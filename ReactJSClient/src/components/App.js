@@ -14,10 +14,10 @@ function mapStateToProps(state) {
    console.log("State is " + JSON.stringify(state));
    return {
       Prss: state.Prss,
-      Cnvs: state.Cnvs,
+      Listing: state.Listing,
       Errs: state.Errs,
       Msgs: state.Msgs,
-      curCnv: state.Cnvs.cnv
+      // curCnv: state.Cnvs.cnv
    };
 }
 

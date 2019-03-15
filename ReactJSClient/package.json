@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^3.4.1",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
     "react": "^15.5.4",
     "react-bootstrap": "^0.31.5",
     "react-dom": "^15.5.4",
@@ -16,6 +17,7 @@
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
+    "eslint": "^5.15.2",
     "react-scripts": "1.0.5"
   },
   "scripts": {

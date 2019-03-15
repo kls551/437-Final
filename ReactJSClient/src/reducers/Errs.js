@@ -3,17 +3,17 @@ function Errs(state = [], action) {
  
     switch (action.type) {
         case 'LOGIN_ERR':
-            console.log("error reducer");
+            console.log("login error ", action.details);
             return action.details;
         case 'REGISTER_ERR':
             return action.details;
-        case 'UPDATE_CNVS_ERR':
+        case 'UPDATE_LSTS_ERR':
             return action.details;
-        case 'GET_CNV_ERR':
+        case 'GET_LST_ERR':
             return action.details;
-        case 'ADD_CNV_ERR':
+        case 'ADD_LST_ERR':
             return action.details;
-        case 'UPDATE_CNV_ERR':
+        case 'UPDATE_LST_ERR':
             return action.details;
         case 'DEL_CNV_ERR':
             return action.details;
