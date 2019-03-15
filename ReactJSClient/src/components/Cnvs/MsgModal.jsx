@@ -7,47 +7,54 @@ export default class MsgModal extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         msgContent: "",
+         content:  "",
       }
+   
+      this.handleChange = this.handleChange.bind(this);
    }
 
    close = (result) => {
-      console.log(result, this.state);
       this.props.onDismiss && this.props.onDismiss({
          status: result,
-         content: this.state.msgContent
+         content: this.state.content
       });
+      this.setState({content: ""});
+   }
+
+   getValidationState = () => {
+      if (this.state.content) {
+         return null
+      }
+      return "warning";
    }
 
    handleChange = (e) => {
-      this.setState({ msgContent: e.target.value });
-   }
-
-   componentWillReceiveProps = (nextProps) => {
-      if (nextProps.showModal) {
-         this.setState({ msgContent: "" })
-      }
+      this.setState({ content: e.target.value });
    }
 
    render() {
-      console.log("INSIDE MSG MODAL RENDER")
       return (
-         <Modal show={this.props.showModal} 
-            onHide={() => this.close("Cancel")}>
+         <Modal show={this.props.showModal} onHide={() => this.close("Cancel")}>
             <Modal.Header closeButton>
-               <Modal.Title>Enter New Message</Modal.Title>
+               <Modal.Title>{"Enter New Message"}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-               <div className="form-group">
-                  <textarea
-                  className="form-control"
-                  id="NewMsg"
-                  rows="2"
-                  placeholder="Enter New Message"
-                  value={this.state.msgContent} 
-                  onChange={this.handleChange}
-                  />
-               </div>
+               <form onSubmit={(e) =>
+                  e.preventDefault() || this.state.content.length ?
+                     this.close("Ok") : this.close("Cancel")}>
+                  <FormGroup controlId="formBasicText"
+                   validationState={this.getValidationState()}
+                  >
+                     <FormControl
+                        type="text"
+                        value={this.state.content}
+                        placeholder={"Enter message here"}
+                        onChange={this.handleChange}
+                     />
+                     <FormControl.Feedback />
+                     <HelpBlock>Content cannot be empty</HelpBlock>
+                  </FormGroup>
+               </form>
             </Modal.Body>
             <Modal.Footer>
                <Button onClick={() => this.close("Ok")}>Ok</Button>

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, Col, FormControl, Button, ControlLabel }
-   from 'react-bootstrap';
+import { Form, FormGroup, Col } from 'react-bootstrap';
+import { FormControl, Button, ControlLabel } from 'react-bootstrap';
 import './SignIn.css';
+import ErrorDialog  from '../ErrorDialog/ErrorDialog';
 
 class SignIn extends Component {
    constructor(props) {
@@ -10,7 +11,7 @@ class SignIn extends Component {
       // Current login state
       this.state = {
          email: 'adm@11.com',
-         password: 'password'
+         password: 'password',
       }
 
        // bind 'this' to the correct context
@@ -21,10 +22,12 @@ class SignIn extends Component {
    // Call redux actionCreator signin via props.
    signIn(event) {
       this.props.signIn(this.state, 
-         () => this.props.history.push("/allCnvs"));
+         () => this.props.history.push("/allCnvs"),
+         () => this.setState({showError: true}));
       event.preventDefault()
-   }
+   }  
 
+   // Continually update state as letters typed. Rerenders, but no DOM change!
    handleChange(event) {
       const newState = {}
       newState[event.target.name] = event.target.value;

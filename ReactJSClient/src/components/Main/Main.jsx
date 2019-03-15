@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
-import { Register, SignIn, CnvOverview, CnvDetail, ConfDialog } 
-   from '../index'
+import { Register, SignIn, CnvOverview, CnvDetail, ConfDialog } from '../index'
 import { Route, Redirect, Switch } from 'react-router-dom';
-import { Navbar, Nav, NavItem, ListGroup, ListGroupItem }
-   from 'react-bootstrap';
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import './Main.css';
+import ErrorDialog  from '../ErrorDialog/ErrorDialog';
 
 var ProtectedRoute = ({component: Cmp, path, ...rest }) => {
    // console.log("HELLOOOOO" + JSON.stringify(rest));
    return (<Route path={path} render={(props) => {
+      console.log("in protected route ", path);
       return Object.keys(rest.Prss).length !== 0 ?
       <Cmp {...rest}/> : <Redirect to='/signin'/>;}}/>);
    };
    
 class Main extends Component {
-
+   
    signedIn() {
       return Object.keys(this.props.Prss).length !== 0; // Nonempty Prss obj
    }
@@ -23,7 +24,11 @@ class Main extends Component {
    // Function component to generate a Route tag with a render method 
    // conditional on login.  Params {conditional: Cmp to render if signed in}
 
+
    render() {
+
+      // var CnvMsgs = [];
+      // this.props.
       console.log("Redrawing main");
       return (
          <div>
@@ -42,10 +47,10 @@ class Main extends Component {
                      <Nav>
                         {this.signedIn() ?
                            [
-                              <LinkContainer key={0} to="/allCnvs">
+                              <LinkContainer key={"all"} to="/allCnvs">
                                  <NavItem>All Conversations</NavItem>
                               </LinkContainer>,
-                              <LinkContainer key={1} to="/myCnvs">
+                              <LinkContainer key={"my"} to="/myCnvs">
                                  <NavItem>My Conversations</NavItem>
                               </LinkContainer>
                            ]
@@ -64,12 +69,10 @@ class Main extends Component {
                      </Nav>
                      {this.signedIn() ?
                         <Nav pullRight>
-                           <LinkContainer key={2} to="/">
-                              <NavItem eventKey={1}
-                              onClick={() => this.props.signout()}>
-                                 Sign out
-                              </NavItem>
-                           </LinkContainer>
+                           <NavItem eventKey={1}
+                            onClick={() => this.props.signOut()}>
+                              Sign out
+                           </NavItem>
                         </Nav>
                         :
                         ''
@@ -84,7 +87,7 @@ class Main extends Component {
                   component={() => this.props.Prss ? 
                   <Redirect to="/allCnvs" /> : <Redirect to="/signin" />} />
                <Route path='/signin' 
-                  render={() => <SignIn {...this.props} />} />
+                     render={() => <SignIn {...this.props} />} />
                <Route path='/register'
                 render={() => <Register {...this.props} />} />
                <ProtectedRoute path='/allCnvs' component={CnvOverview}
@@ -92,26 +95,24 @@ class Main extends Component {
                <ProtectedRoute path='/myCnvs' component={CnvOverview}
                 userOnly="true" {...this.props}/>}
                />
-               <ProtectedRoute path='/CnvDetail/:id' component={CnvDetail}
-                {...this.props}/>}
-               />
-             
             </Switch>
 
+            <ProtectedRoute path='/CnvDetail/:cnvId'  component={CnvDetail}
+            userOnly="true" {...this.props}/>
             {/*Error popup dialog*/}
-            <ConfDialog
-               show={this.props.Errs.length > 0}
-               title="Error Notice"
-               body={<ListGroup>
-                  {this.props.Errs.map(
-                     (err, i) => <ListGroupItem key={i} bsStyle="danger">
-                        {err}
-                     </ListGroupItem>
-                  )}
-               </ListGroup>}
-               buttons={['OK']}
-               onClose={() => { this.props.clearErrors() }}
-            />
+            <ErrorDialog
+              showError={this.props.Errs.length !== 0}
+              title="Error Notice"
+              body={this.props.Errs? this.props.Errs : ""}
+              buttons={['Ok']}
+              onClose={answer => {
+               //   this.setState({offerSignIn: false});
+                 this.props.clearError();
+                 if (answer === 'Ok') {  
+                     this.props.history.push("/");
+                 }
+              }}
+           />
          </div>
       )
    }

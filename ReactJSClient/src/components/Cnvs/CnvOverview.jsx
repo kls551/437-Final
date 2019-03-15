@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { ListGroup, ListGroupItem, 
-   Col, Row, Button, Glyphicon } from 'react-bootstrap';
+import { ListGroup, ListGroupItem} from 'react-bootstrap';
+import { Col, Row, Button, Glyphicon } from 'react-bootstrap';
 import CnvModal from './CnvModal';
-import { ConfDialog, CnvDetail } from '../index';
-import { delCnv} from '../../api';
+import ConfDialog  from '../ConfDialog/ConfDialog';
+import ErrorDialog  from '../ErrorDialog/ErrorDialog';
+import deleteCnv from '../../api';
+import CnvDetail from './CnvDetail'
 import './CnvOverview.css';
 
 export default class CnvOverview extends Component {
@@ -14,6 +16,7 @@ export default class CnvOverview extends Component {
       this.state = {
          showModal: false,
          showConfirmation: false,
+         delCnv: undefined,
       }
       this.openModal = this.openModal.bind(this);
       this.openConfirmation = this.openConfirmation.bind(this);
@@ -24,35 +27,39 @@ export default class CnvOverview extends Component {
    openModal = (cnv) => {
       const newState = { showModal: true };
       if (cnv)
-         newState.editCnv= cnv;
+         newState.editCnv = cnv;
       this.setState(newState);
    }
 
    modalDismiss = (result) => {
       if (result.status === "Ok") {
          if (this.state.editCnv) {
-            this.modCnv(result, result.title);
+            this.modCnv(result);
          }
-         else
+         else {
             this.newCnv(result);
+         }
+      }
+      else if (result.status === "warning") {
+         this.setState({showError : true});
       }
       this.setState({ showModal: false, editCnv: null });
    }
 
-   modCnv(result, title) {
-      this.props.modCnv(this.state.editCnv.id, title);
-      this.props.updateCnvs();
+   modCnv(result) {  
+      this.props.modCnv(this.state.editCnv.id, result.title, 
+         () => this.props.history.push('/'), 
+         () => this.setState({showError: true}));
    }
 
    newCnv(result) {
-      this.props.addCnv({ title: result.title });
-      this.props.updateCnvs();
+      this.props.addCnv({ title: result.title }, 
+          () => this.props.history.push('/'), 
+          () => this.setState({showError: true}));
    }
 
-   openConfirmation = (cnv, cnvTitle) => {
-      this.setState({ delCnv: cnv, 
-         delCnvTitle: cnvTitle, showConfirmation: true })
-      this.props.updateCnvs();
+   openConfirmation = (cnv, title) => {
+      this.setState({ delCnv: cnv, showConfirmation: true , title: title})
    }
 
    closeConfirmation = (res) => {
@@ -61,17 +68,20 @@ export default class CnvOverview extends Component {
 
    render() {
       var cnvItems = [];
+      var self = this;
+
       this.props.Cnvs.forEach(cnv => {
          if (!this.props.userOnly || this.props.Prss.id === cnv.ownerId)
             cnvItems.push(<CnvItem
                key={cnv.id}
-               id = {cnv.id}
-               title={cnv.title}
-               lastMessage={cnv.lastMessage}
+               id={cnv.id}
+               title = {cnv.title}
+               lastMessage = {cnv.lastMessage}
                showControls={cnv.ownerId === this.props.Prss.id}
-               onDelete={() => this.openConfirmation(cnv, cnv.title)}
+               onDelete={() => this.openConfirmation(cnv)}
                onEdit={() => this.openModal(cnv)} />);
       });
+
       return (
          <section className="container">
             <h1>Cnv Overview</h1>
@@ -84,24 +94,25 @@ export default class CnvOverview extends Component {
             {/* Modal for creating and change cnv */}
             <CnvModal
                showModal={this.state.showModal}
-               title={this.state.editCnv ? "Edit title" 
-                  : "New Conversation"}
+               title={this.state.editCnv ? "Edit title" : "New Conversation"}
                cnv={this.state.editCnv}
                onDismiss={this.modalDismiss} />
 
-
             <ConfDialog
-               show={this.state.showConfirmation}
-               title={"Delete Conversation"}
-               body={`Are you sure you want to delete the Converstaion
-                  '${this.state.delCnvTitle}'`}
-               buttons={['Yes', 'Abort']}
-               onClose={but => { 
-                  if (but === 'Yes') {
-                     console.log(this.props.history);
-                     this.props.delCnv(this.state.delCnv.id);
+               showConfirmation={this.state.showConfirmation}
+               title={"Detele Conversation"}
+               body={`Would you like to delete 
+               ${this.state.delCnv ? this.state.delCnv.title : ""}?`}
+               buttons={['YES', 'NO']}
+               onClose={answer => {
+                  if (answer === 'YES') {
+                     this.props.delCnv(this.state.delCnv.id,
+                        () => this.props.history.push("/"));
+                     this.setState({delCnv: null, showConfirmation: false});   
                   }
-                  this.setState({ showConfirmation: false });                  
+                  else if (answer === 'NO') {
+                     this.setState({delCnv: null, showConfirmation: false});
+                  }
                }}
             />
          </section>
@@ -110,28 +121,30 @@ export default class CnvOverview extends Component {
 }
 
 // A Cnv list item
-const CnvItem = (props) => {
+const CnvItem = function (props) {
    return (
       <ListGroupItem>
          <Row>
             <Col sm={4}>
-               <Link to={"/CnvDetail/" + props.id}>{props.title}</Link></Col>
-            <Col sm={4}> {
-               props.lastMessage ? 
-               new Intl.DateTimeFormat('us',
+            <Link to={ { pathname: "/CnvDetail/" + props.id, 
+                        state : {cnvTitle : props.title, cnvId: props.id} }}  
+                        title={props.title}> {props.title} </Link> </Col>
+            <Col sm={4}> { props.lastMessage ? 
+               new Intl.DateTimeFormat('en-US', 
                {
-                  year: "numeric", month: "short", day: "numeric",
-                  hour: "2-digit", minute: "2-digit", second: "2-digit"
+                  year: 'numeric', month: 'short', day: 'numeric',
+                  hour: '2-digit', minute: '2-digit', second: '2-digit'
                })
-               .format(new Date(props.lastMessage)) : "N/A" }
-            </Col>
+               .format(new Date(props.lastMessage))
+               :
+               "N/A" }</Col>
             {props.showControls ?
                <div className="pull-right">
                   <Button bsSize="small" 
-                     onClick={props.onDelete}>
+                        onClick={props.onDelete}>
                      <Glyphicon glyph="trash" /></Button>
                   <Button bsSize="small" 
-                     onClick={props.onEdit}>
+                        onClick={props.onEdit}>
                      <Glyphicon glyph="edit" /></Button>
                </div>
                : ''}

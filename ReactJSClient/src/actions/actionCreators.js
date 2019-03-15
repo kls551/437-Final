@@ -1,112 +1,113 @@
 import * as api from '../api';
 
-export function signIn(credentials, cb) {
+export function signIn(credentials, cb, errcb) {
    return (dispatch, prevState) => {
       api.signIn(credentials)
       .then((userInfo) => dispatch({type: "SIGN_IN", user: userInfo}))
       .then(() => {if (cb) cb();})
-      .catch(error => dispatch({type: 'LOGIN_ERR', details: error}));
+      .catch(error => {
+               dispatch({type: 'LOGIN_ERR', details: error});
+                               if (errcb) errcb(); } );
    };
 }
 
-export function signOut(cb) {
+export function signOut(cb, errcb) {
    return (dispatch, prevState) => {
       api.signOut()
       .then(() => dispatch({ type: 'SIGN_OUT' }))
-      .then(() => {if (cb) cb();});
+      .then(() => {if (cb) cb();})
+      .catch(error => {
+            dispatch({type: 'SIGN_OUT_ERR', details: error});
+                      if (errcb) errcb(); } );;
    };
 }
 
-export function register(data, cb) {
+export function register(data, cb, errcb) {
    return (dispatch, prevState) => {
       api.postPrs(data)
-      .then(() => {if (cb) cb();})
+      // .then((userInfo) => dispatch({type: "REGISTER", user: []}))
+      .then(() => {if (cb) cb() } )
       .catch(error => {
-         dispatch({type: 'REGISTER_ERR', details: error})
-      });
+                        dispatch({type: 'REGISTER_ERR', details: error});
+                        if (errcb) errcb(); } );
    };
 }
 
-export function updateCnvs(userId, cb) {
+export function updateCnvs(userId, cb, errcb) {
    return (dispatch, prevState) => {
       api.getCnvs(userId)
-      .then((cnvs) => dispatch({ type: 'UPDATE_CNVS', cnvs : cnvs }))
-      .then(() => {if (cb) cb();});
+      .then((cnvs) => dispatch({ type: 'UPDATE_CNVS', data: cnvs }))
+      .then(() => {if (cb) cb();})
+      .catch(error => { dispatch({type: 'UPDATE_CNVS_ERR', details: error});
+                        if (errcb) errcb(); } );
    };
 }
 
-export function addCnv(newCnv, cb) {
+export function getCnv(cnvId, cb, errcb) {
    return (dispatch, prevState) => {
+      api.getOneCnv(cnvId)
+      .then((cnv) => dispatch({ type: 'GET_CNV', data: cnv }))
+      .then(() => {if (cb) cb();})
+      .catch(error => {dispatch({type: 'GET_CNV_ERR', details: error});
+                              if (errcb) errcb(); } );
+   };
+}
+
+export function addCnv(newCnv, cb, errcb) {
+   return (dispatch, prevState) => {
+      console.log("adding cnvs");
       api.postCnv(newCnv)
-      //.then(cnvRsp => dispatch({type: 'ADD_CNV', cnv: newCnv}))
+      .then(cnvRsp => dispatch({type: 'ADD_CNV', cnv: newCnv}))
       .then(() => {if (cb) cb();})
-      .catch(error => {
-         dispatch({type: 'FIELD_MIS_ERR', details: error})
-      });
+      .catch(error => {dispatch({type: 'ADD_CNV_ERR', details: error}); 
+                        if (errcb) errcb(); } );
    };
 }
 
-export function addMsg(cnvId, body, cb) {
+export function modCnv(cnvId, title, cb, errcb) {
    return (dispatch, prevState) => {
-      api.postMsg(cnvId, body)
+      api.putCnv(cnvId, {title})
+      .then((cnvs) => dispatch({type: 'UPDATE_CNV', data: cnvs}  ))
       .then(() => {if (cb) cb();})
-      .catch(error => {
-         dispatch({type: 'FIELD_MIS_ERR', details: error})
-      });
+      .catch(error => {dispatch({type: 'UPDATE_CNV_ERR', details: error});
+                           if (errcb) errcb(); } );
    };
 }
 
-export function modCnv(cnvId, title, cb) {
+export function delCnv(cnvId, cb, errcb) {
    return (dispatch, prevState) => {
-      api.putCnv(cnvId, {title : title})
-      .then((cnvs) => dispatch({type: 'UPDATE_CNV', data: title, id: cnvId}))
+      console.log("in delCnv", cnvId)
+      api.deleteCnv(cnvId)
+      .then(() => dispatch({ type: 'DEL_CNV'}))
       .then(() => {if (cb) cb();})
-      .catch((error) => {
-         dispatch({type: "DUP_TITLE", details: error});
-      });
+      .catch(error => {dispatch({type: 'DEL_CNV_ERR', details: error}); 
+                     if (errcb) errcb(); } );
    };
 }
 
-export function delCnv(cnvId, cb) {
-   return (dispatch, prevState) => {
-      api.delCnv(cnvId)
-      .then((res) => {console.log(res);
-         dispatch({type: 'DEL_CNV', cnv: cnvId});})
-      .then(() => {if (cb) cb();});
-   }
-}
-
-export function getCnv(cnvId, cb) {
-   return (dispatch, prevState) => {
-      api.getCnv(cnvId)
-      .then((res) => {console.log(res);
-         dispatch({type: 'GET_CNV', oneCnv: res});})
-      .then(() => {if (cb) cb();});
-   }
-}
-
-export function getMsgs(cnvId, cb) {
+export function updateMsgs(cnvId, cb, errcb) {
    return (dispatch, prevState) => {
       api.getMsgs(cnvId)
-      .then((res) => {console.log("gotten msgs", res);
-         dispatch({type: 'GET_MSGS', msgs: res});})
+      .then((msgs) => dispatch({ type: 'UPDATE_MSGS', data: msgs }))
       .then(() => {if (cb) cb();})
-      .catch((error) => {
-         dispatch({type: "ERROR", details: error});
-      });
-   }
-}
-
-export function postError(type, details, cb) {
-   return (dispatch, prevState) => {
-      dispatch({type, details});
-      if (cb) cb();
+      .catch(error => {dispatch({type: 'UPDATE_MSGS_ERR', details: error});
+                        if (errcb) errcb(); } );
    };
 }
 
-export function clearErrors(cb) {
+export function addMsg(cnvid, content, cb, errcb) {
    return (dispatch, prevState) => {
-      dispatch({type: "ERRS"});
-      if (cb) cb();
+      api.postMsg(cnvid, content)
+      .then(msg => { console.log("msg -----", msg);
+      dispatch({type: 'ADD_MSG', msg: msg}); } )
+      .then(() => {if (cb) cb();})
+      .catch(error => {dispatch({type: 'ADD_MSG_ERR', details: error});
+                        if (errcb) errcb(); } );
+   };
+}
+
+export function clearError(cb) {
+   return (dispatch, prevState) => {
+      dispatch({type: 'CLEAR_ERROR', details: []});
    };
 }

@@ -3,15 +3,14 @@ export default function Cnvs(state = [], action) {
 
    switch (action.type) {
       case 'UPDATE_CNVS': // Replace previous cnvs
-         return action.cnvs;
+         return action.data;
       case 'UPDATE_CNV':
          return state.map(val => val.id !== action.data.cnvId ?
             val : Object.assign({}, val, { title: action.data.title }));
-      case 'DEL_CNV':
-         console.log(action);
-         return state.filter(element => element.id !== action.cnv);
       case 'ADD_CNV':
          return state.concat([action.cnv]);
+      case 'GET_CNV':
+         return action.data;
       default:
          return state;
    }

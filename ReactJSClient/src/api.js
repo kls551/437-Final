@@ -18,47 +18,27 @@ var cookie;
 headers.set('Content-Type', 'application/JSON');
 
 const reqConf = {
-    headers: headers,
+    headers: {'Content-Type': 'application/JSON'},
     credentials: 'include',
+    mode: 'cors'
 };
-
-let newFetch = function (request, options) {
-    return fetch(request, options)
-        .catch(err => Promise.reject(["Server Connect Error"]))
-        .then(res => {
-            return res.ok ? res : createError(res);});
-}
 
 // Helper functions for the comon request types, automatically
 // adding verb, headers, and error management.
 export function post(endpoint, body) {
-    return newFetch(baseURL + endpoint, {
-        method: 'POST',
-        body: JSON.stringify(body),
-        ...reqConf
-    });
+    return safeFetch(baseURL + endpoint,'POST', body);
 }
 
 export function put(endpoint, body) {
-    return newFetch(baseURL + endpoint, {
-        method: 'PUT',
-        body: JSON.stringify(body),
-        ...reqConf
-    });
+    return safeFetch(baseURL + endpoint,'PUT', body);
 }
 
 export function get(endpoint) {
-    return newFetch(baseURL + endpoint, {
-        method: 'GET',
-        ...reqConf
-    });
+    return safeFetch(baseURL + endpoint, 'GET');
 }
 
 export function del(endpoint) {
-    return newFetch(baseURL + endpoint, {
-        method: 'DELETE',
-        ...reqConf
-    });
+    return safeFetch(baseURL + endpoint, 'DELETE');
 }
 
 // Functions for performing the api requests
@@ -69,24 +49,22 @@ export function del(endpoint) {
  * @param {{email: string, password: string}} cred
  */
 export function signIn(cred) {
-    return post("Ssns", cred)
-        .then((response) => {
-            let location = response.headers.get("Location").split('/');
-            cookie = location[location.length - 1];
-            console.log(cookie);
-            return get("Ssns/" + cookie)
-        })
-        .then(response => response.json())  
-        .then(rsp => get('Prss/' + rsp.prsId))
-        .then(userResponse => userResponse.json())
-        .then(rsp => rsp[0]);
+   return post("Ssns", cred)
+      .then((response) => {
+         let location = response.headers.get("Location").split('/');
+         cookie = location[location.length - 1];
+         return get("Ssns/" + cookie)
+      })
+      .then(response => response.json())   // ..json() returns a Promise!
+      .then(rsp => get('Prss/' + rsp.prsId))
+      .then(userResponse => userResponse.json())
+      .then(rsp => rsp[0]);
 }
 
 /**
  * @returns {Promise} result of the sign out request
  */
 export function signOut() {
-    console.log(cookie);
     return del("Ssns/" + cookie);
 }
 
@@ -96,63 +74,107 @@ export function signOut() {
  * @returns {Promise resolving to new user}
  */
 export function postPrs(user) {
-    return post("Prss", user)
-    // .then(rsp => {
-    //     let location = rsp.headers.get("Location").split('/');
-    //     return get("Prss/" + location[location.length - 1]);
-    // })
-    // .then(rsp => rsp.json()[0]);
+   return post("Prss", user)
+//    .then(rsp => {
+//         let location = rsp.headers.get("Location").split('/');
+//         return rsp;
+//         // return get("Prss/" + location[location.length - 1]); 
+//     })  
+//    .then(rsp => rsp[0].json());
 }
 
 /**
  * @returns {Promise} json parsed data
  */
 export function getCnvs(userId) {
-    return get("Cnvs" + (userId ? "?owner=" + userId : ""))
-        .then((res) => res.json())
+    return get("Cnvs" + (userId ? "?owner="+userId : ""))
+    .then((res) => res.json());
 }
 
-export function getCnv(id) {
-    return get(`Cnvs/${id}`)
-        .then((res) => res.json())
+export function getOneCnv(cnvId) {
+    return get("Cnvs/" + cnvId)
+    .then((res) => res.json());
 }
 
 export function putCnv(id, body) {
-    return put(`Cnvs/${id}`, body)
+    return put(`Cnvs/${id}`, body);
 }
 
 export function postCnv(body) {
-    return post('Cnvs', body).then(rsp => {
+    return post('Cnvs', body).then((rsp)=> {
         let location = rsp.headers.get("Location").split('/');
-        return get(`Cnvs/${location[location.length - 1]}`);
+        return get(`Cnvs/${location[location.length-1]}`);
     })
-        .then(rsp => rsp.json());
+   .then(rsp => rsp.json());
+}
+
+export function deleteCnv(cnvId) {
+    return del("Cnvs/" +  cnvId);
+}
+
+// getting message for converstaion 
+export function getMsgs(cnvId) {
+    return get("Cnvs/" + cnvId + "/Msgs")
+    .then((res) => res.json());
 }
 
 export function postMsg(cnvId, body) {
-    return post(`Cnvs/${cnvId}/Msgs`, body);
+    return post('Cnvs/' + cnvId + '/Msgs', body).then((rsp)=> {
+      let location = rsp.headers.get("Location").split('/');
+      return get(`Msgs/${location[location.length-1]}`);
+   })
+   .then(rsp => rsp.json());
+};
+
+export function safeFetch(url, action, body) {
+    if (body) {
+        return fetch(url, {
+            method: action,
+            body: JSON.stringify(body),
+            ...reqConf
+            })
+            .catch(err => {return Promise.reject("Error connection")})
+            .then(res => {
+                // if (err) {
+                //     console.log("Error cnn");
+                //     return Promise.reject("Error connection");
+                // }  
+                // else 
+                    return checkErrs(res)});
+    }
+    else {
+        return fetch(url, {
+            method: action,
+            ...reqConf
+            })
+            .catch(err => 
+                {return Promise.reject("Error connection")})
+            .then((res, err) => {
+                if (err) 
+                    return Promise.reject("Error connection");
+                else 
+                    return checkErrs(res, err);});
+    }
 }
 
-export function delCnv(body) {
-    return del(`Cnvs/${body}`)
-}
+export function checkErrs(response, err) {
+    return new Promise((resolve, reject) => {
+        if (response.status >= 400) {
+            return response.clone().json().then( (res) =>  {
+                var params = "";
+                var errtag = errorTranslate(String(res[0].tag), 'en'); 
 
-export function getMsgs(id) {
-    return get(`Cnvs/${id}/Msgs`)
-        .then((res) => res.json());
-}
-
-function createError(response) {
-    console.log("GOT HERE");
-    if (response.status >= 400)
-        return Promise.resolve(response)
-            .then(response => response.json())
-            .then(errorlist =>
-                Promise
-                    .reject(errorlist.map(err => errorTranslate(err.tag)))
-            );
-    else
-        return Promise.reject(["Server Connect Error"]);
+                if (res[0].params)
+                    res[0].params.forEach(
+                        field => { params = params + field + ' '})
+                errtag += params;
+                reject(errtag);
+            });
+        }
+        else {
+            resolve(response);
+        }
+    })
 }
 
 const errMap = {

@@ -6,6 +6,7 @@ import {
 } from 'react-bootstrap';
 
 import './Register.css';
+import ErrorDialog from '../ErrorDialog/ErrorDialog';
 
 // Functional component label plus control w/optional help message
 function FieldGroup({id, label, help, ...props }) {
@@ -28,16 +29,16 @@ class Register extends Component {
          password: '',
          passwordTwo: '',
          termsAccepted: false,
-         offerSignIn: false,
-         role: 0
+         role: 0,
+         offerSignIn: false, 
       }
-      this.submit = this.submit.bind(this);
+
       this.handleChange = this.handleChange.bind(this);
       this.render = this.render.bind(this);
+      this.submit = this.submit.bind(this);
    }
 
    submit() {
-      console.log(this.state);
       let { // Make a copy of the relevant values in current state
          firstName,
          lastName,
@@ -55,8 +56,8 @@ class Register extends Component {
          termsAccepted,
          role
       };
-      this.props.register(user, () => {
-         this.setState({offerSignIn: true})});
+
+      this.props.register(user, () => {this.setState({offerSignIn: true})});
    }
 
    handleChange(ev) {
@@ -70,6 +71,7 @@ class Register extends Component {
          newState[ev.target.id] = ev.target.value;
       }
       this.setState(newState);
+      console.log("new state ", newState);
    }
 
    formValid() {
@@ -80,7 +82,6 @@ class Register extends Component {
    }
 
    render() {
-      console.log(this.state);
      return (
         <div className="container">
            <form>
@@ -104,17 +105,13 @@ class Register extends Component {
                onChange={this.handleChange} required={true}
                />
 
-              <FieldGroup 
-               id="passwordTwo" 
-               type="password" 
-               label="Repeat Password"
+              <FieldGroup id="passwordTwo" type="password" label="Repeat Password"
                value={this.state.passwordTwo}
                onChange={this.handleChange} required={true}
                help="Repeat your password"
               />
 
-              <Checkbox  id="termsAccepted" 
-               value={this.state.termsAccepted}
+              <Checkbox  id="termsAccepted" value={this.state.termsAccepted}
                onChange={this.handleChange}>
                   Do you accept the terms and conditions?
               </Checkbox>
@@ -131,7 +128,7 @@ class Register extends Component {
            </Button>
 
            <ConfDialog
-              show={this.state.offerSignIn}
+              showConfirmation={this.state.offerSignIn}
               title="Registration Success"
               body={`Would you like to log in as ${this.state.email}?`}
               buttons={['YES', 'NO']}
@@ -139,8 +136,7 @@ class Register extends Component {
                  this.setState({offerSignIn: false});
                  if (answer === 'YES') {
                     this.props.signIn(
-                     {email: this.state.email, 
-                        password: this.state.password},
+                     {email: this.state.email, password: this.state.password},
                      () => this.props.history.push("/"));
                  }
               }}

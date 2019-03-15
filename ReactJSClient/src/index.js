@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 // import react router
-import { BrowserRouter } from 'react-router-dom';
+import { Route, BrowserRouter } from 'react-router-dom';
 
 // Our own components
-import { App } from './components/index';
+import { App, CnvDetail } from './components/index';
 
 // Register service worker
 import registerServiceWorker from './registerServiceWorker';

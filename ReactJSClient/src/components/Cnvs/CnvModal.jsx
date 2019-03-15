@@ -9,10 +9,11 @@ export default class CnvModal extends Component {
       this.state = {
          cnvTitle: (this.props.cnv && this.props.cnv.title) || "",
       }
+     
+      this.handleChange = this.handleChange.bind(this);
    }
 
    close = (result) => {
-      console.log(result, this.state.cnvTitle);
       this.props.onDismiss && this.props.onDismiss({
          status: result,
          title: this.state.cnvTitle
@@ -21,10 +22,9 @@ export default class CnvModal extends Component {
 
    getValidationState = () => {
       if (this.state.cnvTitle) {
-         return null;
+         return null
       }
-      else
-         return "warning";
+      return "warning";
    }
 
    handleChange = (e) => {
@@ -33,36 +33,34 @@ export default class CnvModal extends Component {
 
    componentWillReceiveProps = (nextProps) => {
       if (nextProps.showModal) {
-         this.setState(
-            { cnvTitle: (nextProps.cnv && nextProps.cnv.title) || "" })
+         this.setState({ cnvTitle: 
+            (nextProps.cnv && nextProps.cnv.title) || "" })
       }
    }
 
    render() {
       return (
          <Modal show={this.props.showModal} 
-            onHide={() => this.close("Cancel")}>
+               onHide={() => this.close("Cancel")}>
             <Modal.Header closeButton>
                <Modal.Title>{this.props.title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                <form onSubmit={(e) =>
                   e.preventDefault() || this.state.cnvTitle.length ?
-                     this.close("Ok") : this.close("Cancel")}>
-                  <FormGroup controlId="formBasicText"
+                     this.close("Ok") : this.close("warning")}>
+                  <FormGroup controlId="formBasicText" required
                    validationState={this.getValidationState()}
                   >
                      <ControlLabel>Conversation Title</ControlLabel>
                      <FormControl
                         type="text"
                         value={this.state.cnvTitle}
-                        placeholder="Enter Text"
+                        placeholder={this.state.cnvTitle}
                         onChange={this.handleChange}
                      />
                      <FormControl.Feedback />
-                     {this.getValidationState() ? 
                      <HelpBlock>Title can not be empty.</HelpBlock>
-                     : null }
                   </FormGroup>
                </form>
             </Modal.Body>

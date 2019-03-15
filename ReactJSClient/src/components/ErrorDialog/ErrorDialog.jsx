@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Alert} from 'react-bootstrap';
 
 /**
  * Properties expected:
@@ -7,24 +7,25 @@ import { Modal, Button } from 'react-bootstrap';
  * body: string
  * buttons: Array<string>
  */
-export default class ConfDialog extends PureComponent {
+export default class ErrorDialog extends PureComponent {
    constructor(props) {
       super(props);
-      console.log("Constructing ConfDialog w/ ", props);
+      console.log("Constructing ErrorDialog w/ ", props);
    }
    close = (result) => {
       this.props.onClose(result);
    }
 
    render() {
-      console.log("ConfDialog rerenders");
+      console.log("ErrorDialog rerenders");
       return (
-         <Modal show={this.props.showConfirmation} onHide={() => this.close("NO")}>
+         <Modal show={this.props.showError} onHide={() => this.close("Ok")}>
             <Modal.Header closeButton>
-               <Modal.Title>{this.props.title}</Modal.Title>
+               <Modal.Title>{"Error Notice"}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-               {this.props.body}
+                <div className="alert alert-danger" role="alert"> 
+                {this.props.body} </div>
             </Modal.Body>
             <Modal.Footer>
                {this.props.buttons.map((btn, i) => <Button key={i}
