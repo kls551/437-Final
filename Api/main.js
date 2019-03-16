@@ -26,7 +26,6 @@ app.use(function (req, res, next) {
    res.header("Access-Control-Allow-Headers", ["Content-Type", "Location", "multipart/form-data"]);
    res.header("Access-Control-Expose-Headers", ["Location"]);
    res.header("Access-Control-Allow-Methods", ["DELETE", "PUT"]);
-   res.type('jpeg');
    next();
 });
 

@@ -31,6 +31,7 @@ var upload = multer({
 router.baseURL = '/Listing';
 
 router.get('/', function (req, res) {
+   console.log(req.query);
    var owner = req.query.owner;
    var numbed = req.query.numbed;
    async.waterfall([
@@ -54,6 +55,7 @@ router.get('/', function (req, res) {
          }
       },
       function (Listings, fields, cb) { // Return retrieved messages
+         console.log(Listings);
          res.status(200).json(Listings);
          cb();
       }],
@@ -173,7 +175,7 @@ router.get('/:ListingId/Images', function (req, res) {
 
    var query = 'select m.id as id,'+
       ' m.imageUrl as imageUrl' +
-      ' from Listing l join Images m on m.ListingId = l.id'+
+      ' from Listing l join Image m on m.ListingId = l.id'+
       ' where l.id = ?';
 
    async.waterfall([
@@ -183,10 +185,12 @@ router.get('/:ListingId/Images', function (req, res) {
                cb);
       },
       function (Listing, fields, cb) { // Get indicated messages
+         console.log(Listing);
          if (vld.check(Listing.length, Tags.notFound, null, cb))
             cnn.chkQry(query, params, cb);
       },
       function (Images, fields, cb) { // Return retrieved messages
+         console.log(Images);
          res.json(Images);
          cb();
       }],
@@ -194,7 +198,6 @@ router.get('/:ListingId/Images', function (req, res) {
          cnn.release();
       });
 });
-
 
 // we dont know yet
 router.post('/:ListingId/Images', upload.single('mainImage'), function (req, res) {
