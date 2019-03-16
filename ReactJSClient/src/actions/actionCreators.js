@@ -33,43 +33,43 @@ export function register(data, cb, errcb) {
    };
 }
 
-export function updateCnvs(userId, cb, errcb) {
+export function updateLsts(userId, cb, errcb) {
    return (dispatch, prevState) => {
-      api.getCnvs(userId)
-      .then((cnvs) => dispatch({ type: 'UPDATE_CNVS', data: cnvs }))
+      api.getLsts(userId)
+      .then((lsts) => dispatch({ type: 'UPDATE_LSTS', data: lsts }))
       .then(() => {if (cb) cb();})
-      .catch(error => { dispatch({type: 'UPDATE_CNVS_ERR', details: error});
+      .catch(error => { dispatch({type: 'UPDATE_LSTS_ERR', details: error});
                         if (errcb) errcb(); } );
    };
 }
 
-export function getCnv(cnvId, cb, errcb) {
+export function getLst(lstId, cb, errcb) {
    return (dispatch, prevState) => {
-      api.getOneCnv(cnvId)
-      .then((cnv) => dispatch({ type: 'GET_CNV', data: cnv }))
+      api.getOneLst(lstId)
+      .then((lst) => dispatch({ type: 'GET_LST', data: lst }))
       .then(() => {if (cb) cb();})
-      .catch(error => {dispatch({type: 'GET_CNV_ERR', details: error});
+      .catch(error => {dispatch({type: 'GET_LST_ERR', details: error});
                               if (errcb) errcb(); } );
    };
 }
 
-export function addCnv(newCnv, cb, errcb) {
+export function addLst(newLst, cb, errcb) {
    return (dispatch, prevState) => {
-      console.log("adding cnvs");
-      api.postCnv(newCnv)
-      .then(cnvRsp => dispatch({type: 'ADD_CNV', cnv: newCnv}))
+      console.log("adding lst");
+      api.postLst(newLst)
+      .then(lstRsp => dispatch({type: 'ADD_LST', lst: lstRsp}))
       .then(() => {if (cb) cb();})
-      .catch(error => {dispatch({type: 'ADD_CNV_ERR', details: error}); 
+      .catch(error => {dispatch({type: 'ADD_LST_ERR', details: error}); 
                         if (errcb) errcb(); } );
    };
 }
 
-export function modCnv(cnvId, title, cb, errcb) {
+export function modLst(lstId, body, cb, errcb) {
    return (dispatch, prevState) => {
-      api.putCnv(cnvId, {title})
-      .then((cnvs) => dispatch({type: 'UPDATE_CNV', data: cnvs}  ))
+      api.putLst(lstId, body)
+      .then((lsts) => dispatch({type: 'UPDATE_LST', data: lsts}  ))
       .then(() => {if (cb) cb();})
-      .catch(error => {dispatch({type: 'UPDATE_CNV_ERR', details: error});
+      .catch(error => {dispatch({type: 'UPDATE_LST_ERR', details: error});
                            if (errcb) errcb(); } );
    };
 }

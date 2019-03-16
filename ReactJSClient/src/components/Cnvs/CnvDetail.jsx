@@ -4,7 +4,7 @@ import { ListGroup, ListGroupItem, Col, Row, Button, Glyphicon } from 'react-boo
 import MsgModal from './MsgModal';
 import ConfDialog  from '../ConfDialog/ConfDialog';
 import deleteCnv from '../../api';
-import './CnvOverview.css';
+// import './AllListings.css';
 
 export default class CnvDetail extends Component {
     constructor(props) {

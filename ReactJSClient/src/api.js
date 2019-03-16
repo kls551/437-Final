@@ -86,24 +86,25 @@ export function postPrs(user) {
 /**
  * @returns {Promise} json parsed data
  */
-export function getCnvs(userId) {
-    return get("Cnvs" + (userId ? "?owner="+userId : ""))
+export function getLsts(userId) {
+    return get("Listing" + (userId ? "?owner="+userId : ""))
     .then((res) => res.json());
 }
 
-export function getOneCnv(cnvId) {
-    return get("Cnvs/" + cnvId)
+export function getOneLst(lstId) {
+    return get("Listing/" + lstId)
     .then((res) => res.json());
 }
 
-export function putCnv(id, body) {
-    return put(`Cnvs/${id}`, body);
+export function putLst(id, body) {
+    return put(`Listing/${id}`, body);
 }
 
-export function postCnv(body) {
-    return post('Cnvs', body).then((rsp)=> {
+export function postLst(body) {
+    return post('Listing', body).then((rsp)=> {
+        console.log("new listing body ", body);
         let location = rsp.headers.get("Location").split('/');
-        return get(`Cnvs/${location[location.length-1]}`);
+        return get(`Listing/${location[location.length-1]}`);
     })
    .then(rsp => rsp.json());
 }
@@ -135,11 +136,6 @@ export function safeFetch(url, action, body) {
             })
             .catch(err => {return Promise.reject("Error connection")})
             .then(res => {
-                // if (err) {
-                //     console.log("Error cnn");
-                //     return Promise.reject("Error connection");
-                // }  
-                // else 
                     return checkErrs(res)});
     }
     else {

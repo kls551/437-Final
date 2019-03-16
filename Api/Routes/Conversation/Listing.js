@@ -2,36 +2,10 @@ var Express = require('express');
 var Tags = require('../Validator.js').Tags;
 var router = Express.Router({ caseSensitive: true });
 var async = require('async');
-var multer = require('multer');
-const fs = require("fs");
-
-const storage = multer.diskStorage({
-   destination: function(req, file, cb) {
-      cb(null, './uploads');
-   },
-   filename: function(req,file,cb) {
-      var date = Date.now(); 
-      cb(null, date + file.originalname);
-   }
-});
-
-const fileFilter = (req,file,cb) => {
-   if (file.mimetype == 'image/jpeg' ||
-      file.mimetype == 'image/png')
-      cb (null, true);
-   else
-      cb (null, false);
-}
-
-var upload = multer({
-   storage: storage,
-   fileFilter: fileFilter
-});
 
 router.baseURL = '/Listing';
 
 router.get('/', function (req, res) {
-   console.log(req.query);
    var owner = req.query.owner;
    var numbed = req.query.numbed;
    async.waterfall([
@@ -55,7 +29,6 @@ router.get('/', function (req, res) {
          }
       },
       function (Listings, fields, cb) { // Return retrieved messages
-         console.log(Listings);
          res.status(200).json(Listings);
          cb();
       }],
@@ -81,7 +54,7 @@ router.post('/', function (req, res) {
    var vld = req.validator;
    var body = req.body;
    var cnn = req.cnn;
-   console.log(body);
+
    async.waterfall([
       function (cb) {
          if (vld.check(req.session, Tags.noLogin, null, cb))
@@ -94,14 +67,11 @@ router.post('/', function (req, res) {
             }
       },
       function (existingLst, fields, cb) {
-         if (vld.check(!existingLst.length, Tags.dupTitle, null, cb)) {
-            body.postedDate = (new Date().getTime());
+         if (vld.check(!existingLst.length, Tags.dupTitle, null, cb))
             cnn.chkQry("insert into Listing set ?", body, cb);
-         }
       },
       function (insRes, fields, cb) {
          res.location(router.baseURL + '/' + insRes.insertId).end();
-         res.status(200).end;
          cb();
       }],
       function () {
@@ -118,10 +88,7 @@ router.put('/:ListingId', function (req, res) {
 
    async.waterfall([
       function (cb) {
-         if(vld.hasFields(body, 
-            ["title", "price", "numBed", "location",
-            "contactInfo", "description"], cb)
-            && req.validator.check(req.session, Tags.noLogin, null, cb))
+         if(req.validator.check(req.session, Tags.noLogin, null, cb))
             cnn.chkQry('select * from Listing where id = ?', [ListingId], 
                cb);
       },
@@ -129,7 +96,7 @@ router.put('/:ListingId', function (req, res) {
          if (vld.check(Listing.length, Tags.notFound, null, cb) &&
             vld.checkPrsOK(Listing[0].ownerId, cb))
             cnn.chkQry('select * from Listing where id <> ?'+
-               ' and title = ?',[ListingId, body.title], cb);
+               ' && title = ?',[ListingId, body.title], cb);
       },
       function (sameTtl, fields, cb) {
          if (vld.check(!sameTtl.length, Tags.dupTitle, null, cb))
@@ -175,7 +142,7 @@ router.get('/:ListingId/Images', function (req, res) {
 
    var query = 'select m.id as id,'+
       ' m.imageUrl as imageUrl' +
-      ' from Listing l join Image m on m.ListingId = l.id'+
+      ' from Listing l join Images m on m.ListingId = l.id'+
       ' where l.id = ?';
 
    async.waterfall([
@@ -185,12 +152,10 @@ router.get('/:ListingId/Images', function (req, res) {
                cb);
       },
       function (Listing, fields, cb) { // Get indicated messages
-         console.log(Listing);
          if (vld.check(Listing.length, Tags.notFound, null, cb))
             cnn.chkQry(query, params, cb);
       },
       function (Images, fields, cb) { // Return retrieved messages
-         console.log(Images);
          res.json(Images);
          cb();
       }],
@@ -200,31 +165,33 @@ router.get('/:ListingId/Images', function (req, res) {
 });
 
 // we dont know yet
-router.post('/:ListingId/Images', upload.single('mainImage'), function (req, res) {
-   console.log(req.file);
+router.post('/:ListingId/Images', function (req, res) {
    var vld = req.validator;
    var cnn = req.cnn;
    var ListingId = req.params.ListingId;
+   var now;
 
    async.waterfall([
       function (cb) {
-         if (vld.check(req.session, Tags.noLogin, null, cb)) {
-            //vld.hasFields(req.body, ["imageUrl"], cb)) {
+         if (vld.check(req.session, Tags.noLogin, null, cb) &&
+            vld.hasFields(req.body, ["imageUrl"], cb)) {
             cnn.chkQry('select * from Listing where id = ?', [ListingId],
                cb);
          }
       },
       function (Listing, fields, cb) {
          if (vld.check(Listing.length, Tags.notFound, null, cb))
-            cnn.chkQry('insert into Image set ?',
+            cnn.chkQry('insert into Message set ?',
                {
-                  ListingId: ListingId,
-                  imageUrl: req.file.path,
+                  ListingId: ListingId, prsId: req.session.id,
+                  whenMade: now = (new Date().getTime()), 
+                  content: req.body.content
                }, cb);
       },
       function (insRes, fields, cb) {
          res.location(router.baseURL + '/' + insRes.insertId).end();
-         cb();
+         cnn.chkQry("update Listing set lastMessage = ? where id = ?",
+            [now, ListingId], cb);
       }],
       function (err) {
          cnn.release();

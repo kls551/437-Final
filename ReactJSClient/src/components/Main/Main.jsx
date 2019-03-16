@@ -6,6 +6,7 @@ import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import './Main.css';
 import ErrorDialog  from '../ErrorDialog/ErrorDialog';
+import AllListings from '../Cnvs/AllListings';
 
 var ProtectedRoute = ({component: Cmp, path, ...rest }) => {
    // console.log("HELLOOOOO" + JSON.stringify(rest));
@@ -90,9 +91,9 @@ class Main extends Component {
                      render={() => <SignIn {...this.props} />} />
                <Route path='/register'
                 render={() => <Register {...this.props} />} />
-               <ProtectedRoute path='/allCnvs' component={CnvOverview}
+               <ProtectedRoute path='/allCnvs' component={AllListings}
                 {...this.props}/>
-               <ProtectedRoute path='/myCnvs' component={CnvOverview}
+               <ProtectedRoute path='/myCnvs' component={AllListings}
                 userOnly="true" {...this.props}/>}
                />
             </Switch>
