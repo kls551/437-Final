@@ -10,10 +10,10 @@ export default class CnvModal extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         lstTitle: (this.props.lst && this.props.lst.title) || "",
+         title: (this.props.lst && this.props.lst.title) || "",
          price: "",
          numBed: "",
-         loc: "",
+         location: "",
          description: "",
          contactInfo: "",
       }
@@ -22,14 +22,32 @@ export default class CnvModal extends Component {
    }
 
    close = (result) => {
+      let {
+         title,
+         price,
+         numBed,
+         location,
+         description,
+         contactInfo,
+      } = this.state;
+
+      const listing = {
+         title,
+         price,
+         numBed,
+         location,
+         description,
+         contactInfo,
+      }
+
       this.props.onDismiss && this.props.onDismiss({
          status: result,
-         title: this.state.lstTitle
+         listing: listing,
       });
    }
 
    getValidationState = () => {
-      if (this.state.lstTitle) {
+      if (this.state.title) {
          return null
       }
       return "warning";
@@ -42,7 +60,7 @@ export default class CnvModal extends Component {
 
    componentWillReceiveProps = (nextProps) => {
       if (nextProps.showModal) {
-         this.setState({ lstTitle: 
+         this.setState({ title: 
             (nextProps.lst && nextProps.lst.title) || "" })
       }
    }
@@ -60,17 +78,17 @@ export default class CnvModal extends Component {
             </Modal.Header>
             <Modal.Body>
                <form onSubmit={(e) =>
-                  e.preventDefault() || this.state.lstTitle.length ?
+                  e.preventDefault() || this.state.title.length ?
                      this.close("Ok") : this.close("warning")}>
                   <FormGroup controlId="formBasicText" required
                    validationState={this.getValidationState()}
                   >
                      <ControlLabel>Title</ControlLabel>
                      <FormControl
-                        id="lstTitle"
+                        id="title"
                         type="text"
-                        value={this.state.lstTitle}
-                        placeholder={this.state.lstTitle}
+                        value={this.state.title}
+                        placeholder={this.state.title}
                         onChange={this.handleChange}
                      />
 
@@ -95,10 +113,10 @@ export default class CnvModal extends Component {
 
                      <ControlLabel> Location </ControlLabel>
                      <FormControl
-                        id="loc"
+                        id="location"
                         type="text"
-                        value={this.state.loc}
-                        placeholder={this.state.loc}
+                        value={this.state.location}
+                        placeholder={this.state.location}
                         onChange={this.handleChange}
                      />
 

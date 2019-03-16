@@ -7,9 +7,9 @@ import ConfDialog  from '../ConfDialog/ConfDialog';
 import ErrorDialog  from '../ErrorDialog/ErrorDialog';
 import deleteCnv from '../../api';
 import CnvDetail from './CnvDetail'
-import './CnvOverview.css';
+import './AllListings.css';
 
-export default class CnvOverview extends Component {
+export default class AllListings extends Component {
    constructor(props) {
       super(props);
       this.props.updateLsts();
@@ -54,7 +54,7 @@ export default class CnvOverview extends Component {
    }
 
    addLst(result) {
-      this.props.addLst({ title: result.title }, 
+      this.props.addLst(result.listing, 
           () => this.props.history.push('/'), 
           () => this.setState({showError: true}));
    }
@@ -68,12 +68,12 @@ export default class CnvOverview extends Component {
    }
 
    render() {
-      var cnvItems = [];
+      var lstItems = [];
       var self = this;
 
       this.props.Listing.forEach(cnv => {
          if (!this.props.userOnly || this.props.Prss.id === cnv.ownerId)
-            cnvItems.push(<LstItem
+            lstItems.push(<LstItem
                key={cnv.id}
                id={cnv.id}
                title = {cnv.title}
@@ -85,9 +85,9 @@ export default class CnvOverview extends Component {
 
       return (
          <section className="container">
-            <h1>Cnv Overview</h1>
+            <h1>All Listings </h1>
             <ListGroup>
-               {cnvItems}
+               {lstItems}
             </ListGroup>
             <Button className="btn btn-primary" onClick={() => this.openModal()}>
                New Listing
