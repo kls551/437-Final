@@ -33,6 +33,7 @@ create table Image (
    id int auto_increment primary key,
    ListingId int not null,
    imageUrl varchar(5000) not null,
+   image blob,
    constraint FKMessage_cnvId foreign key (ListingId) references Listing(id)
     on delete cascade
 );

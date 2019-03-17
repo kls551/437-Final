@@ -67,6 +67,10 @@ export default class AllListings extends Component {
       this.state.showConfirmation = false;
    }
 
+   changeValue(value) {
+      console.log(value);
+   }
+
    render() {
       var lstItems = [];
       var self = this;

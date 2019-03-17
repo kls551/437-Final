@@ -1,9 +1,9 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Cal Poly Houzzerss",
+  "name": "Housing app",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "housing-icon.png",
       "sizes": "192x192",
       "type": "image/png"
     }

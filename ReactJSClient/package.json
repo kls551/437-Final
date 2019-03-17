@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^3.4.1",
+    "bootstrap-slider": "^10.6.1",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react-app": "^4.0.1",
     "react": "^15.5.4",
