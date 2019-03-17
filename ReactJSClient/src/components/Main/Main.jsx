@@ -27,9 +27,6 @@ class Main extends Component {
 
 
    render() {
-
-      // var CnvMsgs = [];
-      // this.props.
       console.log("Redrawing main");
       return (
          <div>
@@ -48,11 +45,11 @@ class Main extends Component {
                      <Nav>
                         {this.signedIn() ?
                            [
-                              <LinkContainer key={"all"} to="/allCnvs">
-                                 <NavItem>All Conversations</NavItem>
+                              <LinkContainer key={"all"} to="/allLsts">
+                                 <NavItem>All Listings</NavItem>
                               </LinkContainer>,
-                              <LinkContainer key={"my"} to="/myCnvs">
-                                 <NavItem>My Conversations</NavItem>
+                              <LinkContainer key={"my"} to="/myLsts">
+                                 <NavItem>My Listings</NavItem>
                               </LinkContainer>
                            ]
                            :
@@ -86,14 +83,14 @@ class Main extends Component {
             <Switch>
                <Route exact path='/'
                   component={() => this.props.Prss ? 
-                  <Redirect to="/allCnvs" /> : <Redirect to="/signin" />} />
+                  <Redirect to="/allLsts" /> : <Redirect to="/signin" />} />
                <Route path='/signin' 
                      render={() => <SignIn {...this.props} />} />
                <Route path='/register'
                 render={() => <Register {...this.props} />} />
-               <ProtectedRoute path='/allCnvs' component={AllListings}
+               <ProtectedRoute path='/allLsts' component={AllListings}
                 {...this.props}/>
-               <ProtectedRoute path='/myCnvs' component={AllListings}
+               <ProtectedRoute path='/myLsts' component={AllListings}
                 userOnly="true" {...this.props}/>}
                />
             </Switch>

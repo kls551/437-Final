@@ -4,8 +4,6 @@ import {
 } from 'react-bootstrap';
 // import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'bootstrap-4-react';
 
-
-
 export default class CnvModal extends Component {
    constructor(props) {
       super(props);
@@ -139,7 +137,7 @@ export default class CnvModal extends Component {
                      />
               
                      <FormControl.Feedback />
-                     <HelpBlock>Title can not be empty.</HelpBlock>
+                     <HelpBlock>Fields cannot be empty.</HelpBlock>
                   </FormGroup>
                </form>
             </Modal.Body>

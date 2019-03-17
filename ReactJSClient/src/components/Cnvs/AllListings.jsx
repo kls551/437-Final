@@ -67,6 +67,10 @@ export default class AllListings extends Component {
       this.state.showConfirmation = false;
    }
 
+   changeValue(value) {
+      console.log(value);
+   }
+
    render() {
       var lstItems = [];
       var self = this;
@@ -86,12 +90,34 @@ export default class AllListings extends Component {
       return (
          <section className="container">
             <h1>All Listings </h1>
-            <ListGroup>
-               {lstItems}
-            </ListGroup>
-            <Button className="btn btn-primary" onClick={() => this.openModal()}>
-               New Listing
-            </Button>
+
+            <Row>
+               <Col sm={3}>
+               <ListGroup>
+               <ListGroupItem>
+                  <Row>
+                     <Col sm={3}>Price</Col>
+                  </Row>
+                  <Row>
+                 </Row>
+               </ListGroupItem>
+               <ListGroupItem>
+                  <Row>
+                     <Col sm={1}>Row1</Col>
+                  </Row>
+               </ListGroupItem>
+               </ListGroup>
+               </Col>
+               <Col sm={9}>
+               <ListGroup>
+                  {lstItems}
+               </ListGroup>
+               <Button className="btn btn-primary" onClick={() => this.openModal()}>
+                  New Listing
+               </Button>
+               </Col>
+            </Row>
+
             {/* Modal for creating and change cnv */}
             <CnvModal
                showModal={this.state.showModal}
