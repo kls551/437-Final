@@ -17,16 +17,17 @@ export default class AllListings extends Component {
          showModal: false,
          showConfirmation: false,
          delLst: undefined,
+         editLst: undefined,
       }
       this.openModal = this.openModal.bind(this);
       this.openConfirmation = this.openConfirmation.bind(this);
+      this.openModal = this.openModal.bind(this);
       this.render = this.render.bind(this);
    }
 
    // Open a model with a |cnv| (optional)
    openModal = (lst) => {
-      console.log("opening modal");
-      const newState = { showModal: true };
+      let newState = { showModal: true };
       if (lst)
          newState.editLst = lst;
       this.setState(newState);
@@ -48,7 +49,7 @@ export default class AllListings extends Component {
    }
 
    modLst(result) {  
-      this.props.modLst(this.state.editLst.id, result.title, 
+      this.props.modLst(this.state.editLst.id, result.listing, 
          () => this.props.history.push('/'), 
          () => this.setState({showError: true}));
    }
@@ -81,9 +82,6 @@ export default class AllListings extends Component {
                key={lst.id}
                id={lst.id}
                lst={lst}
-               // title = {lst.title}
-               // price = {lst.price}
-               // postedDate = {lst.postedDate}
                showControls={lst.ownerId === this.props.Prss.id}
                onDelete={() => this.openConfirmation(lst)}
                onEdit={() => this.openModal(lst)} />);
@@ -113,10 +111,6 @@ export default class AllListings extends Component {
                </Col>
             </Row>
                
-
-               
-               
-            
                {/* Modal for creating and change lst */}
                <CnvModal
                   showModal={this.state.showModal}
@@ -149,21 +143,32 @@ export default class AllListings extends Component {
 // A Cnv list item
 const LstItem = function (props) {
    return (
-      <ListGroupItem >
+      <ListGroupItem className="list-group-item-info">
          <Row>
             <Col sm={6}>
-            <Link to={ { pathname: "/ListingDetail/" + props.id, 
-                        state : {lstTitle : props.lst.title, lstId: props.id} }}  
-                        title={props.lst.title}> {props.lst.title} </Link> </Col>
-            <Col sm={3}> { props.lst.postedDate ? 
-               new Intl.DateTimeFormat('en-US', 
-               {
-                  year: 'numeric', month: 'short', day: 'numeric',
-                  hour: '2-digit', minute: '2-digit', second: '2-digit'
-               })
-               .format(new Date(props.lst.postedDate))
-               :
-               "N/A" }</Col>
+            <h3>
+               {console.log("id ", props.id)}
+               {console.log("lst ", props)}
+               <Link to={ { pathname: "/ListingDetail/" + props.id, 
+                        state : {lstTitle : props.lst.title, lstId: props.lst.id, lst: props.lst} } }  
+                        title={props.lst.title}> {props.lst.title} </Link> 
+            </h3>
+            </Col>
+
+            <Col sm={3}> 
+               <h4>
+                  { props.lst.postedDate ? 
+                  new Intl.DateTimeFormat('en-US', 
+                  {
+                     year: 'numeric', month: 'short', day: 'numeric',
+                  })
+                  .format(new Date(props.lst.postedDate))
+                  :
+                  "N/A" }
+               </h4> 
+            </Col>
+
+           
             {props.showControls ?
                <div className="pull-right">
                   <Button bsSize="small" 
@@ -176,21 +181,27 @@ const LstItem = function (props) {
                : ''}
          </Row>
 
-         <Row> 
-            <Col sm={6}>{`Price:   ${props.lst.price}`} </Col>
+         <Row>
+            <Col sm={6}> </Col>
+            <Col sm={6}> <h4> {`Price:   ${props.lst.price}`} </h4></Col>
          </Row>
 
          <Row> 
-         <Col sm={6}> {`Location:  ${props.lst.location}`} </Col>
+            <Col sm={6}> </Col>
+            <Col sm={6} > <h4> {`Location:  ${props.lst.location}`} </h4></Col>
          </Row>
 
-         <Row> 
-         <Col sm={6}> {`Number of Bedroom: ${props.lst.numBed}`} </Col>
+         <Row>
+            <Col sm={6}> </Col>
+            <Col sm={6} >  <h4> {`Number of Bedroom: ${props.lst.numBed}`}  </h4> </Col>
          </Row>
 
-         <Row> 
-         <Col sm={6}> {`Contact Information:  ${props.lst.contactInfo}`} </Col>
+         <Row>
+            <Col sm={6}> </Col>
+            <Col sm={6}  > <h4>{`Contact Information:  ${props.lst.contactInfo}`} </h4> </Col>
          </Row>
+         
+         
       </ListGroupItem>
    )
 }

@@ -109,8 +109,8 @@ export function postLst(body) {
    .then(rsp => rsp.json());
 }
 
-export function deleteCnv(cnvId) {
-    return del("Cnvs/" +  cnvId);
+export function deletedLst(lstId) {
+    return del("Listing/" +  lstId);
 }
 
 // getting message for converstaion 

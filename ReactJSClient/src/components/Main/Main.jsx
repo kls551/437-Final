@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Register, SignIn, CnvOverview, CnvDetail, ConfDialog } from '../index'
+import { Register, SignIn, CnvOverview, CnvDetail, ConfDialog} from '../index'
 import { Route, Redirect, Switch } from 'react-router-dom';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
@@ -7,6 +7,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import './Main.css';
 import ErrorDialog  from '../ErrorDialog/ErrorDialog';
 import AllListings from '../Cnvs/AllListings';
+import ListingDetail from '../Cnvs/ListingDetail';
 
 var ProtectedRoute = ({component: Cmp, path, ...rest }) => {
    // console.log("HELLOOOOO" + JSON.stringify(rest));
@@ -95,7 +96,7 @@ class Main extends Component {
                />
             </Switch>
 
-            <ProtectedRoute path='/ListingDetail/:lstId'  component={AllListings}
+            <ProtectedRoute path='/ListingDetail/:lstId'  component={ListingDetail}
             userOnly="true" {...this.props}/>
             {/*Error popup dialog*/}
             <ErrorDialog

@@ -9,14 +9,15 @@ export default class CnvModal extends Component {
       super(props);
       this.state = {
          title: (this.props.lst && this.props.lst.title) || "",
-         price: "",
-         numBed: "",
-         location: "",
-         description: "",
-         contactInfo: "",
+         price: (this.props.lst && this.props.lst.price) ||  "",
+         numBed: (this.props.lst && this.props.lst.numBed) || "",
+         location: (this.props.lst && this.props.lst.location) || "",
+         description: (this.props.lst &&  this.props.lst.description) || "",
+         contactInfo: (this.props.lst && this.props.lst.contactInfo) || "",
       }
      
       this.handleChange = this.handleChange.bind(this);
+      this.render = this.render.bind(this);
    }
 
    close = (result) => {
@@ -58,14 +59,15 @@ export default class CnvModal extends Component {
 
    componentWillReceiveProps = (nextProps) => {
       if (nextProps.showModal) {
-         this.setState({ title: 
-            (nextProps.lst && nextProps.lst.title) || "" })
+         this.setState(nextProps.lst);
+         // this.setState({ title: 
+         //    (nextProps.lst && nextProps.lst.title) || "" })
       }
    }
 
    render() {
       console.log("CnvModal rerenders");
-      console.log("show modal ", this.props && this.props.showModal);
+   
       return (
          <Modal show={this.props.showModal} 
                onHide={() => this.close("Cancel")}>
@@ -78,9 +80,11 @@ export default class CnvModal extends Component {
                <form onSubmit={(e) =>
                   e.preventDefault() || this.state.title.length ?
                      this.close("Ok") : this.close("warning")}>
-                  <FormGroup controlId="formBasicText" required
-                   validationState={this.getValidationState()}
+                  <FormGroup 
                   >
+                  {/* <FormGroup controlId="formBasicText" required
+                   validationState={this.getValidationState()}
+                  ></FormGroup> */}
                      <ControlLabel>Title</ControlLabel>
                      <FormControl
                         id="title"

@@ -65,6 +65,7 @@ export function addLst(newLst, cb, errcb) {
 }
 
 export function modLst(lstId, body, cb, errcb) {
+
    return (dispatch, prevState) => {
       api.putLst(lstId, body)
       .then((lsts) => dispatch({type: 'UPDATE_LST', data: lsts}  ))
@@ -74,13 +75,13 @@ export function modLst(lstId, body, cb, errcb) {
    };
 }
 
-export function delCnv(cnvId, cb, errcb) {
+export function delLst(lstId, cb, errcb) {
    return (dispatch, prevState) => {
-      console.log("in delCnv", cnvId)
-      api.deleteCnv(cnvId)
-      .then(() => dispatch({ type: 'DEL_CNV'}))
+      console.log("in delLst", lstId)
+      api.deletedLst(lstId)
+      .then(() => dispatch({ type: 'DEL_LST'}))
       .then(() => {if (cb) cb();})
-      .catch(error => {dispatch({type: 'DEL_CNV_ERR', details: error}); 
+      .catch(error => {dispatch({type: 'DEL_LST_ERR', details: error}); 
                      if (errcb) errcb(); } );
    };
 }
