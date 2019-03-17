@@ -34,24 +34,30 @@ router.get('/', function (req, res) {
    console.log(req.query);
    var owner = req.query.owner;
    var numbed = req.query.numbed;
+   var joinQuery = "select l.*, m1.imageUrl from Listing l "+
+      "left join "+ 
+      "(select min(m.ListingId) as ListingId, min(imageUrl) as imageUrl from "+
+      "Image m "+
+      "group by m.ListingId) m1 "+
+      "on l.id = m1.ListingId ";
+
    async.waterfall([
       function (cb) {  // Check for existence of Listing
          if (req.validator.check(req.session, Tags.noLogin, null, cb)) {
             if (owner)
-               req.cnn.chkQry('select * from Listing where ownerid = ?'+
+               req.cnn.chkQry(joinQuery +' where ownerid = ? '+
                   'order by postedDate asc',
                   [owner], cb);
             else if (numbed)
-               req.cnn.chkQry('select * from Listing where numBed = ?'+
+               req.cnn.chkQry(joinQuery + ' where numBed = ? '+
                   'order by postedDate asc',
                   [numbed], cb);
             else if (numbed && owner)
-               req.cnn.chkQry('select * from Listing where numBed = ?'+
-                  'order by postedDate asc'+
-                  'ownerid = ?',
+               req.cnn.chkQry(joinQuery+' where numBed = ? and ownerId = ? '+
+                  'order by postedDate asc',
                   [numbed, owner], cb);
             else
-               req.cnn.chkQry('select * from Listing order by postedDate asc', cb);
+               req.cnn.chkQry(joinQuery+ 'order by postedDate asc', cb);
          }
       },
       function (Listings, fields, cb) { // Return retrieved messages
@@ -73,7 +79,7 @@ router.get('/:ListingId', function (req, res) {
       req.status(401).end();
       req.cnn.release();
    }
-   req.cnn.chkQry('select * from Listing where id = ?',
+   req.cnn.chkQry('select l.*, m.imageUrl from Listing l left join Image m on m.ListingId = l.id where l.id = ? limit 1',
       [req.params.ListingId], handler);
 });
 
@@ -200,11 +206,22 @@ router.get('/:ListingId/Images', function (req, res) {
 });
 
 // we dont know yet
-router.post('/:ListingId/Images', upload.single('mainImage'), function (req, res) {
-   console.log(req.file);
+router.post('/:ListingId/Images', upload.array('mainImage', 10), function (req, res) {
+   console.log(req.files, req.files.length);
    var vld = req.validator;
    var cnn = req.cnn;
    var ListingId = req.params.ListingId;
+   var filePaths = [];
+   var i = 0;
+   for (i = 0; i < req.files.length; i++) {
+      // filePaths = filePaths + 
+      // "("+ListingId+","+req.files[0].path+")";
+      // if (i !== (req.files.length-1))
+      //    filePaths = filePaths + ","
+      filePaths.push([ListingId, req.files[i].path]);
+   }
+   console.log(" file paths " ,filePaths);
+   var dummy = [[1, "hello"], [2, "hello"]];
 
    async.waterfall([
       function (cb) {
@@ -215,12 +232,11 @@ router.post('/:ListingId/Images', upload.single('mainImage'), function (req, res
          }
       },
       function (Listing, fields, cb) {
-         if (vld.check(Listing.length, Tags.notFound, null, cb))
-            cnn.chkQry('insert into Image set ?',
-               {
-                  ListingId: ListingId,
-                  imageUrl: req.file.path,
-               }, cb);
+         if (vld.check(Listing.length, Tags.notFound, null, cb)) {
+            console.log("I'm here")
+            cnn.query("insert into Image (ListingId, imageUrl) values ?",
+               [filePaths], cb);
+         }
       },
       function (insRes, fields, cb) {
          res.location(router.baseURL + '/' + insRes.insertId).end();
