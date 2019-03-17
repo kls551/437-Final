@@ -34,7 +34,7 @@ class Main extends Component {
       return (
          <div>
             <div>
-               <Navbar>
+               <Navbar bg="dark" variant="dark">
                   <Navbar.Toggle />
                   {this.signedIn() ?
                      <Navbar.Text key={1}>
@@ -48,11 +48,11 @@ class Main extends Component {
                      <Nav>
                         {this.signedIn() ?
                            [
-                              <LinkContainer key={"all"} to="/allCnvs">
-                                 <NavItem>All Conversations</NavItem>
+                              <LinkContainer key={"all"} to="/allListings">
+                                 <NavItem>All Listings</NavItem>
                               </LinkContainer>,
-                              <LinkContainer key={"my"} to="/myCnvs">
-                                 <NavItem>My Conversations</NavItem>
+                              <LinkContainer key={"my"} to="/myListings">
+                                 <NavItem>My Listings</NavItem>
                               </LinkContainer>
                            ]
                            :
@@ -91,14 +91,14 @@ class Main extends Component {
                      render={() => <SignIn {...this.props} />} />
                <Route path='/register'
                 render={() => <Register {...this.props} />} />
-               <ProtectedRoute path='/allCnvs' component={AllListings}
+               <ProtectedRoute path='/allListings' component={AllListings}
                 {...this.props}/>
-               <ProtectedRoute path='/myCnvs' component={AllListings}
+               <ProtectedRoute path='/myListings' component={AllListings}
                 userOnly="true" {...this.props}/>}
                />
             </Switch>
 
-            <ProtectedRoute path='/CnvDetail/:cnvId'  component={CnvDetail}
+            <ProtectedRoute path='/ListingDetail/:lstId'  component={AllListings}
             userOnly="true" {...this.props}/>
             {/*Error popup dialog*/}
             <ErrorDialog

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { ListGroup, ListGroupItem} from 'react-bootstrap';
-import { Col, Row, Button, Glyphicon } from 'react-bootstrap';
+import { Col, Row, Button, Glyphicon} from 'react-bootstrap';
 import CnvModal from './CnvModal';
 import ConfDialog  from '../ConfDialog/ConfDialog';
 import ErrorDialog  from '../ErrorDialog/ErrorDialog';
 import deleteCnv from '../../api';
-import CnvDetail from './CnvDetail'
+import ListingDetail from './ListingDetail'
 import './AllListings.css';
 
 export default class AllListings extends Component {
@@ -24,11 +24,11 @@ export default class AllListings extends Component {
    }
 
    // Open a model with a |cnv| (optional)
-   openModal = (cnv) => {
+   openModal = (lst) => {
       console.log("opening modal");
       const newState = { showModal: true };
-      if (cnv)
-         newState.editLst = cnv;
+      if (lst)
+         newState.editLst = lst;
       this.setState(newState);
    }
 
@@ -59,8 +59,8 @@ export default class AllListings extends Component {
           () => this.setState({showError: true}));
    }
 
-   openConfirmation = (cnv, title) => {
-      this.setState({ delLst: cnv, showConfirmation: true , title: title})
+   openConfirmation = (lst, title) => {
+      this.setState({ delLst: lst, showConfirmation: true , title: title})
    }
 
    closeConfirmation = (res) => {
@@ -71,52 +71,73 @@ export default class AllListings extends Component {
       var lstItems = [];
       var self = this;
 
-      this.props.Listing.forEach(cnv => {
-         if (!this.props.userOnly || this.props.Prss.id === cnv.ownerId)
+      this.props.Listing.forEach(lst => {
+         if (!this.props.userOnly || this.props.Prss.id === lst.ownerId)
             lstItems.push(<LstItem
-               key={cnv.id}
-               id={cnv.id}
-               title = {cnv.title}
-               // lastMessage = {cnv.lastMessage}
-               showControls={cnv.ownerId === this.props.Prss.id}
-               onDelete={() => this.openConfirmation(cnv)}
-               onEdit={() => this.openModal(cnv)} />);
+               key={lst.id}
+               id={lst.id}
+               lst={lst}
+               // title = {lst.title}
+               // price = {lst.price}
+               // postedDate = {lst.postedDate}
+               showControls={lst.ownerId === this.props.Prss.id}
+               onDelete={() => this.openConfirmation(lst)}
+               onEdit={() => this.openModal(lst)} />);
       });
 
       return (
          <section className="container">
-            <h1>All Listings </h1>
-            <ListGroup>
-               {lstItems}
-            </ListGroup>
-            <Button className="btn btn-primary" onClick={() => this.openModal()}>
-               New Listing
-            </Button>
-            {/* Modal for creating and change cnv */}
-            <CnvModal
-               showModal={this.state.showModal}
-               title={this.state.editLst ? "Edit title" : "New Conversation"}
-               lst={this.state.editLst}
-               onDismiss={this.modalDismiss} />
+            <h1> All Listings </h1>
+            <Row>
+               <Col sm={3}>
+                  <ListGroup>
+                     <ListGroupItem>
+                        SORTING OPTION
+                     </ListGroupItem>
+                  </ListGroup>
+               </Col>
+               
 
-            <ConfDialog
-               showConfirmation={this.state.showConfirmation}
-               title={"Detele Conversation"}
-               body={`Would you like to delete 
-               ${this.state.delLst ? this.state.delLst.title : ""}?`}
-               buttons={['YES', 'NO']}
-               onClose={answer => {
-                  if (answer === 'YES') {
-                     this.props.delLst(this.state.delLst.id,
-                        () => this.props.history.push("/"));
-                     this.setState({delLst: null, showConfirmation: false});   
-                  }
-                  else if (answer === 'NO') {
-                     this.setState({delLst: null, showConfirmation: false});
-                  }
-               }}
-            />
-         </section>
+               <Col sm={9}>
+                  <ListGroup>
+                     {lstItems}
+                  </ListGroup>
+
+                  <Button className="btn btn-primary" onClick={() => this.openModal()}>
+                     New Listing
+                  </Button>
+               </Col>
+            </Row>
+               
+
+               
+               
+            
+               {/* Modal for creating and change lst */}
+               <CnvModal
+                  showModal={this.state.showModal}
+                  title={this.state.editLst ? "Edit Listing" : "New Listing"}
+                  lst={this.state.editLst}
+                  onDismiss={this.modalDismiss} />
+
+               <ConfDialog
+                  showConfirmation={this.state.showConfirmation}
+                  title={"Detele Listing"}
+                  body={`Would you like to delete 
+                  ${this.state.delLst ? this.state.delLst.title : ""}?`}
+                  buttons={['YES', 'NO']}
+                  onClose={answer => {
+                     if (answer === 'YES') {
+                        this.props.delLst(this.state.delLst.id,
+                           () => this.props.history.push("/"));
+                        this.setState({delLst: null, showConfirmation: false});   
+                     }
+                     else if (answer === 'NO') {
+                        this.setState({delLst: null, showConfirmation: false});
+                     }
+                  }}
+               />    
+            </section>
       )
    }
 }
@@ -124,19 +145,19 @@ export default class AllListings extends Component {
 // A Cnv list item
 const LstItem = function (props) {
    return (
-      <ListGroupItem>
+      <ListGroupItem >
          <Row>
-            <Col sm={4}>
-            <Link to={ { pathname: "/CnvDetail/" + props.id, 
-                        state : {cnvTitle : props.title, cnvId: props.id} }}  
-                        title={props.title}> {props.title} </Link> </Col>
-            <Col sm={4}> { props.postedDate ? 
+            <Col sm={6}>
+            <Link to={ { pathname: "/ListingDetail/" + props.id, 
+                        state : {lstTitle : props.lst.title, lstId: props.id} }}  
+                        title={props.lst.title}> {props.lst.title} </Link> </Col>
+            <Col sm={3}> { props.lst.postedDate ? 
                new Intl.DateTimeFormat('en-US', 
                {
                   year: 'numeric', month: 'short', day: 'numeric',
                   hour: '2-digit', minute: '2-digit', second: '2-digit'
                })
-               .format(new Date(props.postedDate))
+               .format(new Date(props.lst.postedDate))
                :
                "N/A" }</Col>
             {props.showControls ?
@@ -149,6 +170,22 @@ const LstItem = function (props) {
                      <Glyphicon glyph="edit" /></Button>
                </div>
                : ''}
+         </Row>
+
+         <Row> 
+            <Col sm={6}>{`Price:   ${props.lst.price}`} </Col>
+         </Row>
+
+         <Row> 
+         <Col sm={6}> {`Location:  ${props.lst.location}`} </Col>
+         </Row>
+
+         <Row> 
+         <Col sm={6}> {`Number of Bedroom: ${props.lst.numBed}`} </Col>
+         </Row>
+
+         <Row> 
+         <Col sm={6}> {`Contact Information:  ${props.lst.contactInfo}`} </Col>
          </Row>
       </ListGroupItem>
    )
