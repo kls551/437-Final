@@ -97,13 +97,13 @@ export default class ListingDetail extends Component {
       //    /> </Carousel.Item>)
       // }
 
-      // this.props.Imgs.forEach( img => {
-      //    console.log("adding image ------ ", img.imageUrl);
-      //    imgItems.push(<ImgItem
-      //    key = {img.id}
-      //    imageUrl = {img.imageUrl}
-      //    />);
-      // });
+      this.props.Imgs.forEach( img => {
+         console.log("adding image ------ ", img.imageUrl);
+         imgItems.push(<ImgItem
+         key = {img.id}
+         imageUrl = {img.imageUrl}
+         />);
+      });
 
       return (
          <section className="container">
@@ -114,8 +114,8 @@ export default class ListingDetail extends Component {
             {/* Carousel - Photos */}
             <Row>
                <Carousel>
-                  {/* {imgItems} */}
-                  <Carousel.Item> 
+                  {imgItems}
+                  {/* <Carousel.Item> 
                   <img
                      className="d-block w-700 h-500"
                      src={(this.props.Imgs && this.props.Imgs[0]) ? this.props.Imgs[0].imageUrl : ""}
@@ -140,7 +140,7 @@ export default class ListingDetail extends Component {
                      <Carousel.Caption>
                            <h3>Second slide label</h3>
                      </Carousel.Caption>
-                  </Carousel.Item>
+                  </Carousel.Item> */}
 
                </Carousel>
             </Row>

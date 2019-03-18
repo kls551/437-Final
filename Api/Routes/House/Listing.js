@@ -19,8 +19,6 @@ cloudinary.config({
    api_secret: process.env.API_SECRET
 })
 
-console.log(process.env.CLOUD_NAME)
-
 // const storage = multer.diskStorage({
 //    destination: function(req, file, cb) {
 //       cb(null, './uploads');
@@ -232,8 +230,7 @@ router.delete('/:ListingId', function (req, res) {
             imgArr.push(element.publicId);
          });
          console.log(imgArr);
-         cloudinary.v2.api.delete_derived_resources(imgArr,
-            cb);
+         cloudinary.v2.api.delete_derived_resources(imgArr,cb);
       },
       function (fields, cb) {
          cnn.chkQry('delete from Listing where id = ?', [ListingId],
@@ -346,8 +343,9 @@ router.post('/:ListingId/Images', function (req, res) {
                   cb);
             }
          },
-         function (Listing, fields, cb) {
+         function (Listing, results, fields, cb) {
             if (vld.check(Listing.length, Tags.notFound, null, cb)) {
+               console.log("i'm here");
                cnn.query("insert into Image set ?",
                   {
                      publicId: results[0].public_id,
