@@ -87,26 +87,37 @@ export function delLst(lstId, cb, errcb) {
    };
 }
 
-export function updateMsgs(cnvId, cb, errcb) {
+export function getLstImgs(lstId, cb, errcb) {
    return (dispatch, prevState) => {
-      api.getMsgs(cnvId)
-      .then((msgs) => dispatch({ type: 'UPDATE_MSGS', data: msgs }))
+      api.getImgs(lstId)
+      .then((imgs) => dispatch({ type: 'GET_IMGS', data: imgs }))
       .then(() => {if (cb) cb();})
-      .catch(error => {dispatch({type: 'UPDATE_MSGS_ERR', details: error});
+      .catch(error => {dispatch({type: 'GET_IMGS_ERR', details: error});
                         if (errcb) errcb(); } );
    };
 }
 
-export function addMsg(cnvid, content, cb, errcb) {
+export function uploadImages(lstId, img, cb, errcb) {
    return (dispatch, prevState) => {
-      api.postMsg(cnvid, content)
-      .then(msg => { console.log("msg -----", msg);
-      dispatch({type: 'ADD_MSG', msg: msg}); } )
+      api.postImg(lstId, img)
+      .then(imgs => { console.log("imgs -----", imgs);
+         dispatch({type: 'ADD_IMG', imgs: imgs}); } )
       .then(() => {if (cb) cb();})
-      .catch(error => {dispatch({type: 'ADD_MSG_ERR', details: error});
+      .catch(error => {dispatch({type: 'ADD_IMG_ERR', details: error});
                         if (errcb) errcb(); } );
    };
 }
+
+// export function addMsg(cnvid, content, cb, errcb) {
+//    return (dispatch, prevState) => {
+//       api.postMsg(cnvid, content)
+//       .then(msg => { console.log("msg -----", msg);
+//       dispatch({type: 'ADD_MSG', msg: msg}); } )
+//       .then(() => {if (cb) cb();})
+//       .catch(error => {dispatch({type: 'ADD_MSG_ERR', details: error});
+//                         if (errcb) errcb(); } );
+//    };
+// }
 
 export function clearError(cb) {
    return (dispatch, prevState) => {

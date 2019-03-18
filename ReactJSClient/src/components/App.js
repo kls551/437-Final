@@ -17,7 +17,7 @@ function mapStateToProps(state) {
       Prss: state.Prss,
       Listing: state.Listing,
       Errs: state.Errs,
-      Msgs: state.Msgs,
+      Imgs: state.Imgs,
       // curCnv: state.Cnvs.cnv
    };
 }

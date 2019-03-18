@@ -14,10 +14,12 @@ export default class CnvModal extends Component {
          location: (this.props.lst && this.props.lst.location) || "",
          description: (this.props.lst &&  this.props.lst.description) || "",
          contactInfo: (this.props.lst && this.props.lst.contactInfo) || "",
+         imageUrl: (this.props.lst && this.props.lst.imageUrl) || "",
       }
      
       this.handleChange = this.handleChange.bind(this);
       this.render = this.render.bind(this);
+      this.close = this.close.bind(this);
    }
 
    close = (result) => {
@@ -42,6 +44,7 @@ export default class CnvModal extends Component {
       this.props.onDismiss && this.props.onDismiss({
          status: result,
          listing: listing,
+         imageUrl: this.state.imageUrl,
       });
    }
 
@@ -144,6 +147,15 @@ export default class CnvModal extends Component {
                         onChange={this.handleChange}
                      />
               
+                     <ControlLabel> Description </ControlLabel>
+                     <FormControl
+                        id="imageUrl"
+                        type="file"
+                        value={this.state.imageUrl}
+                        placeholder={this.state.imageUrl}
+                        onChange={this.handleChange}
+                     />
+
                      <FormControl.Feedback />
                      <HelpBlock>Fields cannot be empty.</HelpBlock>
                   </FormGroup>

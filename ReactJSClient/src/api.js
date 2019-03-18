@@ -15,7 +15,7 @@ const baseURL = "http://localhost:3001/";
 const headers = new Headers();
 var cookie;
 
-headers.set('Content-Type', 'application/JSON');
+headers.set('Content-Type', 'application/JSON', 'multipart/form-data');
 
 const reqConf = {
     headers: {'Content-Type': 'application/JSON'},
@@ -117,17 +117,30 @@ export function deletedLst(lstId) {
 }
 
 // getting message for converstaion 
-export function getMsgs(cnvId) {
-    return get("Cnvs/" + cnvId + "/Msgs")
+export function getImgs(lstId) {
+    return get("Listing/" + lstId +"/Images")
     .then((res) => res.json());
 }
 
-export function postMsg(cnvId, body) {
-    return post('Cnvs/' + cnvId + '/Msgs', body).then((rsp)=> {
-      let location = rsp.headers.get("Location").split('/');
-      return get(`Msgs/${location[location.length-1]}`);
-   })
-   .then(rsp => rsp.json());
+export function postImg(lstId, img) {
+    // return post('Listing/' + lstId + '/Images', img).then((rsp)=> {
+    //     let location = rsp.headers.get("Location").split('/');
+    //     return get(`Listing/${lstId}/Images`);
+    //  })
+    return fetch(baseURL + 'Listing/' + lstId + '/Images', {
+        method: 'POST',
+        body: img,
+        headers: {'Content-Type': 'multipart/form-data'},
+        credentials: 'include',
+        mode: 'cors'
+    })
+    .then(rsp => {console.log("return form image post ----------"); return rsp;})
+    // .catch(err => {console.log(err)});
+//     .then((rsp)=> {
+//     //   let location = rsp.headers.get("Location").split('/');
+//     //   return get(`Listing/${lstId}/Images`);
+//    })
+   
 };
 
 export function safeFetch(url, action, body) {

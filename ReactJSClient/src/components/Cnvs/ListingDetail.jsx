@@ -1,119 +1,159 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { ListGroup, ListGroupItem, Col, Row, Button, Glyphicon } from 'react-bootstrap';
+import { ListGroup, ListGroupItem, Col, Row, Spinner, Images, 
+    Button, Glyphicon, Panel , Carousel , CarouselItem, Image} from 'react-bootstrap';
 import MsgModal from './MsgModal';
 import ConfDialog  from '../ConfDialog/ConfDialog';
 import deleteCnv from '../../api';
+
 // import './AllListings.css';
 
 export default class ListingDetail extends Component {
     constructor(props) {
        super(props);
-        console.log("title : ", this.props.lst && this.props.lst.title);
+      //   console.log("title : ", this.props.lst && this.props.lst.title);
         this.state = {
-            showModal: false,
-            showConfirmation: false,
+           lst: this.props.location.state.lst,
+           uploading: false, 
+           images: [],
+            // showModal: false,
+            // showConfirmation: false,
             // lst: this.props.location.state.cnvTitle,
             // lst: this.props.lst,
             // cnvId: this.props.location.state.cnvId,
         };
-      //   this.props.updateMsgs(this.state.cnvId);
+     
       //   this.openModal = this.openModal.bind(this);
         this.render = this.render.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.upload = this.upload.bind(this);
     }
 
    componentDidMount() {
-      this.props.getLst(this.state.lst && this.state.lst.id);
+      const newState = this.state;
+      newState.lst = this.props.location.state.lst;
+      this.setState(newState);
+      this.props.getLstImgs(this.state.lst && this.state.lst.id);
+
    }
 
    componentWillReceiveProps = (nextProps) => {
-      // if (nextProps.showModal) {
-         const newState = this.state;
-         newState.lst = nextProps.lst;
-      
-         this.setState(newState);
-         console.log("listing in detail  ", this.state.lst);
-         // this.setState({ title: 
-         //    (nextProps.lst && nextProps.lst.title) || "" })
-      // }
+      const newState = this.state;
+      newState.lst = this.props.location.state.lst;
+   
+      this.setState(newState);
+      console.log("listing in detail  ", this.state.lst);
    }
-   //  openModal = () => {
-   //      const newState = { showModal: true };
-   //      this.setState(newState);
-   //  }
 
-   //  modalDismiss = (result) => {    
-   //       if (result.status === "Ok") 
-   //          this.newMsg(result);
-   //       this.setState({showModal: false});
-   //  }
-    
-   //  newMsg(result) {
-   //      this.props.addMsg(this.state.cnvId, 
-   //          {content : result.content}, 
-   //          () =>  this.props.history.push('/CnvDetail/' + this.state.cnvId));
-   //  }
+   handleChange = (e) => {
+      let newState = {};
+      const files = Array.from(e.target.files);
+      // const files = e.target.files;
+   
+      // this.setState({uploading: true});
+      const formData = new FormData();
+      // formData.append(0, files);
+      files.forEach((file, i) => {
+         formData.append(i, file);
+      })
+      console.log(" (formData) ------- ", formData);
+      // this.upload();
+      // this.props.uploadImages(this.state.lst.id, files);
+      this.setState({images : formData});
+      console.log("listing id ------- ", this.state.lst.id);
+      console.log(formData);
+      // this.props.uploadImages(this.state.lst.id, formData);
+   }
 
-    render() {
-        var msgItems = [];
+   upload = () => {
+      console.log("images (formData) ------- ", this.state.images);
+      this.props.uploadImages(this.state.lst.id, this.state.images);
+   }
+   render() {
+      var imgItems = [];
 
-      //    this.props.Msgs.forEach(msg => {
-      //       msgItems.push(<MsgItem
-      //          key={msg.id}
-      //          onwerEmail = {msg.email}
-      //          whenMade = {msg.whenMade}
-      //          content = {msg.content}
-      //          />);
-      //   });
-        
-        return (
-           <section className="container">
+      this.props.Imgs.forEach((img) => {
+         console.log("adding image ------ ", img);
+         imgItems.push(<ImgItem
+         key = {img.id}
+         url = {img.imageUrl}
+         />);
+      });
 
-              <h1> {this.state.lst && this.state.lst.title} </h1>
-              <h1> DETAIL OF LISTING </h1>
-              <ListGroup>
-                 {/* {msgItems} */}
+      return (
+         <section className="container">
 
-              </ListGroup>
-              {/* <Button bsStyle="primary" onClick={() => this.openModal()}>
-                 New Message
-              </Button> */}
-              {/* Modal for creating and change cnv */}
-              {/* <MsgModal
-                 showModal={this.state.showModal}
-                 title={"New Message"}
-                 msg={this.state.msg}
-                 onDismiss={this.modalDismiss} /> */}
-           </section>
-        )
-     }
+         <h1> {this.state.lst && this.state.lst.title} </h1>
+   
+         <Panel>
+            {/* Carousel - Photos */}
+            <Row>
+               <Carousel>
+
+                  {imgItems}
+
+                  {/* <Carousel.Item> 
+                  <img
+                     className="d-block w-700 h-500"
+                     src={(this.props.Imgs && this.props.Imgs[0]) ? this.props.Imgs[0].imageUrl : ""}
+                     alt="First slide"
+                  />
+               
+                  </Carousel.Item>  */}
+
+                  {/* <Carousel.Item> 
+                  <img
+                     className="d-block w-700 h-500"
+                     src="http://cdn.goodshomedesign.com/wp-content/uploads/2014/05/mini-apartment-design.jpg"
+                     alt="First slide"
+                  />
+                  <Carousel.Caption>
+                     <h3>First slide label</h3>
+                  </Carousel.Caption>
+                  </Carousel.Item> */}
+               </Carousel>
+            </Row>
+
+            <Row>
+               <Col sm={6}>
+                  <h3> {this.state.lst.description}</h3>
+               </Col>
+
+               <Col sm={6}>
+                  <div> <h3> Price: {this.state.lst.price} </h3> </div>
+                  <div> <h3> Location: {this.state.lst.location} </h3> </div>
+                  <div> <h3> Number of Bed: {this.state.lst.numBed} </h3> </div>
+                  <div> <h3> Date posted: { this.state.lst.postedDate ? 
+                     new Intl.DateTimeFormat('en-US', 
+                     {
+                        year: 'numeric', month: 'short', day: 'numeric',
+                     })
+                     .format(new Date(this.state.lst.postedDate))
+                     :
+                     "N/A" } </h3> </div>
+               </Col>
+
+            </Row>
+
+         </Panel>
+
+         <input type='file' id='imageUrl' onChange={this.handleChange} /> 
+         <Button onClick={this.upload}> Upload Image </Button>
+         </section>
+      )
+   }
 }
 
-// const MsgItem = function (props) {
-//     return (
-//        <ListGroupItem>
-//           <Row>
-//              <Col sm={4}> {props.onwerEmail} </Col>
-//              <Col sm={4}> { 
-//                 new Intl.DateTimeFormat('en-US', 
-//                 {
-//                    year: 'numeric', month: 'short', day: 'numeric',
-//                    hour: '2-digit', minute: '2-digit', second: '2-digit'
-//                 })
-//                 .format(new Date(props.whenMade)) } 
-//                 </Col>
-//              {props.showControls ?
-//                 <div className="pull-right">
-//                    <Button bsSize="small" 
-//                            onClick={props.onDelete}>
-//                            <Glyphicon glyph="trash" /></Button>
-//                    <Button bsSize="small" 
-//                            onClick={props.onEdit}>
-//                            <Glyphicon glyph="edit" /></Button>
-//                 </div>
-//                 : ''}
-//           </Row>
-//           <Row> <Col sm={8}> {props.content}  </Col></Row> 
-//        </ListGroupItem>
-//     )
-//  }
+const ImgItem = function (props) {
+   console.log(props)
+    return (
+       <CarouselItem>
+          {console.log("in image item ---- ", props.url)}
+          <img
+            className="d-block w-700 h-500"
+            src={props.url}
+            alt="First slide"
+         />
+       </CarouselItem>
+    )
+ }

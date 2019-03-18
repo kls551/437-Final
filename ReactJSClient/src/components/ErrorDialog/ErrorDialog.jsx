@@ -25,7 +25,8 @@ export default class ErrorDialog extends PureComponent {
             </Modal.Header>
             <Modal.Body>
                 <div className="alert alert-danger" role="alert"> 
-                {this.props.body} </div>
+                  {this.props.body} 
+                </div>
             </Modal.Body>
             <Modal.Footer>
                {this.props.buttons.map((btn, i) => <Button key={i}
