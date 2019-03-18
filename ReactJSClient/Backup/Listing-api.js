@@ -20,6 +20,30 @@ cloudinary.config({
 })
 
 console.log(process.env.CLOUD_NAME)
+
+// const storage = multer.diskStorage({
+//    destination: function(req, file, cb) {
+//       cb(null, './uploads');
+//    },
+//    filename: function(req,file,cb) {
+//       var date = Date.now(); 
+//       cb(null, date + file.originalname);
+//    }
+// });
+
+// const fileFilter = (req,file,cb) => {
+//    if (file.mimetype == 'image/jpeg' ||
+//       file.mimetype == 'image/png')
+//       cb (null, true);
+//    else
+//       cb (null, false);
+// }
+
+// var upload = multer({
+//    storage: storage,
+//    fileFilter: fileFilter
+// });
+
 router.baseURL = '/Listing';
 
 // this is multiple image upload (tester version)
@@ -240,6 +264,47 @@ router.get('/:ListingId/Images', function (req, res) {
       });
 });
 
+// we dont know yet
+// router.post('/:ListingId/Images', upload.array('mainImage', 10), function (req, res) {
+//    console.log(req.files, req.files.length);
+//    var vld = req.validator;
+//    var cnn = req.cnn;
+//    var ListingId = req.params.ListingId;
+//    var filePaths = [];
+//    var i = 0;
+//    for (i = 0; i < req.files.length; i++) {
+//       // filePaths = filePaths + 
+//       // "("+ListingId+","+req.files[0].path+")";
+//       // if (i !== (req.files.length-1))
+//       //    filePaths = filePaths + ","
+//       filePaths.push([ListingId, req.files[i].path]);
+//    }
+//    console.log(" file paths " ,filePaths);
+//    var dummy = [[1, "hello"], [2, "hello"]];
+
+//    async.waterfall([
+//       function (cb) {
+//          if (vld.check(req.session, Tags.noLogin, null, cb)) {
+//             //vld.hasFields(req.body, ["imageUrl"], cb)) {
+//             cnn.chkQry('select * from Listing where id = ?', [ListingId],
+//                cb);
+//          }
+//       },
+//       function (Listing, fields, cb) {
+//          if (vld.check(Listing.length, Tags.notFound, null, cb)) {
+//             console.log("I'm here")
+//             cnn.query("insert into Image (ListingId, imageUrl) values ?",
+//                [filePaths], cb);
+//          }
+//       },
+//       function (insRes, fields, cb) {
+//          res.location(router.baseURL + '/' + insRes.insertId).end();
+//          cb();
+//       }],
+//       function (err) {
+//          cnn.release();
+//       });
+// });
 
 router.post('/:ListingId/Images', function (req, res) {
    var vld = req.validator;
