@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { ListGroup, ListGroupItem} from 'react-bootstrap';
-import { Col, Row, Button, Glyphicon} from 'react-bootstrap';
+import { Col, Row, Button, Glyphicon, Image} from 'react-bootstrap';
 import CnvModal from './CnvModal';
 import ConfDialog  from '../ConfDialog/ConfDialog';
 import ErrorDialog  from '../ErrorDialog/ErrorDialog';
@@ -46,6 +46,11 @@ export default class AllListings extends Component {
          this.setState({showError : true});
       }
       this.setState({ showModal: false, editLst: null });
+   }
+
+   handleChange(event) {
+      this.setState({value: event.target.value});
+      console.log(this.state);
    }
 
    modLst(result) {  
@@ -94,7 +99,39 @@ export default class AllListings extends Component {
                <Col sm={3}>
                   <ListGroup>
                      <ListGroupItem>
-                        SORTING OPTION
+                     <form>
+
+<div className="form-check">
+  <label>
+    <input
+      type="radio"
+      name="react-tips"
+      value="price"
+      className="form-check-input"
+    />
+    price(high-low)
+  </label>
+</div>
+
+<div className="form-check">
+  <label>
+    <input
+      type="radio"
+      name="react-tips"
+      value="price"
+      className="form-check-input"
+    />
+    price(low-high)
+  </label>
+</div>
+
+<div className="form-group">
+  <button className="btn btn-primary mt-2" type="submit">
+    Save
+  </button>
+</div>
+
+</form>
                      </ListGroupItem>
                   </ListGroup>
                </Col>
@@ -146,13 +183,17 @@ const LstItem = function (props) {
       <ListGroupItem className="list-group-item-info">
          <Row>
             <Col sm={6}>
+            <div>
             <h3>
                {console.log("id ", props.id)}
                {console.log("lst ", props)}
                <Link to={ { pathname: "/ListingDetail/" + props.id, 
                         state : {lstTitle : props.lst.title, lstId: props.lst.id, lst: props.lst} } }  
                         title={props.lst.title}> {props.lst.title} </Link> 
-            </h3>
+            </h3></div>
+            <div>
+                  <Image src={props.lst.imageUrl} thumbnail />
+            </div>
             </Col>
 
             <Col sm={3}> 
@@ -179,27 +220,32 @@ const LstItem = function (props) {
                      <Glyphicon glyph="edit" /></Button>
                </div>
                : ''}
-         </Row>
 
-         <Row>
+            <Col>
+            <div>
             <Col sm={6}> </Col>
             <Col sm={6}> <h4> {`Price:   ${props.lst.price}`} </h4></Col>
-         </Row>
+         </div>
 
-         <Row> 
+         <div> 
             <Col sm={6}> </Col>
             <Col sm={6} > <h4> {`Location:  ${props.lst.location}`} </h4></Col>
-         </Row>
+         </div>
 
-         <Row>
+         <div>
             <Col sm={6}> </Col>
             <Col sm={6} >  <h4> {`Number of Bedroom: ${props.lst.numBed}`}  </h4> </Col>
-         </Row>
+         </div>
 
-         <Row>
+         <div>
             <Col sm={6}> </Col>
             <Col sm={6}  > <h4>{`Contact Information:  ${props.lst.contactInfo}`} </h4> </Col>
+         </div>
+            </Col>
+
          </Row>
+
+
          
          
       </ListGroupItem>

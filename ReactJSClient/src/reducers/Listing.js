@@ -3,6 +3,7 @@ export default function Cnvs(state = [], action) {
 
    switch (action.type) {
       case 'UPDATE_LSTS': // Replace previous cnvs
+         console.log("data ", action.data)
          return action.data;
       case 'UPDATE_LST':
          return state.map(val => val.id !== action.data.id ?
