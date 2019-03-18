@@ -6,6 +6,9 @@ var Session = require('./Routes/Session.js');
 var Validator = require('./Routes/Validator.js');
 var CnnPool = require('./Routes/CnnPool.js');
 var async = require('async');
+var fs = require('fs');
+
+const directory = './uploads';
 
 var app = express();
 //app.use(function(req, res, next) {console.log("Hello"); next();});
@@ -79,6 +82,16 @@ app.delete('/DB', function (req, res) {
             req.cnn.query("delete from " + tblName, cb);
          };
       });
+
+      fs.readdir(directory, (err,files) => {
+         if (err ) throw err;
+
+         for (const file of files) {
+            fs.unlink(path.join(directory, file), err => {
+               if (err) throw err;
+            });
+         }
+      })
 
       // Callbacks to reset increment bases
       cbs = cbs.concat(["Listing", "Image", "Person"]
