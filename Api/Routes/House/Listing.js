@@ -219,18 +219,10 @@ router.delete('/:ListingId', function (req, res) {
                cb);
       },
       function (Listing, fields, cb) {
-
          if (vld.check(Listing.length, Tags.notFound, null, cb) &&
             vld.checkPrsOK(Listing[0].ownerId, cb))
-            cnn.chkQry('select * from Image where ListingId = ?', [ListingId], cb);
-      },
-      function (imgs, fields, cb) {
-         console.log(imgs);
-         imgs.forEach(element => {
-            imgArr.push(element.publicId);
-         });
-         console.log(imgArr);
-         cloudinary.v2.api.delete_derived_resources(imgArr,cb);
+               cloudinary.v2.api.delete_resources_by_tag(ListingId,
+                  cb);
       },
       function (fields, cb) {
          cnn.chkQry('delete from Listing where id = ?', [ListingId],
@@ -329,12 +321,12 @@ router.post('/:ListingId/Images', function (req, res) {
    // const values = Object.values(req.files);
    const filePath = [req.body.filePath];
    const promises = filePath.map(file => 
-      cloudinary.uploader.upload(file));
+      cloudinary.v2.uploader.upload(file, {tags : ListingId}));
    
    Promise
      .all(promises)
      .then(results => {
-      console.log(results);
+
       async.waterfall([
          function (cb) {
             if (vld.check(req.session, Tags.noLogin, null, cb)) {
@@ -343,12 +335,10 @@ router.post('/:ListingId/Images', function (req, res) {
                   cb);
             }
          },
-         function (Listing, results, fields, cb) {
+         function (Listing, fields, cb) {
             if (vld.check(Listing.length, Tags.notFound, null, cb)) {
-               console.log("i'm here");
                cnn.query("insert into Image set ?",
                   {
-                     publicId: results[0].public_id,
                      ListingId: ListingId,
                      imageUrl: results[0].secure_url
                   }
