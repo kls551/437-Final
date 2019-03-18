@@ -111,6 +111,8 @@ export function uploadImages(lstId, img, cb, errcb) {
 export function addImg(lstId, body, cb) {
    return (dispatch, prevState) => {
       api.postImg(lstId, body)
+      // .then(imgs => { console.log("imgs -----", imgs);
+      //    dispatch({type: 'ADD_IMG', imgs: imgs}); } )
       .then(() => {if (cb) cb();})
       .catch(error => {
          dispatch({type: 'FIELD_MIS_ERR', details: error})

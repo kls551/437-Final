@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { ListGroup, ListGroupItem, Col, Row, Spinner, Images, FormGroup, FormControl, HelpBlock,
-    Button, Glyphicon, Panel , Carousel , CarouselItem, Image} from 'react-bootstrap';
+    Button, Glyphicon, Panel ,Carousel, CarouselItem, Image} from 'react-bootstrap';
 import ImgModal from './imgModal';
 import ConfDialog  from '../ConfDialog/ConfDialog';
-import deleteCnv from '../../api';
+
+
 
 // import './AllListings.css';
 
@@ -16,11 +17,6 @@ export default class ListingDetail extends Component {
          lst: this.props.location.state.lst,
          uploading: false, 
          images: [],
-         // showModal: false,
-         // showConfirmation: false,
-         // lst: this.props.location.state.cnvTitle,
-         // lst: this.props.lst,
-         // cnvId: this.props.location.state.cnvId,
       };
    
       this.modalDismiss = this.modalDismiss.bind(this);
@@ -101,21 +97,32 @@ export default class ListingDetail extends Component {
       //    console.log("adding image ------ ", img.imageUrl);
       //    imgItems.push(<ImgItem
       //    key = {img.id}
-      //    imageUrl = {img.imageUrl}
+      //    imageUrl={require(img.imageUrl)}
       //    />);
       // });
+
+
+      this.props.Imgs.forEach( img => {
+         console.log("adding image ------ ", img.imageUrl);
+         imgItems.push(<Carousel.Item
+         key = {img.id}
+         src={img.ImageUrl}
+         alt="First slide"
+         // imageUrl={require(img.imageUrl)}
+         >   </Carousel.Item>);
+      });
+
 
       return (
          <section className="container">
 
          <h1> {this.state.lst && this.state.lst.title} </h1>
-   
-         <Panel>
             {/* Carousel - Photos */}
             <Row>
                <Carousel>
-                  {/* {imgItems} */}
-                  <Carousel.Item> 
+
+                  {imgItems}
+                  {/* <Carousel.Item> 
                   <img
                      className="d-block w-700 h-500"
                      src={(this.props.Imgs && this.props.Imgs[0]) ? this.props.Imgs[0].imageUrl : ""}
@@ -140,7 +147,7 @@ export default class ListingDetail extends Component {
                      <Carousel.Caption>
                            <h3>Second slide label</h3>
                      </Carousel.Caption>
-                  </Carousel.Item>
+                  </Carousel.Item> */}
 
                </Carousel>
             </Row>
@@ -166,7 +173,7 @@ export default class ListingDetail extends Component {
 
             </Row>
 
-         </Panel>
+
 
          {/* <input type='file' id='imageUrl' onChange={this.handleChange} /> 
          <Button onClick={this.upload}> Upload Image </Button> */}
@@ -181,16 +188,16 @@ export default class ListingDetail extends Component {
    }
 }
 
-const ImgItem = function (props) {
-   console.log(props)
-    return (
-       <Carousel.Item>
-          {console.log("in image item ---- ", props.imageUrl)}
-          <img
-            className="d-block w-700 h-500"
-            src={props.imageUrl}
-            // alt="First slide"
-         />
-       </Carousel.Item>
-    );
- }
+// const ImgItem = function (props) {
+//    console.log(props)
+//     return (
+//        <Carousel.Item>
+//           {console.log("in image item ---- ", props.imageUrl)}
+//           <img
+//             className="d-block w-700 h-500"
+//             src={props.imageUrl} 
+//             alt="First slide"
+//          />
+//        </Carousel.Item>
+//     );
+//  }

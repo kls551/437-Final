@@ -28,7 +28,6 @@ export default class AllListings extends Component {
       this.handleNumBedsPost = this.handleNumBedsPost.bind(this);
    }
 
-   // Open a model with a |cnv| (optional)
    openModal = (lst) => {
       let newState = { showModal: true };
       if (lst)
@@ -90,7 +89,6 @@ export default class AllListings extends Component {
       console.log(value);
    }
 
-   
    render() {
       var lstItems = [];
       var self = this;
@@ -279,7 +277,6 @@ const LstItem = function (props) {
          </Row>
 
 
-         
          
       </ListGroupItem>
    )
