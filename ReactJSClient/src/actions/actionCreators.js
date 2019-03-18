@@ -108,6 +108,17 @@ export function uploadImages(lstId, img, cb, errcb) {
    };
 }
 
+export function addImg(lstId, body, cb) {
+   return (dispatch, prevState) => {
+      api.postImg(lstId, body)
+      .then(() => {if (cb) cb();})
+      .catch(error => {
+         dispatch({type: 'FIELD_MIS_ERR', details: error})
+      });
+   };
+}
+
+
 // export function addMsg(cnvid, content, cb, errcb) {
 //    return (dispatch, prevState) => {
 //       api.postMsg(cnvid, content)

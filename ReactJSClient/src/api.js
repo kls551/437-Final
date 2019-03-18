@@ -15,30 +15,66 @@ const baseURL = "http://localhost:3001/";
 const headers = new Headers();
 var cookie;
 
-headers.set('Content-Type', 'application/JSON', 'multipart/form-data');
+headers.set('Content-Type', 'application/JSON');
 
 const reqConf = {
-    headers: {'Content-Type': 'application/JSON'},
+    headers: headers,
     credentials: 'include',
-    mode: 'cors'
 };
+
+let newFetch = function (request, options) {
+    return fetch(request, options)
+        .catch(err => Promise.reject(["Server Connect Error"]))
+        .then(res => {
+            return res.ok ? res : createError(res);});
+}
 
 // Helper functions for the comon request types, automatically
 // adding verb, headers, and error management.
+// export function post(endpoint, body) {
+//     return safeFetch(baseURL + endpoint,'POST', body);
+// }
+
+// export function put(endpoint, body) {
+//     return safeFetch(baseURL + endpoint,'PUT', body);
+// }
+
+// export function get(endpoint) {
+//     return safeFetch(baseURL + endpoint, 'GET');
+// }
+
+// export function del(endpoint) {
+//     return safeFetch(baseURL + endpoint, 'DELETE');
+// }
+
 export function post(endpoint, body) {
-    return safeFetch(baseURL + endpoint,'POST', body);
+    return newFetch(baseURL + endpoint, {
+        method: 'POST',
+        body: JSON.stringify(body),
+        ...reqConf
+    });
 }
 
 export function put(endpoint, body) {
-    return safeFetch(baseURL + endpoint,'PUT', body);
+    return newFetch(baseURL + endpoint, {
+        method: 'PUT',
+        body: JSON.stringify(body),
+        ...reqConf
+    });
 }
 
 export function get(endpoint) {
-    return safeFetch(baseURL + endpoint, 'GET');
+    return newFetch(baseURL + endpoint, {
+        method: 'GET',
+        ...reqConf
+    });
 }
 
 export function del(endpoint) {
-    return safeFetch(baseURL + endpoint, 'DELETE');
+    return newFetch(baseURL + endpoint, {
+        method: 'DELETE',
+        ...reqConf
+    });
 }
 
 // Functions for performing the api requests
@@ -122,26 +158,10 @@ export function getImgs(lstId) {
     .then((res) => res.json());
 }
 
-export function postImg(lstId, img) {
-    // return post('Listing/' + lstId + '/Images', img).then((rsp)=> {
-    //     let location = rsp.headers.get("Location").split('/');
-    //     return get(`Listing/${lstId}/Images`);
-    //  })
-    return fetch(baseURL + 'Listing/' + lstId + '/Images', {
-        method: 'POST',
-        body: img,
-        headers: {'Content-Type': 'multipart/form-data'},
-        credentials: 'include',
-        mode: 'cors'
-    })
-    .then(rsp => {console.log("return form image post ----------"); return rsp;})
-    // .catch(err => {console.log(err)});
-//     .then((rsp)=> {
-//     //   let location = rsp.headers.get("Location").split('/');
-//     //   return get(`Listing/${lstId}/Images`);
-//    })
-   
-};
+export function postImg(lstId, body) {
+    return post("Listing/"+lstId+"/Images", 
+    {filePath: body});
+}
 
 export function safeFetch(url, action, body) {
     if (body) {
@@ -152,7 +172,7 @@ export function safeFetch(url, action, body) {
             })
             .catch(err => {return Promise.reject("Error connection")})
             .then(res => {
-                    return checkErrs(res)});
+                    return createError(res)});
     }
     else {
         return fetch(url, {
@@ -165,9 +185,23 @@ export function safeFetch(url, action, body) {
                 if (err) 
                     return Promise.reject("Error connection");
                 else 
-                    return checkErrs(res, err);});
+                    return createError(res, err);});
     }
 }
+
+function createError(response) {
+    console.log("GOT HERE");
+    if (response.status >= 400)
+        return Promise.resolve(response)
+            .then(response => response.json())
+            .then(errorlist =>
+                Promise
+                    .reject(errorlist.map(err => errorTranslate(err.tag)))
+            );
+    else
+        return Promise.reject(["Server Connect Error"]);
+}
+
 
 export function checkErrs(response, err) {
     return new Promise((resolve, reject) => {

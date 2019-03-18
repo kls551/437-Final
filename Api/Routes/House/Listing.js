@@ -50,7 +50,6 @@ router.baseURL = '/Listing';
 router.post('/multiple_uploads', async (req, res) => {
    /* we would receive a request of file paths as array */
    let filePaths = req.body.filePaths;
-   console.log("--------- uploading ", filePaths);
    let multipleUpload = new Promise(async (resolve, reject) => {
      let upload_len = filePaths.length
          ,upload_res = new Array();
@@ -68,13 +67,12 @@ router.post('/multiple_uploads', async (req, res) => {
                  /*push public_ids in an array */  
                  upload_res.push(result.public_id);
                } else if(error) {
-                 console.log(error)
                  reject(error)
                }
            })
        } 
    })
-   .then((result) => result)
+   .then((result) => console.log("res  ", result, "resUp ...", upload_res))
    .catch((error) => console.log(error))
 
    let upload = await multipleUpload; 
@@ -309,16 +307,14 @@ router.get('/:ListingId/Images', function (req, res) {
 // });
 
 router.post('/:ListingId/Images', function (req, res) {
-   console.log("file ===== " ,req.files);
    var vld = req.validator;
    var cnn = req.cnn;
    var ListingId = req.params.ListingId;
-   console.log("images --- ", req.files);
-   const values = Object.values(req.files);
-   
-   console.log("values --- ", values);
-   const promises = values.map(image => 
-      cloudinary.uploader.upload(image.path));
+   console.log(req.body);
+   // const values = Object.values(req.files);
+   const filePath = [req.body.filePath];
+   const promises = filePath.map(file => 
+      cloudinary.uploader.upload(file));
    
    Promise
      .all(promises)
@@ -349,7 +345,8 @@ router.post('/:ListingId/Images', function (req, res) {
          function (err) {
             cnn.release();
          });
-   });
+   })
+   .catch(err => console.log("this is error ",err));
 });
 
 module.exports = router;

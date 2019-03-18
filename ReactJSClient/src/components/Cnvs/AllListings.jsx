@@ -173,13 +173,12 @@ export default class AllListings extends Component {
                
 
                <Col sm={9}>
-                  <ListGroup>
-                     {lstItems}
-                  </ListGroup>
-
                   <Button className="btn btn-primary" onClick={() => this.openModal()}>
                      New Listing
                   </Button>
+                  <ListGroup>
+                     {lstItems}
+                  </ListGroup>
                </Col>
             </Row>
                
