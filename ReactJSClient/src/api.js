@@ -178,27 +178,6 @@ function createError(response) {
         return Promise.reject(["Server Connect Error"]);
 }
 
-
-export function checkErrs(response, err) {
-    return new Promise((resolve, reject) => {
-        if (response.status >= 400) {
-            return response.clone().json().then( (res) =>  {
-                var params = "";
-                var errtag = errorTranslate(String(res[0].tag), 'en'); 
-
-                if (res[0].params)
-                    res[0].params.forEach(
-                        field => { params = params + field + ' '})
-                errtag += params;
-                reject(errtag);
-            });
-        }
-        else {
-            resolve(response);
-        }
-    })
-}
-
 const errMap = {
     en: {
         missingField: 'Field missing from request: ',

@@ -188,6 +188,7 @@ router.delete('/:ListingId', function (req, res) {
    var vld = req.validator;
    var ListingId = req.params.ListingId;
    var cnn = req.cnn;
+   var imgArr = [];
 
    async.waterfall([
       function (cb) {
@@ -198,8 +199,12 @@ router.delete('/:ListingId', function (req, res) {
       function (Listing, fields, cb) {
          if (vld.check(Listing.length, Tags.notFound, null, cb) &&
             vld.checkPrsOK(Listing[0].ownerId, cb))
-            cnn.chkQry('delete from Listing where id = ?', [ListingId],
-               cb);
+               cloudinary.v2.api.delete_resources_by_tag(ListingId,
+                  cb);
+      },
+      function (fields, cb) {
+         cnn.chkQry('delete from Listing where id = ?', [ListingId],
+         cb);
       }],
       function (err) {
          if (!err)
@@ -249,7 +254,7 @@ router.post('/:ListingId/Images', function (req, res) {
    // const values = Object.values(req.files);
    const filePath = [req.body.filePath];
    const promises = filePath.map(file => 
-      cloudinary.uploader.upload(file));
+      cloudinary.v2.uploader.upload(file, {tags : ListingId}));
    
    Promise
      .all(promises)
