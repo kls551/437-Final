@@ -33,10 +33,10 @@ export function register(data, cb, errcb) {
    };
 }
 
-export function updateLsts(userId, cb, errcb) {
+export function updateLsts(userId, price, numbeds, cb, errcb) {
    console.log("get here");
    return (dispatch, prevState) => {
-      api.getLsts(userId)
+      api.getLsts(userId, price, numbeds)
       .then((lsts) => dispatch({ type: 'UPDATE_LSTS', data: lsts}))
       .then(() => {if (cb) cb();})
       .catch(error => { dispatch({type: 'UPDATE_LSTS_ERR', details: error});
@@ -107,6 +107,17 @@ export function uploadImages(lstId, img, cb, errcb) {
                         if (errcb) errcb(); } );
    };
 }
+
+export function addImg(lstId, body, cb) {
+   return (dispatch, prevState) => {
+      api.postImg(lstId, body)
+      .then(() => {if (cb) cb();})
+      .catch(error => {
+         dispatch({type: 'FIELD_MIS_ERR', details: error})
+      });
+   };
+}
+
 
 // export function addMsg(cnvid, content, cb, errcb) {
 //    return (dispatch, prevState) => {

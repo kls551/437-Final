@@ -2,34 +2,52 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { ListGroup, ListGroupItem, Col, Row, Spinner, Images, FormGroup, FormControl, HelpBlock,
     Button, Glyphicon, Panel , Carousel , CarouselItem, Image} from 'react-bootstrap';
-import MsgModal from './MsgModal';
+import ImgModal from './imgModal';
 import ConfDialog  from '../ConfDialog/ConfDialog';
 import deleteCnv from '../../api';
 
 // import './AllListings.css';
 
 export default class ListingDetail extends Component {
-    constructor(props) {
-       super(props);
-      //   console.log("title : ", this.props.lst && this.props.lst.title);
-        this.state = {
-           lst: this.props.location.state.lst,
-           uploading: false, 
-           images: [],
-           imageUrl: "",
-            // showModal: false,
-            // showConfirmation: false,
-            // lst: this.props.location.state.cnvTitle,
-            // lst: this.props.lst,
-            // cnvId: this.props.location.state.cnvId,
-        };
-     
-      //   this.openModal = this.openModal.bind(this);
-        this.render = this.render.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.upload = this.upload.bind(this);
-    }
+   constructor(props) {
+      super(props);
+   //   console.log("title : ", this.props.lst && this.props.lst.title);
+      this.state = {
+         lst: this.props.location.state.lst,
+         uploading: false, 
+         images: [],
+         // showModal: false,
+         // showConfirmation: false,
+         // lst: this.props.location.state.cnvTitle,
+         // lst: this.props.lst,
+         // cnvId: this.props.location.state.cnvId,
+      };
+   
+      this.modalDismiss = this.modalDismiss.bind(this);
+      this.openModal = this.openModal.bind(this);
+      this.render = this.render.bind(this);
+      this.handleChange = this.handleChange.bind(this);
+      this.upload = this.upload.bind(this);
+   }
 
+   openModal = (img) => {
+      const newState = { showModal: true };
+      if (img)
+         newState.newImg= img;
+      this.setState(newState);
+   }
+
+   newImg(result) {
+      this.props.addImg(this.state.lst.id, result.Path);
+   }
+
+   modalDismiss = (result) => {
+      console.log(result);
+      if (result.status === "Ok") {
+         this.newImg(result);
+      }
+      this.setState({ showModal: false});
+   }
    componentDidMount() {
       const newState = this.state;
       newState.lst = this.props.location.state.lst;
@@ -48,24 +66,26 @@ export default class ListingDetail extends Component {
 
    handleChange = (e) => {
       let newState = {};
-      // const files = Array.from(e.target.files);
-      const files = e.target.files[0];
-      const formData = new FormData;
-      let reader = new FileReader();
-     console.log(reader.readAsText(files));
+      const files = Array.from(e.target.files);
+      // const files = e.target.files;
+   
+      // this.setState({uploading: true});
+      const formData = new FormData();
+      // formData.append(0, files);
+      formData.append(0, files[0]);
 
-
-      formData.append(0, files);
-   }
-
-   onChange = (e) => {
-      this.setState({ imageUrl: e.target.value });
+      console.log(" (formData) ------- ", formData);
+      // this.upload();
+      // this.props.uploadImages(this.state.lst.id, files);
+      this.setState({images : formData});
+      // this.props.uploadImages(this.state.lst.id, formData);
    }
 
    upload = () => {
       console.log("images (formData) ------- ", this.state.images);
       this.props.uploadImages(this.state.lst.id, this.state.imageUrl);
    }
+
    render() {
       var imgItems = [];
 
@@ -141,21 +161,14 @@ export default class ListingDetail extends Component {
 
          </Panel>
 
-      
-         {/* <FormGroup type='file' name='imageUrl' onChange={this.handleChange} /> </input> */}
-   
-            <FormGroup controlId="formBasicText"
-            >
-            <FormControl
-               type="text"
-               value={this.state.imageUrl}
-               // placeholder={"Enter message here"}
-               onChange={this.onChange}
-            />
-            <FormControl.Feedback />
-            <HelpBlock>Content cannot be empty</HelpBlock>
-         </FormGroup>
-         <Button onClick={this.upload}> Upload Image </Button>
+         {/* <input type='file' id='imageUrl' onChange={this.handleChange} /> 
+         <Button onClick={this.upload}> Upload Image </Button> */}
+         <Button bsStyle="primary" onClick={() => this.openModal()}>
+               Add Image
+            </Button>
+         <ImgModal
+               showModal={this.state.showModal}
+               onDismiss={this.modalDismiss} />
          </section>
       )
    }

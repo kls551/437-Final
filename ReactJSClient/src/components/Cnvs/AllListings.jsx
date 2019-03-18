@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { ListGroup, ListGroupItem} from 'react-bootstrap';
-import { Col, Row, Button, Glyphicon, Image} from 'react-bootstrap';
+import { Col, Row, Button, Glyphicon, Image, FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
 import CnvModal from './CnvModal';
 import ConfDialog  from '../ConfDialog/ConfDialog';
 import ErrorDialog  from '../ErrorDialog/ErrorDialog';
@@ -23,6 +23,10 @@ export default class AllListings extends Component {
       this.openConfirmation = this.openConfirmation.bind(this);
       this.openModal = this.openModal.bind(this);
       this.render = this.render.bind(this);
+      this.handleFormSubmit = this.handleFormSubmit.bind(this);
+      this.handleOptionChange = this.handleOptionChange.bind(this);
+      this.handleNumBeds = this.handleNumBeds.bind(this);
+      this.handleNumBedsPost = this.handleNumBedsPost.bind(this);
    }
 
    // Open a model with a |cnv| (optional)
@@ -48,9 +52,19 @@ export default class AllListings extends Component {
       this.setState({ showModal: false, editLst: null });
    }
 
-   handleChange(event) {
-      this.setState({value: event.target.value});
-      console.log(this.state);
+   handleOptionChange = event => {
+      this.setState({selected: event.target.value});
+   }
+   handleFormSubmit = event => {
+      event.preventDefault();
+      this.props.updateLsts(null, this.state.selected);
+      console.log("CHANGE!", this.state.selected);
+   }
+   handleNumBeds = event => {
+      this.setState({numBeds: event.target.value});
+   }
+   handleNumBedsPost = () => {
+      this.props.updateLsts(null, null, this.state.numBeds);
    }
 
    modLst(result) {  
@@ -77,6 +91,7 @@ export default class AllListings extends Component {
       console.log(value);
    }
 
+   
    render() {
       var lstItems = [];
       var self = this;
@@ -99,52 +114,71 @@ export default class AllListings extends Component {
                <Col sm={3}>
                   <ListGroup>
                      <ListGroupItem>
-                     <form>
+                     <form onSubmit={this.handleFormSubmit}>
 
-<div className="form-check">
-  <label>
-    <input
-      type="radio"
-      name="react-tips"
-      value="price"
-      className="form-check-input"
-    />
-    price(high-low)
-  </label>
-</div>
+                        <div className="form-check">
+                        <label>
+                           <input
+                              type="radio"
+                              name="react-tips"
+                              value={-1}
+                              checked={this.state.selected == -1}
+                              onChange={this.handleOptionChange}
+                              className="form-check-input"
+                           />
+                           price(high-low)
+                        </label>
+                        </div>
 
-<div className="form-check">
-  <label>
-    <input
-      type="radio"
-      name="react-tips"
-      value="price"
-      className="form-check-input"
-    />
-    price(low-high)
-  </label>
-</div>
+                        <div className="form-check">
+                        <label>
+                           <input
+                              type="radio"
+                              name="react-tips"
+                              value={1}
+                              checked={this.state.selected == 1}
+                              onChange={this.handleOptionChange}
+                              className="form-check-input"
+                           />
+                           price(low-high)
+                        </label>
+                        </div>
+                        <div className="form-group">
+                        <button className="btn btn-primary mt-2" type="submit">
+                           Sort
+                        </button>
+                        </div>
 
-<div className="form-group">
-  <button className="btn btn-primary mt-2" type="submit">
-    Save
-  </button>
-</div>
+                     </form>
 
-</form>
+                     <FormGroup>
+                     <ControlLabel>Number of Beds</ControlLabel>
+                     <Row>
+                        <Col sm={7}>
+                           <FormControl className="form-control-sm"
+                              type="text"
+                              value={this.state.numBeds}
+                              placeholder="Enter a number"
+                              onChange={this.handleNumBeds}
+                           />
+                        </Col>
+                        <Col className="pull-right">
+                           <button  onClick={this.handleNumBedsPost} type="submit" className="btn btn-primary mt-2">Filter</button>
+                        </Col>
+                     </Row>
+                     </FormGroup>
                      </ListGroupItem>
                   </ListGroup>
                </Col>
                
 
                <Col sm={9}>
-                  <ListGroup>
-                     {lstItems}
-                  </ListGroup>
-
                   <Button className="btn btn-primary" onClick={() => this.openModal()}>
                      New Listing
                   </Button>
+                  <ListGroup>
+                     {lstItems}
+                  </ListGroup>
                </Col>
             </Row>
                

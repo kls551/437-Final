@@ -74,7 +74,7 @@ class SignIn extends Component {
                   <Col smOffset={2} sm={8}>
                      <Button type="submit" onClick={this.signIn}>
                         Sign in
-                     </Button>
+                     </Button>n
                  </Col>
                </FormGroup>
             </Form>
