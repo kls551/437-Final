@@ -32,7 +32,7 @@ class Main extends Component {
       return (
          <div>
             <div>
-               <Navbar bg="dark" variant="dark">
+               <Navbar>
                   <Navbar.Toggle />
                   {this.signedIn() ?
                      <Navbar.Text key={1}>

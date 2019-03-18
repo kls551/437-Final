@@ -3,48 +3,109 @@ var Tags = require('../Validator.js').Tags;
 var router = Express.Router({ caseSensitive: true });
 var async = require('async');
 var multer = require('multer');
-const fs = require("fs");
 
-const storage = multer.diskStorage({
-   destination: function(req, file, cb) {
-      cb(null, './uploads');
-   },
-   filename: function(req,file,cb) {
-      var date = Date.now(); 
-      cb(null, date + file.originalname);
-   }
-});
+//img stuff
+const formData = require('express-form-data')
+require('dotenv').config({
+   path: './config.env'
+})
+var cloudinary = require('cloudinary');
 
-const fileFilter = (req,file,cb) => {
-   if (file.mimetype == 'image/jpeg' ||
-      file.mimetype == 'image/png')
-      cb (null, true);
-   else
-      cb (null, false);
-}
+router.use(formData.parse())
 
-var upload = multer({
-   storage: storage,
-   fileFilter: fileFilter
-});
+cloudinary.config({
+   cloud_name: process.env.CLOUD_NAME,
+   api_key: process.env.API_KEY, 
+   api_secret: process.env.API_SECRET
+})
+
+console.log(process.env.CLOUD_NAME)
+
+// const storage = multer.diskStorage({
+//    destination: function(req, file, cb) {
+//       cb(null, './uploads');
+//    },
+//    filename: function(req,file,cb) {
+//       var date = Date.now(); 
+//       cb(null, date + file.originalname);
+//    }
+// });
+
+// const fileFilter = (req,file,cb) => {
+//    if (file.mimetype == 'image/jpeg' ||
+//       file.mimetype == 'image/png')
+//       cb (null, true);
+//    else
+//       cb (null, false);
+// }
+
+// var upload = multer({
+//    storage: storage,
+//    fileFilter: fileFilter
+// });
 
 router.baseURL = '/Listing';
+
+// this is multiple image upload (tester version)
+router.post('/multiple_uploads', async (req, res) => {
+   /* we would receive a request of file paths as array */
+   let filePaths = req.body.filePaths;
+
+   let multipleUpload = new Promise(async (resolve, reject) => {
+     let upload_len = filePaths.length
+         ,upload_res = new Array();
+
+       for(let i = 0; i <= upload_len + 1; i++)
+       {
+           let filePath = filePaths[i];
+           await cloudinary.uploader.upload(filePath, (error, result) => {
+               if(upload_res.length === upload_len)
+               {
+                 /* resolve promise after upload is complete */
+                 resolve(upload_res)
+               }else if(result)
+               {
+                 /*push public_ids in an array */  
+                 upload_res.push(result.public_id);
+               } else if(error) {
+                 console.log(error)
+                 reject(error)
+               }
+           })
+       } 
+   })
+   .then((result) => result)
+   .catch((error) => console.log(error))
+
+   let upload = await multipleUpload; 
+   res.json({'response':upload})
+})
 
 router.get('/', function (req, res) {
    console.log(req.query);
    var owner = req.query.owner;
    var numbed = req.query.numbed;
+   var price = req.query.price;
    var joinQuery = "select l.*, m1.imageUrl from Listing l "+
       "left join "+ 
       "(select min(m.ListingId) as ListingId, min(imageUrl) as imageUrl from "+
       "Image m "+
       "group by m.ListingId) m1 "+
       "on l.id = m1.ListingId ";
+   var sort;
+   if (price === "1")
+      sort = "order by price asc;";
+   else if (price === "-1")
+      sort = "order by price desc;";
 
    async.waterfall([
       function (cb) {  // Check for existence of Listing
          if (req.validator.check(req.session, Tags.noLogin, null, cb)) {
-            if (owner)
+            if (price)
+               req.cnn.chkQry(joinQuery +
+               sort,
+               [owner], cb);
+            else if (owner)
                req.cnn.chkQry(joinQuery +' where ownerid = ? '+
                   'order by postedDate asc',
                   [owner], cb);
@@ -206,45 +267,87 @@ router.get('/:ListingId/Images', function (req, res) {
 });
 
 // we dont know yet
-router.post('/:ListingId/Images', upload.array('mainImage', 10), function (req, res) {
-   console.log(req.files, req.files.length);
+// router.post('/:ListingId/Images', upload.array('mainImage', 10), function (req, res) {
+//    console.log(req.files, req.files.length);
+//    var vld = req.validator;
+//    var cnn = req.cnn;
+//    var ListingId = req.params.ListingId;
+//    var filePaths = [];
+//    var i = 0;
+//    for (i = 0; i < req.files.length; i++) {
+//       // filePaths = filePaths + 
+//       // "("+ListingId+","+req.files[0].path+")";
+//       // if (i !== (req.files.length-1))
+//       //    filePaths = filePaths + ","
+//       filePaths.push([ListingId, req.files[i].path]);
+//    }
+//    console.log(" file paths " ,filePaths);
+//    var dummy = [[1, "hello"], [2, "hello"]];
+
+//    async.waterfall([
+//       function (cb) {
+//          if (vld.check(req.session, Tags.noLogin, null, cb)) {
+//             //vld.hasFields(req.body, ["imageUrl"], cb)) {
+//             cnn.chkQry('select * from Listing where id = ?', [ListingId],
+//                cb);
+//          }
+//       },
+//       function (Listing, fields, cb) {
+//          if (vld.check(Listing.length, Tags.notFound, null, cb)) {
+//             console.log("I'm here")
+//             cnn.query("insert into Image (ListingId, imageUrl) values ?",
+//                [filePaths], cb);
+//          }
+//       },
+//       function (insRes, fields, cb) {
+//          res.location(router.baseURL + '/' + insRes.insertId).end();
+//          cb();
+//       }],
+//       function (err) {
+//          cnn.release();
+//       });
+// });
+
+router.post('/:ListingId/Images', function (req, res) {
+   console.log(req.files);
    var vld = req.validator;
    var cnn = req.cnn;
    var ListingId = req.params.ListingId;
-   var filePaths = [];
-   var i = 0;
-   for (i = 0; i < req.files.length; i++) {
-      // filePaths = filePaths + 
-      // "("+ListingId+","+req.files[0].path+")";
-      // if (i !== (req.files.length-1))
-      //    filePaths = filePaths + ","
-      filePaths.push([ListingId, req.files[i].path]);
-   }
-   console.log(" file paths " ,filePaths);
-   var dummy = [[1, "hello"], [2, "hello"]];
 
-   async.waterfall([
-      function (cb) {
-         if (vld.check(req.session, Tags.noLogin, null, cb)) {
-            //vld.hasFields(req.body, ["imageUrl"], cb)) {
-            cnn.chkQry('select * from Listing where id = ?', [ListingId],
-               cb);
-         }
-      },
-      function (Listing, fields, cb) {
-         if (vld.check(Listing.length, Tags.notFound, null, cb)) {
-            console.log("I'm here")
-            cnn.query("insert into Image (ListingId, imageUrl) values ?",
-               [filePaths], cb);
-         }
-      },
-      function (insRes, fields, cb) {
-         res.location(router.baseURL + '/' + insRes.insertId).end();
-         cb();
-      }],
-      function (err) {
-         cnn.release();
-      });
+   const values = Object.values(req.files);
+   const promises = values.map(image => 
+      cloudinary.uploader.upload(image.path));
+   
+   Promise
+     .all(promises)
+     .then(results => {
+
+      async.waterfall([
+         function (cb) {
+            if (vld.check(req.session, Tags.noLogin, null, cb)) {
+               //vld.hasFields(req.body, ["imageUrl"], cb)) {
+               cnn.chkQry('select * from Listing where id = ?', [ListingId],
+                  cb);
+            }
+         },
+         function (Listing, fields, cb) {
+            if (vld.check(Listing.length, Tags.notFound, null, cb)) {
+               cnn.query("insert into Image set ?",
+                  {
+                     ListingId: ListingId,
+                     imageUrl: results[0].secure_url
+                  }
+                  , cb);
+            }
+         },
+         function (insRes, fields, cb) {
+            res.location(router.baseURL + '/' + insRes.insertId).end();
+            cb();
+         }],
+         function (err) {
+            cnn.release();
+         });
+   });
 });
 
 module.exports = router;

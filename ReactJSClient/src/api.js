@@ -87,6 +87,7 @@ export function postPrs(user) {
  * @returns {Promise} json parsed data
  */
 export function getLsts(userId) {
+    console.log(userId);
     return get("Listing" + (userId ? "?owner="+userId : ""))
     .then((res) => res.json());
 }
