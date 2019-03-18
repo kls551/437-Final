@@ -26,6 +26,7 @@ export default class ListingDetail extends Component {
       //   this.openModal = this.openModal.bind(this);
         this.render = this.render.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.upload = this.upload.bind(this);
     }
 
    componentDidMount() {
@@ -37,25 +38,27 @@ export default class ListingDetail extends Component {
    }
 
    componentWillReceiveProps = (nextProps) => {
-      // if (nextProps.showModal) {
-         // console.log(" before state ", this.props.location.state.lst);
-         const newState = this.state;
-         newState.lst = this.props.location.state.lst;
-      
-         this.setState(newState);
-         console.log("listing in detail  ", this.state.lst);
+      const newState = this.state;
+      newState.lst = this.props.location.state.lst;
+   
+      this.setState(newState);
+      console.log("listing in detail  ", this.state.lst);
    }
 
    handleChange = (e) => {
       let newState = {};
       const files = Array.from(e.target.files);
-      
-      this.setState({uploading: true});
+      // const files = e.target.files;
+   
+      // this.setState({uploading: true});
       const formData = new FormData();
-
+      // formData.append(0, files);
       files.forEach((file, i) => {
-         formData.append(i, file)
+         formData.append(i, file);
       })
+      console.log(" (formData) ------- ", formData);
+      // this.upload();
+      // this.props.uploadImages(this.state.lst.id, files);
       this.setState({images : formData});
       console.log("listing id ------- ", this.state.lst.id);
       console.log(formData);

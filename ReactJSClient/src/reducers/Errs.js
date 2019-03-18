@@ -19,7 +19,7 @@ function Errs(state = [], action) {
             return action.details;
         case 'GET_IMGS_ERR':
             return action.details;
-        case 'ADD_MSG_ERR':
+        case 'ADD_IMG_ERR': 
             return action.details;   
         case 'CLEAR_ERROR':
             return action.details;       

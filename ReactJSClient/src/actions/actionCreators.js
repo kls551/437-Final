@@ -100,8 +100,8 @@ export function getLstImgs(lstId, cb, errcb) {
 export function uploadImages(lstId, img, cb, errcb) {
    return (dispatch, prevState) => {
       api.postImg(lstId, img)
-      .then(imgs => { console.log("msg -----", imgs);
-      dispatch({type: 'ADD_IMG', imgs: imgs}); } )
+      .then(imgs => { console.log("imgs -----", imgs);
+         dispatch({type: 'ADD_IMG', imgs: imgs}); } )
       .then(() => {if (cb) cb();})
       .catch(error => {dispatch({type: 'ADD_IMG_ERR', details: error});
                         if (errcb) errcb(); } );
