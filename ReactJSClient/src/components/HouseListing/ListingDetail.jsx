@@ -87,16 +87,23 @@ export default class ListingDetail extends Component {
    }
 
    render() {
+      var imgArray = this.props.Imgs;
       var imgItems = [];
+      // for (var i=0; i<imgArray; i++) {
+      //    imgItems.push(<Carousel.Item><img
+      //       className="d-block w-700 h-500"
+      //       src={imgArray[i].imageUrl}
+      //       alt="First slide"
+      //    /> </Carousel.Item>)
+      // }
 
-
-      this.props.Imgs.forEach( img => {
-         console.log("adding image ------ ", img.imageUrl);
-         imgItems.push(<ImgItem
-         key = {img.id}
-         imageUrl = {img.imageUrl}
-         />);
-      });
+      // this.props.Imgs.forEach( img => {
+      //    console.log("adding image ------ ", img.imageUrl);
+      //    imgItems.push(<ImgItem
+      //    key = {img.id}
+      //    imageUrl = {img.imageUrl}
+      //    />);
+      // });
 
       return (
          <section className="container">
@@ -107,7 +114,7 @@ export default class ListingDetail extends Component {
             {/* Carousel - Photos */}
             <Row>
                <Carousel>
-
+                  {/* {imgItems} */}
                   <Carousel.Item> 
                   <img
                      className="d-block w-700 h-500"

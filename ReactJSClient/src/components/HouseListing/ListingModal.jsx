@@ -147,15 +147,6 @@ export default class CnvModal extends Component {
                         onChange={this.handleChange}
                      />
               
-                     <ControlLabel> Description </ControlLabel>
-                     <FormControl
-                        id="imageUrl"
-                        type="file"
-                        value={this.state.imageUrl}
-                        placeholder={this.state.imageUrl}
-                        onChange={this.handleChange}
-                     />
-
                      <FormControl.Feedback />
                      <HelpBlock>Fields cannot be empty.</HelpBlock>
                   </FormGroup>

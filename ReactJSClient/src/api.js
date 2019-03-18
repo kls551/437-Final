@@ -29,24 +29,6 @@ let newFetch = function (request, options) {
             return res.ok ? res : createError(res);});
 }
 
-// Helper functions for the comon request types, automatically
-// adding verb, headers, and error management.
-// export function post(endpoint, body) {
-//     return safeFetch(baseURL + endpoint,'POST', body);
-// }
-
-// export function put(endpoint, body) {
-//     return safeFetch(baseURL + endpoint,'PUT', body);
-// }
-
-// export function get(endpoint) {
-//     return safeFetch(baseURL + endpoint, 'GET');
-// }
-
-// export function del(endpoint) {
-//     return safeFetch(baseURL + endpoint, 'DELETE');
-// }
-
 export function post(endpoint, body) {
     return newFetch(baseURL + endpoint, {
         method: 'POST',
@@ -111,12 +93,6 @@ export function signOut() {
  */
 export function postPrs(user) {
    return post("Prss", user)
-//    .then(rsp => {
-//         let location = rsp.headers.get("Location").split('/');
-//         return rsp;
-//         // return get("Prss/" + location[location.length - 1]); 
-//     })  
-//    .then(rsp => rsp[0].json());
 }
 
 /**
