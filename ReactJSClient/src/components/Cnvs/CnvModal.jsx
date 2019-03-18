@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-   Modal, Button, FormControl, ControlLabel, FormGroup, HelpBlock
+   Modal, Button, FormControl, ControlLabel, FormGroup, HelpBlock, Row, Col, ListGroup, ListGroupItem
 } from 'react-bootstrap';
 // import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'bootstrap-4-react';
 
@@ -93,25 +93,28 @@ export default class CnvModal extends Component {
                         placeholder={this.state.title}
                         onChange={this.handleChange}
                      />
-
-                     <ControlLabel>Price</ControlLabel>
-                     <FormControl
-                        id="price"
-                        type="text"
-                        value={this.state.price}
-                        placeholder={this.state.price}
-                        onChange={this.handleChange}
-                     />
-
-                     <ControlLabel>Number of Bed-room </ControlLabel>
-                     <FormControl
-                        id="numBed"
-                        type="text"
-                        value={this.state.numBed}
-                        placeholder={this.state.numBed}
-                        onChange={this.handleChange}
-                     />
-
+                     <Row>
+                        <Col sm={6}>
+                           <ControlLabel>Price</ControlLabel>
+                           <FormControl
+                              id="price"
+                              type="text"
+                              value={this.state.price}
+                              placeholder={this.state.price}
+                              onChange={this.handleChange}
+                           />
+                        </Col>
+                        <Col sm={6}>
+                           <ControlLabel>Number of Bed-room </ControlLabel>
+                           <FormControl
+                              id="numBed"
+                              type="text"
+                              value={this.state.numBed}
+                              placeholder={this.state.numBed}
+                              onChange={this.handleChange}
+                           />
+                        </Col>
+                     </Row>
 
                      <ControlLabel> Location </ControlLabel>
                      <FormControl
@@ -132,9 +135,10 @@ export default class CnvModal extends Component {
                      />
 
                      <ControlLabel> Description </ControlLabel>
-                     <FormControl
+                     <textarea
+                        className="form-control"
                         id="description"
-                        type="text"
+                        rows="4"
                         value={this.state.description}
                         placeholder={this.state.description}
                         onChange={this.handleChange}

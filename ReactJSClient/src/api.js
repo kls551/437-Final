@@ -86,9 +86,11 @@ export function postPrs(user) {
 /**
  * @returns {Promise} json parsed data
  */
-export function getLsts(userId) {
-    console.log(userId);
-    return get("Listing" + (userId ? "?owner="+userId : ""))
+export function getLsts(userId, price, numbeds) {
+    console.log(userId, price, numbeds);
+    return get("Listing" + (userId ? "?owner="+userId : "")+
+        (price ? "?price="+price : "")+
+        (numbeds ? "?numbed="+numbeds : ""))
     .then((res) => res.json());
 }
 

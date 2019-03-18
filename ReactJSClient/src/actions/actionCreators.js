@@ -33,10 +33,10 @@ export function register(data, cb, errcb) {
    };
 }
 
-export function updateLsts(userId, cb, errcb) {
+export function updateLsts(userId, price, numbeds, cb, errcb) {
    console.log("get here");
    return (dispatch, prevState) => {
-      api.getLsts(userId)
+      api.getLsts(userId, price, numbeds)
       .then((lsts) => dispatch({ type: 'UPDATE_LSTS', data: lsts}))
       .then(() => {if (cb) cb();})
       .catch(error => { dispatch({type: 'UPDATE_LSTS_ERR', details: error});
