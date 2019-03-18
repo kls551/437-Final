@@ -5,7 +5,7 @@ function Imgs(state = [], action) {
       return action.data;
     case 'ADD_IMG':
       return action.data;
-      //   return state.concat([action.msg]);
+        // return state.concat([action.data]);
     default:
        return state;
     }

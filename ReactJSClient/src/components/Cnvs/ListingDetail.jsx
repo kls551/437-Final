@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { ListGroup, ListGroupItem, Col, Row, Spinner, Images, 
+import { ListGroup, ListGroupItem, Col, Row, Spinner, Images, FormGroup, FormControl, HelpBlock,
     Button, Glyphicon, Panel , Carousel , CarouselItem, Image} from 'react-bootstrap';
 import MsgModal from './MsgModal';
 import ConfDialog  from '../ConfDialog/ConfDialog';
@@ -16,6 +16,7 @@ export default class ListingDetail extends Component {
            lst: this.props.location.state.lst,
            uploading: false, 
            images: [],
+           imageUrl: "",
             // showModal: false,
             // showConfirmation: false,
             // lst: this.props.location.state.cnvTitle,
@@ -47,36 +48,33 @@ export default class ListingDetail extends Component {
 
    handleChange = (e) => {
       let newState = {};
-      const files = Array.from(e.target.files);
-      // const files = e.target.files;
-   
-      // this.setState({uploading: true});
-      const formData = new FormData();
-      // formData.append(0, files);
-      files.forEach((file, i) => {
-         formData.append(i, file);
-      })
-      console.log(" (formData) ------- ", formData);
-      // this.upload();
-      // this.props.uploadImages(this.state.lst.id, files);
-      this.setState({images : formData});
-      console.log("listing id ------- ", this.state.lst.id);
-      console.log(formData);
-      // this.props.uploadImages(this.state.lst.id, formData);
+      // const files = Array.from(e.target.files);
+      const files = e.target.files[0];
+      const formData = new FormData;
+      let reader = new FileReader();
+     console.log(reader.readAsText(files));
+
+
+      formData.append(0, files);
+   }
+
+   onChange = (e) => {
+      this.setState({ imageUrl: e.target.value });
    }
 
    upload = () => {
       console.log("images (formData) ------- ", this.state.images);
-      this.props.uploadImages(this.state.lst.id, this.state.images);
+      this.props.uploadImages(this.state.lst.id, this.state.imageUrl);
    }
    render() {
       var imgItems = [];
 
-      this.props.Imgs.forEach((img) => {
-         console.log("adding image ------ ", img);
+
+      this.props.Imgs.forEach( img => {
+         console.log("adding image ------ ", img.imageUrl);
          imgItems.push(<ImgItem
          key = {img.id}
-         url = {img.imageUrl}
+         imageUrl = {img.imageUrl}
          />);
       });
 
@@ -90,27 +88,33 @@ export default class ListingDetail extends Component {
             <Row>
                <Carousel>
 
-                  {imgItems}
-
-                  {/* <Carousel.Item> 
+                  <Carousel.Item> 
                   <img
                      className="d-block w-700 h-500"
                      src={(this.props.Imgs && this.props.Imgs[0]) ? this.props.Imgs[0].imageUrl : ""}
                      alt="First slide"
                   />
-               
-                  </Carousel.Item>  */}
+                  </Carousel.Item> 
 
-                  {/* <Carousel.Item> 
+                  <Carousel.Item> 
                   <img
                      className="d-block w-700 h-500"
-                     src="http://cdn.goodshomedesign.com/wp-content/uploads/2014/05/mini-apartment-design.jpg"
+                     src={(this.props.Imgs && this.props.Imgs[1]) ? this.props.Imgs[1].imageUrl : ""}
                      alt="First slide"
                   />
-                  <Carousel.Caption>
-                     <h3>First slide label</h3>
-                  </Carousel.Caption>
-                  </Carousel.Item> */}
+                  </Carousel.Item>
+
+                  <Carousel.Item> 
+                     <img
+                        className="d-block w-700 h-500"
+                        src={(this.props.Imgs && this.props.Imgs[2]) ? this.props.Imgs[2].imageUrl : ""}
+                        alt="First slide"
+                     />
+                     <Carousel.Caption>
+                           <h3>Second slide label</h3>
+                     </Carousel.Caption>
+                  </Carousel.Item>
+
                </Carousel>
             </Row>
 
@@ -137,7 +141,20 @@ export default class ListingDetail extends Component {
 
          </Panel>
 
-         <input type='file' id='imageUrl' onChange={this.handleChange} /> 
+      
+         {/* <FormGroup type='file' name='imageUrl' onChange={this.handleChange} /> </input> */}
+   
+            <FormGroup controlId="formBasicText"
+            >
+            <FormControl
+               type="text"
+               value={this.state.imageUrl}
+               // placeholder={"Enter message here"}
+               onChange={this.onChange}
+            />
+            <FormControl.Feedback />
+            <HelpBlock>Content cannot be empty</HelpBlock>
+         </FormGroup>
          <Button onClick={this.upload}> Upload Image </Button>
          </section>
       )
@@ -147,13 +164,13 @@ export default class ListingDetail extends Component {
 const ImgItem = function (props) {
    console.log(props)
     return (
-       <CarouselItem>
-          {console.log("in image item ---- ", props.url)}
+       <Carousel.Item>
+          {console.log("in image item ---- ", props.imageUrl)}
           <img
             className="d-block w-700 h-500"
-            src={props.url}
-            alt="First slide"
+            src={props.imageUrl}
+            // alt="First slide"
          />
-       </CarouselItem>
-    )
+       </Carousel.Item>
+    );
  }

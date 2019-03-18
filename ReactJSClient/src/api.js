@@ -121,18 +121,20 @@ export function getImgs(lstId) {
 }
 
 export function postImg(lstId, img) {
-    // return post('Listing/' + lstId + '/Images', img).then((rsp)=> {
+    return post('Listing/' + lstId + '/Images', { path : img})
+    // .then((rsp)=> {
     //     let location = rsp.headers.get("Location").split('/');
     //     return get(`Listing/${lstId}/Images`);
     //  })
-    return fetch(baseURL + 'Listing/' + lstId + '/Images', {
-        method: 'POST',
-        body: img,
-        headers: {'Content-Type': 'multipart/form-data'},
-        credentials: 'include',
-        mode: 'cors'
-    })
-    .then(rsp => {console.log("return form image post ----------"); return rsp;})
+
+    // return fetch(baseURL + 'Listing/' + lstId + '/Images', {
+    //     method: 'POST',
+    //     body:  { path: img},
+    //     headers: {'Content-Type': 'application/JSON'},
+    //     credentials: 'include',
+    //     mode: 'cors'
+    // })
+    // .then(rsp => {console.log("return form image post ----------"); return rsp;})
     // .catch(err => {console.log(err)});
 //     .then((rsp)=> {
 //     //   let location = rsp.headers.get("Location").split('/');
@@ -150,7 +152,8 @@ export function safeFetch(url, action, body) {
             })
             .catch(err => {return Promise.reject("Error connection")})
             .then(res => {
-                    return checkErrs(res)});
+                    console.log("res ----- ", res);
+                    return checkErrs(res); });
     }
     else {
         return fetch(url, {

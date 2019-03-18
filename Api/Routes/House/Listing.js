@@ -309,16 +309,17 @@ router.get('/:ListingId/Images', function (req, res) {
 // });
 
 router.post('/:ListingId/Images', function (req, res) {
-   console.log("file ===== " ,req.files);
+
    var vld = req.validator;
    var cnn = req.cnn;
    var ListingId = req.params.ListingId;
-   console.log("images --- ", req.files);
+   console.log("req.body.path --- ", req.body.path);
    const values = Object.values(req.files);
-   
    console.log("values --- ", values);
-   const promises = values.map(image => 
-      cloudinary.uploader.upload(image.path));
+
+   const promises = cloudinary.uploader.upload(req.body.path);
+   // const promises = values.map(image => 
+   //    cloudinary.uploader.upload(image.path));
    
    Promise
      .all(promises)
