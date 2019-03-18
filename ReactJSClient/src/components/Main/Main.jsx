@@ -6,8 +6,8 @@ import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import './Main.css';
 import ErrorDialog  from '../ErrorDialog/ErrorDialog';
-import AllListings from '../Cnvs/AllListings';
-import ListingDetail from '../Cnvs/ListingDetail';
+import AllListings from '../HouseListing/AllListings';
+import ListingDetail from '../HouseListing/ListingDetail';
 
 var ProtectedRoute = ({component: Cmp, path, ...rest }) => {
    // console.log("HELLOOOOO" + JSON.stringify(rest));

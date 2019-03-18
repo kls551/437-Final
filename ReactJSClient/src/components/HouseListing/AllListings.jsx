@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { ListGroup, ListGroupItem} from 'react-bootstrap';
 import { Col, Row, Button, Glyphicon, Image, FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
-import CnvModal from './CnvModal';
+import ListingModal from './ListingModal';
 import ConfDialog  from '../ConfDialog/ConfDialog';
 import ErrorDialog  from '../ErrorDialog/ErrorDialog';
-import deleteCnv from '../../api';
 import ListingDetail from './ListingDetail'
 import './AllListings.css';
 
@@ -183,7 +182,7 @@ export default class AllListings extends Component {
             </Row>
                
                {/* Modal for creating and change lst */}
-               <CnvModal
+               <ListingModal
                   showModal={this.state.showModal}
                   title={this.state.editLst ? "Edit Listing" : "New Listing"}
                   lst={this.state.editLst}
