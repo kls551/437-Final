@@ -17,7 +17,7 @@ function Errs(state = [], action) {
             return action.details;
         case 'DEL_CNV_ERR':
             return action.details;
-        case 'UPDATE_MSGS_ERR':
+        case 'GET_IMGS_ERR':
             return action.details;
         case 'ADD_MSG_ERR':
             return action.details;   

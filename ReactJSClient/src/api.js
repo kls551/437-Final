@@ -114,15 +114,15 @@ export function deletedLst(lstId) {
 }
 
 // getting message for converstaion 
-export function getMsgs(cnvId) {
-    return get("Cnvs/" + cnvId + "/Msgs")
+export function getImgs(lstId) {
+    return get("Listing/" + lstId +"/Images")
     .then((res) => res.json());
 }
 
-export function postMsg(cnvId, body) {
-    return post('Cnvs/' + cnvId + '/Msgs', body).then((rsp)=> {
-      let location = rsp.headers.get("Location").split('/');
-      return get(`Msgs/${location[location.length-1]}`);
+export function postImg(lstId, img) {
+    return post('Listing/' + lstId + '/Images', img).then((rsp)=> {
+    //   let location = rsp.headers.get("Location").split('/');
+      return get(`Listing/${lstId}/Images`);
    })
    .then(rsp => rsp.json());
 };
