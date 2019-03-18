@@ -212,6 +212,7 @@ router.delete('/:ListingId', function (req, res) {
    var vld = req.validator;
    var ListingId = req.params.ListingId;
    var cnn = req.cnn;
+   var imgArr = [];
 
    async.waterfall([
       function (cb) {
@@ -220,10 +221,23 @@ router.delete('/:ListingId', function (req, res) {
                cb);
       },
       function (Listing, fields, cb) {
+
          if (vld.check(Listing.length, Tags.notFound, null, cb) &&
             vld.checkPrsOK(Listing[0].ownerId, cb))
-            cnn.chkQry('delete from Listing where id = ?', [ListingId],
-               cb);
+            cnn.chkQry('select * from Image where ListingId = ?', [ListingId], cb);
+      },
+      function (imgs, fields, cb) {
+         console.log(imgs);
+         imgs.forEach(element => {
+            imgArr.push(element.publicId);
+         });
+         console.log(imgArr);
+         cloudinary.v2.api.delete_derived_resources(imgArr,
+            cb);
+      },
+      function (fields, cb) {
+         cnn.chkQry('delete from Listing where id = ?', [ListingId],
+         cb);
       }],
       function (err) {
          if (!err)
@@ -264,7 +278,11 @@ router.get('/:ListingId/Images', function (req, res) {
       });
 });
 
-// we dont know yet
+
+/* Working Commented block of images to local uploads folder 
+ * for further development with file systems 
+ */
+
 // router.post('/:ListingId/Images', upload.array('mainImage', 10), function (req, res) {
 //    console.log(req.files, req.files.length);
 //    var vld = req.validator;
@@ -319,7 +337,7 @@ router.post('/:ListingId/Images', function (req, res) {
    Promise
      .all(promises)
      .then(results => {
-
+      console.log(results);
       async.waterfall([
          function (cb) {
             if (vld.check(req.session, Tags.noLogin, null, cb)) {
@@ -332,6 +350,7 @@ router.post('/:ListingId/Images', function (req, res) {
             if (vld.check(Listing.length, Tags.notFound, null, cb)) {
                cnn.query("insert into Image set ?",
                   {
+                     publicId: results[0].public_id,
                      ListingId: ListingId,
                      imageUrl: results[0].secure_url
                   }

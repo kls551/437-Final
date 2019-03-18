@@ -31,6 +31,7 @@ create table Listing (
 
 create table Image (
    id int auto_increment primary key,
+   publicId varchar(200) not null,
    ListingId int not null,
    imageUrl varchar(5000) not null,
    constraint FKMessage_cnvId foreign key (ListingId) references Listing(id)
