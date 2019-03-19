@@ -281,7 +281,6 @@ router.post('/:ListingId/Images', function (req, res) {
             }
          },
          function (insRes, fields, cb) {
-            console.log("inRes ", inRes);
             if (vld.check(insRes, Tags.notFound, null, cb)) {
                res.location(router.baseURL + '/' + insRes.insertId).end();
             }

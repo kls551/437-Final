@@ -1,0 +1,2931 @@
+{
+	"info": {
+		"_postman_id": "96bdfd35-4294-4c90-8ad5-29f238a1fdb7",
+		"name": "housingTests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Images",
+			"item": [
+				{
+					"name": "NUKE",
+					"item": [
+						{
+							"name": "Admin Login Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"tests[\"Cookie Returned\"] = postman.getResponseCookie(\"CHSAuth\")",
+											" !== null && postman.getResponseCookie(\"CHSAuth\").value !== undefined;",
+											"if (tests[\"Cookie Returned\"])",
+											"   postman.setEnvironmentVariable(\"curLogin\",",
+											"    postman.getResponseCookie(\"CHSAuth\").value)"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"email\": \"adm@11.com\", \"password\": \"password\"}"
+								},
+								"url": {
+									"raw": "{{url}}/Ssns",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Ssns"
+									]
+								},
+								"description": "Good Login\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Admin put",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "42dd89df-cf5b-4e70-b595-966f0fa1cc20",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"tests[\"Cookie Returned\"] = postman.getResponseCookie(\"CHSAuth\")",
+											" !== null && postman.getResponseCookie(\"CHSAuth\").value !== undefined;"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstName\": \"Add1\",\n    \"lastName\" : \"Add2\",\n    \"password\": \"abc\",\n    \"oldPassword\": \"pw\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/Prss/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Prss",
+										"1"
+									]
+								},
+								"description": "Good Login\n"
+							},
+							"response": []
+						},
+						{
+							"name": "get admin Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "42dd89df-cf5b-4e70-b595-966f0fa1cc20",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"tests[\"Cookie Returned\"] = postman.getResponseCookie(\"CHSAuth\")",
+											" !== null && postman.getResponseCookie(\"CHSAuth\").value !== undefined;",
+											"    ",
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"Body1\"] = jsonData[0].id === 1 && jsonData[0].email === \"adm@11.com\" && jsonData[0].firstName === \"Add1\" && jsonData[0].lastName === \"Add2\";"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/Prss/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Prss",
+										"1"
+									]
+								},
+								"description": "Good Login\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Admin put Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "42dd89df-cf5b-4e70-b595-966f0fa1cc20",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"tests[\"Cookie Returned\"] = postman.getResponseCookie(\"CHSAuth\")",
+											" !== null && postman.getResponseCookie(\"CHSAuth\").value !== undefined;"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"password\": \"jjj\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/Prss/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Prss",
+										"1"
+									]
+								},
+								"description": "Good Login\n"
+							},
+							"response": []
+						},
+						{
+							"name": "get admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "42dd89df-cf5b-4e70-b595-966f0fa1cc20",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"tests[\"Cookie Returned\"] = postman.getResponseCookie(\"CHSAuth\")",
+											" !== null && postman.getResponseCookie(\"CHSAuth\").value !== undefined;",
+											"    ",
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"Body1\"] = jsonData[0].id === 1 && jsonData[0].email === \"adm@11.com\" && jsonData[0].firstName === \"Add1\" && jsonData[0].lastName === \"Add2\";"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/Prss/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Prss",
+										"1"
+									]
+								},
+								"description": "Good Login\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Logout admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "35c988e9-febf-4927-8629-45e6c26aa1b8",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/Ssns/{{curLogin}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Ssns",
+										"{{curLogin}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login ad",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d6b68855-c089-498a-9ce1-24fd75d33fe4",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"tests[\"Cookie Returned\"] = postman.getResponseCookie(\"CHSAuth\")",
+											" !== null && postman.getResponseCookie(\"CHSAuth\").value !== undefined;",
+											"if (tests[\"Cookie Returned\"])",
+											"   postman.setEnvironmentVariable(\"curLogin\",",
+											"    postman.getResponseCookie(\"CHSAuth\").value)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"email\": \"adm@11.com\", \"password\": \"jjj\"}"
+								},
+								"url": {
+									"raw": "{{url}}/Ssns",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Ssns"
+									]
+								},
+								"description": "Good Login\n"
+							},
+							"response": []
+						},
+						{
+							"name": "regis 2nd ad",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d6b68855-c089-498a-9ce1-24fd75d33fe4",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"tests[\"Cookie Returned\"] = postman.getResponseCookie(\"CHSAuth\")",
+											" !== null && postman.getResponseCookie(\"CHSAuth\").value !== undefined;"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"email\": \"adm1@11.com\", \"role\": 1, \"lastName\": \"Ad2\", \"termsAccepted\": false}"
+								},
+								"url": {
+									"raw": "{{url}}/Prss",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Prss"
+									]
+								},
+								"description": "Good Login\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Logout admin Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "35c988e9-febf-4927-8629-45e6c26aa1b8",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/Ssns/{{curLogin}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Ssns",
+										"{{curLogin}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login ad Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d6b68855-c089-498a-9ce1-24fd75d33fe4",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"tests[\"Cookie Returned\"] = postman.getResponseCookie(\"CHSAuth\")",
+											" !== null && postman.getResponseCookie(\"CHSAuth\").value !== undefined;",
+											"if (tests[\"Cookie Returned\"])",
+											"   postman.setEnvironmentVariable(\"curLogin\",",
+											"    postman.getResponseCookie(\"CHSAuth\").value)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"email\": \"adm1@11.com\", \"password\": \"*\"}"
+								},
+								"url": {
+									"raw": "{{url}}/Ssns",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Ssns"
+									]
+								},
+								"description": "Good Login\n"
+							},
+							"response": []
+						},
+						{
+							"name": "get ad2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "42dd89df-cf5b-4e70-b595-966f0fa1cc20",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"tests[\"Cookie Returned\"] = postman.getResponseCookie(\"CHSAuth\")",
+											" !== null && postman.getResponseCookie(\"CHSAuth\").value !== undefined;",
+											"    "
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/Prss/2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Prss",
+										"2"
+									]
+								},
+								"description": "Good Login\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Nuke",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d431840b-028b-4a9c-a09b-f84008730bfa",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/javascript"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/DB",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"DB"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Admin Login Copy Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"tests[\"Cookie Returned\"] = postman.getResponseCookie(\"CHSAuth\")",
+											" !== null && postman.getResponseCookie(\"CHSAuth\").value !== undefined;",
+											"if (tests[\"Cookie Returned\"])",
+											"   postman.setEnvironmentVariable(\"curLogin\",",
+											"    postman.getResponseCookie(\"CHSAuth\").value)"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"email\": \"adm@11.com\", \"password\": \"password\"}"
+								},
+								"url": {
+									"raw": "{{url}}/Ssns",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Ssns"
+									]
+								},
+								"description": "Good Login\n"
+							},
+							"response": []
+						},
+						{
+							"name": "get with Prss",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d431840b-028b-4a9c-a09b-f84008730bfa",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"Body1\"] = jsonData[0].id === 1 && jsonData[0].email === \"adm@11.com\";"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/javascript"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/Prss",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Prss"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get with Prssid",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d431840b-028b-4a9c-a09b-f84008730bfa",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"Body1\"] = jsonData[0].id === 1 && jsonData[0].email === \"adm@11.com\" && jsonData[0].firstName === \"Joe\" && jsonData[0].lastName === \"Admin\" && jsonData[0].termsAccepted === null && jsonData[0].role === 1 && jsonData.length === 1;"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/javascript"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/Prss/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Prss",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Nuke Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d431840b-028b-4a9c-a09b-f84008730bfa",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/javascript"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/DB",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"DB"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Nuke Copy Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d431840b-028b-4a9c-a09b-f84008730bfa",
+										"exec": [
+											"tests[\"Status code is 401\"] = responseCode.code === 401;"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/javascript"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/DB",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"DB"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "notlogin",
+					"item": [
+						{
+							"name": "Prss",
+							"item": [
+								{
+									"name": "Register Student A",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "261870d4-0b4d-4baf-96b7-18427e7f913d",
+												"exec": [
+													"tests[\"Status code is 400\"] = responseCode.code === 400;",
+													"",
+													"tests[\"Body matches string\"] = responseBody.has(\"missingField\");",
+													"tests[\"Body matches string1\"] = responseBody.has(\"role\");",
+													"tests[\"Body matches string2\"] = responseBody.has(\"lastName\");",
+													"tests[\"Body matches string3\"] = responseBody.has(\"email\");",
+													"",
+													"var jsonData = JSON.parse(responseBody);",
+													"tests[\"Body1\"] = jsonData.length === 3;"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"firstName\": \"FirstA\",\n    \"lastName\" : \"\",\n    \"password\" : \"passwordA\",\n    \"termsAccepted\": true\n}"
+										},
+										"url": {
+											"raw": "{{url}}/Prss",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"Prss"
+											]
+										},
+										"description": "\n"
+									},
+									"response": []
+								},
+								{
+									"name": "email non uniq",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "261870d4-0b4d-4baf-96b7-18427e7f913d",
+												"exec": [
+													"tests[\"Status code is 400\"] = responseCode.code === 400;",
+													"",
+													"tests[\"Body matches string\"] = responseBody.has(\"dupEmail\");",
+													"",
+													"",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"email\": \"adm@11.com\",\n    \"firstName\": \"FirstA\",\n    \"lastName\" : \"FirstB\",\n    \"password\" : \"passwordBC\",\n    \"role\": 0,\n    \"termsAccepted\": true\n}"
+										},
+										"url": {
+											"raw": "{{url}}/Prss",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"Prss"
+											]
+										},
+										"description": "\n"
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "get Prss (t4) Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "481bc6c2-0733-4b45-848a-b661ffbfedaa",
+										"exec": [
+											"tests[\"Status code is 401\"] = responseCode.code === 401;",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"email\": \"adm@11.com\", \"password\": \"password\"}"
+								},
+								"url": {
+									"raw": "{{url}}/Prss",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Prss"
+									]
+								},
+								"description": "Good Login\n"
+							},
+							"response": []
+						},
+						{
+							"name": "get Prss (t4) with email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "481bc6c2-0733-4b45-848a-b661ffbfedaa",
+										"exec": [
+											"tests[\"Status code is 401\"] = responseCode.code === 401;",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/Prss?email=\"adm@11.com\"",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Prss"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "\"adm@11.com\""
+										}
+									]
+								},
+								"description": "Good Login\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Login as Student A",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "0de107e2-1759-43b7-b820-f8048b499554",
+										"exec": [
+											"",
+											"tests[\"Status code is 400\"] = responseCode.code === 400;",
+											"",
+											"tests[\"Body matches string\"] = responseBody.has(\"badLogin\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"email\": \"userA@domainA\", \"password\": \"passwordA\"}"
+								},
+								"url": {
+									"raw": "{{url}}/Ssns",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Ssns"
+									]
+								},
+								"description": "Good Login\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "35c988e9-febf-4927-8629-45e6c26aa1b8",
+										"exec": [
+											"tests[\"Status code is 401\"] = responseCode.code === 401;"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/Ssns/{{curLogin}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Ssns",
+										"{{curLogin}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit Student Name",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "870da03a-832b-4bd5-bc5a-95ee5de1dc5a",
+										"exec": [
+											"tests[\"Status code is 401\"] = responseCode.code === 401;"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstName\": \"FirstAV1\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/Prss/2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Prss",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get Ssns",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "481bc6c2-0733-4b45-848a-b661ffbfedaa",
+										"exec": [
+											"tests[\"Status code is 401\"] = responseCode.code === 401;",
+											"",
+											"tests[\"Cookie Returned\"] = postman.getResponseCookie(\"CHSAuth\")",
+											" !== null && postman.getResponseCookie(\"CHSAuth\").value !== undefined;",
+											"if (tests[\"Cookie Returned\"])",
+											"   postman.setEnvironmentVariable(\"curLogin\",",
+											"    postman.getResponseCookie(\"CHSAuth\").value)",
+											"    "
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/Ssns",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Ssns"
+									]
+								},
+								"description": "Good Login\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Remove Student A",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "400b71f8-c26c-46c2-b172-a961be4157f2",
+										"exec": [
+											"tests[\"Status code is 401\"] = responseCode.code === 401;"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/Prss/2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Prss",
+										"2"
+									]
+								},
+								"description": "\n"
+							},
+							"response": []
+						},
+						{
+							"name": "get ssnss",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "481bc6c2-0733-4b45-848a-b661ffbfedaa",
+										"exec": [
+											"tests[\"Status code is 401\"] = responseCode.code === 401;",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"email\": \"adm@11.com\", \"password\": \"password\"}"
+								},
+								"url": {
+									"raw": "{{url}}/Ssns",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Ssns"
+									]
+								},
+								"description": "Good Login\n"
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "1 Nuke",
+					"item": [
+						{
+							"name": "Admin Login wrong pw(t3)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "840e1ee3-3358-463f-857a-ec38fd697772",
+										"exec": [
+											"tests[\"400 Bad Request\"] = responseCode.code === 400;",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"email\": \"adm@11.com\", \"password\": \"pw\"}"
+								},
+								"url": {
+									"raw": "{{url}}/Ssns",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Ssns"
+									]
+								},
+								"description": "Good Login\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Admin Login unparsable",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "840e1ee3-3358-463f-857a-ec38fd697772",
+										"exec": [
+											"tests[\"500\"] = responseCode.code === 500;",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"email\": \"adm@11.com\", \"password\": \"pw\",}"
+								},
+								"url": {
+									"raw": "{{url}}/Ssns",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Ssns"
+									]
+								},
+								"description": "Good Login\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Admin Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"tests[\"Cookie Returned\"] = postman.getResponseCookie(\"CHSAuth\")",
+											" !== null && postman.getResponseCookie(\"CHSAuth\").value !== undefined;",
+											"if (tests[\"Cookie Returned\"])",
+											"   postman.setEnvironmentVariable(\"curLogin\",",
+											"    postman.getResponseCookie(\"CHSAuth\").value)"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"email\": \"adm@11.com\", \"password\": \"password\"}"
+								},
+								"url": {
+									"raw": "{{url}}/Ssns",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Ssns"
+									]
+								},
+								"description": "Good Login\n"
+							},
+							"response": []
+						},
+						{
+							"name": "get Prss (t4)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "481bc6c2-0733-4b45-848a-b661ffbfedaa",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"tests[\"Cookie Returned\"] = postman.getResponseCookie(\"CHSAuth\")",
+											" !== null && postman.getResponseCookie(\"CHSAuth\").value !== undefined;",
+											"if (tests[\"Cookie Returned\"])",
+											"   postman.setEnvironmentVariable(\"curLogin\",",
+											"    postman.getResponseCookie(\"CHSAuth\").value)",
+											"    ",
+											"",
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"Body1\"] = jsonData[0].email === \"adm@11.com\";"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/Prss",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Prss"
+									]
+								},
+								"description": "Good Login\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Nuke",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d431840b-028b-4a9c-a09b-f84008730bfa",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/javascript"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/DB",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"DB"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Regi",
+					"item": [
+						{
+							"name": "regis",
+							"item": [
+								{
+									"name": "Register Student noterm",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "edfc55e3-3502-482c-835c-6977abade236",
+												"exec": [
+													"tests[\"Status code is 400\"] = responseCode.code === 400;",
+													"",
+													"tests[\"Body matches string\"] = responseBody.has(\"noTerms\");"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"UserA@domainA\",\n    \"firstName\": \"FirstA\",\n    \"lastName\" : \"LastA\",\n    \"password\" : \"passwordA\",\n    \"role\"     : 0,\n    \"termsAccepted\": false\n}"
+										},
+										"url": {
+											"raw": "{{url}}/Prss",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"Prss"
+											]
+										},
+										"description": "\n"
+									},
+									"response": []
+								},
+								{
+									"name": "Login as Student A b4 reg (t 10)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "3c789007-60db-45c2-a91c-223c58bf54bb",
+												"exec": [
+													"tests[\"Status code is 400\"] = responseCode.code === 400;",
+													"",
+													"tests[\"Body matches string\"] = responseBody.has(\"badLogin\");"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\"email\": \"userA@domainA\", \"password\": \"passwordA\"}"
+										},
+										"url": {
+											"raw": "{{url}}/Ssns",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"Ssns"
+											]
+										},
+										"description": "Good Login\n"
+									},
+									"response": []
+								},
+								{
+									"name": "Register Student A",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "16d1ec1c-671f-44ea-a1a0-76df069848cc",
+												"exec": [
+													"tests[\"Status code is 200\"] = responseCode.code === 200;",
+													"",
+													"//postman.setEnvironmentVariable('regisA',(new Date().valueOf()));"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"UserA@domainA\",\n    \"firstName\": \"FirstA\",\n    \"lastName\" : \"LastA\",\n    \"password\" : \"passwordA\",\n    \"role\"     : 0,\n    \"termsAccepted\": true\n}"
+										},
+										"url": {
+											"raw": "{{url}}/Prss",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"Prss"
+											]
+										},
+										"description": "\n"
+									},
+									"response": []
+								},
+								{
+									"name": "Register Student B",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "7eeb7174-73c7-4db6-a29f-ee812a69b1f2",
+												"exec": [
+													"tests[\"Status code is 200\"] = responseCode.code === 200;"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"b@b.com\",\n    \"firstName\": \"bob\",\n    \"lastName\" : \"bell\",\n    \"password\" : \"passwordB\",\n    \"role\"     : 0,\n    \"termsAccepted\": true\n}"
+										},
+										"url": {
+											"raw": "{{url}}/Prss",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"Prss"
+											]
+										},
+										"description": "\n"
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "conv",
+							"item": [
+								{
+									"name": "loginA stuff",
+									"item": [
+										{
+											"name": "Login as Student A",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "c2d3d03c-c718-4285-9af6-3fa506dd7a6a",
+														"exec": [
+															"var locURL = postman.getResponseHeader(\"Location\").split('/');",
+															"var cookie = postman.getResponseCookie(\"CHSAuth\");",
+															"",
+															"tests[\"Status code is 200\"] = responseCode.code === 200;",
+															"",
+															"tests[\"Cookie Returned\"] = cookie && cookie.value !== undefined;",
+															"",
+															"if (tests[\"Cookie Returned\"]) {",
+															"   postman.setEnvironmentVariable(\"curLogin\", cookie.value)",
+															"   tests[\"Cookie matches session\"] = locURL[locURL.length - 1]",
+															"    === cookie.value;",
+															"}",
+															"",
+															"//postman.setEnvironmentVariable('logisA',(new Date().valueOf()));"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\"email\": \"userA@domainA\", \"password\": \"passwordA\"}"
+												},
+												"url": {
+													"raw": "{{url}}/Ssns",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"Ssns"
+													]
+												},
+												"description": "Good Login\n"
+											},
+											"response": []
+										},
+										{
+											"name": "Nuke Copy Copy",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "d431840b-028b-4a9c-a09b-f84008730bfa",
+														"exec": [
+															"tests[\"Status code is 403\"] = responseCode.code === 403;"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/javascript"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": ""
+												},
+												"url": {
+													"raw": "{{url}}/DB",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"DB"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "get Prss/id",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "93ac0d4d-cc11-4193-b4b1-f220396e2506",
+														"exec": [
+															"tests[\"Status code is 200\"] = responseCode.code === 200;",
+															"",
+															"tests[\"Cookie Returned\"] = postman.getResponseCookie(\"CHSAuth\")",
+															" !== null && postman.getResponseCookie(\"CHSAuth\").value !== undefined;",
+															"    ",
+															"var jsonData = JSON.parse(responseBody);",
+															"//tests[\"Body1\"] = jsonData[0].firstName === \"FirstA\" && jsonData[0].lastName === \"LastA\" && jsonData[0].lastName === \"LastA\"",
+															"//&& jsonData[0].role === 0;",
+															"tests[\"Body3\"] = jsonData.length === 1;",
+															"",
+															"//tests[\"body4\"] = (postman.getEnvironmentVariable(\"regisA\") - jsonData[0].whenRegistered) < 9000"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": ""
+												},
+												"url": {
+													"raw": "{{url}}/Prss?email=Us",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"Prss"
+													],
+													"query": [
+														{
+															"key": "email",
+															"value": "Us"
+														}
+													]
+												},
+												"description": "Good Login\n"
+											},
+											"response": []
+										},
+										{
+											"name": "rename A using acc Copy",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "8d89438f-368c-4d71-ad30-2cd676269436",
+														"exec": [
+															"tests[\"Status code is 400\"] = responseCode.code === 400;",
+															"",
+															"var jsonData = JSON.parse(responseBody);",
+															"tests[\"Body3\"] = jsonData.length === 1;"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n\n    \"firstName\": \"FirstAA\",\n    \"lastName\" : \"LastAA\",\n    \"email\": \"UserAAAAAA\",\n    \"role\": 0\n}"
+												},
+												"url": {
+													"raw": "{{url}}/Prss/2",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"Prss",
+														"2"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "get Ssns with A",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "481bc6c2-0733-4b45-848a-b661ffbfedaa",
+														"exec": [
+															"tests[\"Status code is 403\"] = responseCode.code === 403;",
+															"",
+															"tests[\"Cookie Returned\"] = postman.getResponseCookie(\"CHSAuth\")",
+															" !== null && postman.getResponseCookie(\"CHSAuth\").value !== undefined;",
+															"if (tests[\"Cookie Returned\"])",
+															"   postman.setEnvironmentVariable(\"curLogin\",",
+															"    postman.getResponseCookie(\"CHSAuth\").value)",
+															"    "
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": ""
+												},
+												"url": {
+													"raw": "{{url}}/Ssns",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"Ssns"
+													]
+												},
+												"description": "Good Login\n"
+											},
+											"response": []
+										},
+										{
+											"name": "Admin Login",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"type": "text/javascript",
+														"exec": [
+															"tests[\"Status code is 200\"] = responseCode.code === 200;",
+															"",
+															"tests[\"Cookie Returned\"] = postman.getResponseCookie(\"CHSAuth\")",
+															" !== null && postman.getResponseCookie(\"CHSAuth\").value !== undefined;",
+															"if (tests[\"Cookie Returned\"])",
+															"   postman.setEnvironmentVariable(\"curLogin\",",
+															"    postman.getResponseCookie(\"CHSAuth\").value)"
+														]
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\"email\": \"adm@11.com\", \"password\": \"password\"}"
+												},
+												"url": {
+													"raw": "{{url}}/Ssns",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"Ssns"
+													]
+												},
+												"description": "Good Login\n"
+											},
+											"response": []
+										},
+										{
+											"name": "get Ssns with Admin",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "481bc6c2-0733-4b45-848a-b661ffbfedaa",
+														"exec": [
+															"tests[\"Status code is 200\"] = responseCode.code === 200;",
+															"",
+															"tests[\"Cookie Returned\"] = postman.getResponseCookie(\"CHSAuth\")",
+															" !== null && postman.getResponseCookie(\"CHSAuth\").value !== undefined;",
+															"if (tests[\"Cookie Returned\"])",
+															"   postman.setEnvironmentVariable(\"curLogin\",",
+															"    postman.getResponseCookie(\"CHSAuth\").value)",
+															"    ",
+															"    ",
+															"var jsonData = JSON.parse(responseBody);",
+															"tests[\"Body1\"] = jsonData[0].prsId === 2;",
+															"//tests[\"time\"] = (postman.getEnvironmentVariable(\"logisA\") - jsonData[0].loginTime) < 8000"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": ""
+												},
+												"url": {
+													"raw": "{{url}}/Ssns",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"Ssns"
+													]
+												},
+												"description": "Good Login\n"
+											},
+											"response": []
+										},
+										{
+											"name": "Logout",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "35c988e9-febf-4927-8629-45e6c26aa1b8",
+														"exec": [
+															"tests[\"Status code is 200\"] = responseCode.code === 200;"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": ""
+												},
+												"url": {
+													"raw": "{{url}}/Ssns/{{curLogin}}",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"Ssns",
+														"{{curLogin}}"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Login as Student A Copy",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "c2d3d03c-c718-4285-9af6-3fa506dd7a6a",
+														"exec": [
+															"var locURL = postman.getResponseHeader(\"Location\").split('/');",
+															"var cookie = postman.getResponseCookie(\"CHSAuth\");",
+															"",
+															"tests[\"Status code is 200\"] = responseCode.code === 200;",
+															"",
+															"tests[\"Cookie Returned\"] = cookie && cookie.value !== undefined;",
+															"",
+															"if (tests[\"Cookie Returned\"]) {",
+															"   postman.setEnvironmentVariable(\"curLogin\", cookie.value)",
+															"   tests[\"Cookie matches session\"] = locURL[locURL.length - 1]",
+															"    === cookie.value;",
+															"}",
+															"",
+															"//postman.setEnvironmentVariable('logisA',(new Date().valueOf()));"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\"email\": \"userA@domainA\", \"password\": \"passwordA\"}"
+												},
+												"url": {
+													"raw": "{{url}}/Ssns",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"Ssns"
+													]
+												},
+												"description": "Good Login\n"
+											},
+											"response": []
+										}
+									],
+									"_postman_isSubFolder": true
+								},
+								{
+									"name": "rename A using acc",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "8d89438f-368c-4d71-ad30-2cd676269436",
+												"exec": [
+													"tests[\"Status code is 200\"] = responseCode.code === 200;"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"firstName\": \"FirstAA\",\n    \"lastName\" : \"LastAA\",\n\t\"password\": \"wala\",\n\t\"oldPassword\": \"passwordA\"\n}"
+										},
+										"url": {
+											"raw": "{{url}}/Prss/2",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"Prss",
+												"2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get Prss check",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "481bc6c2-0733-4b45-848a-b661ffbfedaa",
+												"exec": [
+													"tests[\"Status code is 200\"] = responseCode.code === 200;",
+													"",
+													"tests[\"Cookie Returned\"] = postman.getResponseCookie(\"CHSAuth\")",
+													" !== null && postman.getResponseCookie(\"CHSAuth\").value !== undefined;",
+													"if (tests[\"Cookie Returned\"])",
+													"   postman.setEnvironmentVariable(\"curLogin\",",
+													"    postman.getResponseCookie(\"CHSAuth\").value)",
+													"    ",
+													"var jsonData = JSON.parse(responseBody);",
+													"tests[\"Body1\"] = jsonData[0].firstName === \"FirstAA\" && jsonData[0].lastName === \"LastAA\"",
+													"&& jsonData[0].role === 0;",
+													"tests[\"Body3\"] = jsonData[0].whenRegistered === jsonData[0].termsAccepted;",
+													"",
+													"//tests[\"body4\"] = (postman.getEnvironmentVariable(\"regisA\") - jsonData[0].whenRegistered) < 9000",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{url}}/Prss/2",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"Prss",
+												"2"
+											]
+										},
+										"description": "Good Login\n"
+									},
+									"response": []
+								},
+								{
+									"name": "rename B using A",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "8d89438f-368c-4d71-ad30-2cd676269436",
+												"exec": [
+													"tests[\"Status code is 403\"] = responseCode.code === 403;"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"firstName\": \"FirstAA\",\n    \"lastName\" : \"LastAA\",\n\t\"password\": \"wala\",\n\t\"oldPassword\": \"passwordA\"\n}"
+										},
+										"url": {
+											"raw": "{{url}}/Prss/3",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"Prss",
+												"3"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Conversations",
+							"item": [
+								{
+									"name": "initial",
+									"item": [
+										{
+											"name": "Lisitng post (t1)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "341b6a8e-3ef8-48ce-a3b7-9f4415cdc31f",
+														"exec": [
+															"tests[\"Status code is 200\"] = responseCode.code === 200;"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"name": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n\t\"title\": \"My First jj Listing\",\n\t\"price\": 1000.99,\n\t\"numBed\": 3,\n\t\"location\": \"SLO\",\n\t\"contactInfo\": \"432-222-3433\",\n\t\"description\": \"Nice house\"\n}"
+												},
+												"url": {
+													"raw": "{{url}}/Listing",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"Listing"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "l get (t6) 1",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "5dd4c303-6bdf-41fa-b62c-ba3a8af2fd06",
+														"exec": [
+															"tests[\"Status code is 200\"] = responseCode.code === 200;",
+															"",
+															"",
+															"var jsonData = JSON.parse(responseBody);",
+															"tests[\"Body1\"] = jsonData.length === 1 && jsonData[0].title === \"My First jj Listing\";"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "GET",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": ""
+												},
+												"url": {
+													"raw": "{{url}}/Listing?price=1",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"Listing"
+													],
+													"query": [
+														{
+															"key": "price",
+															"value": "1"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "dup post",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "341b6a8e-3ef8-48ce-a3b7-9f4415cdc31f",
+														"exec": [
+															"tests[\"Status code is 400\"] = responseCode.code === 400;",
+															"",
+															"tests[\"Body matches string\"] = responseBody.has(\"dupTitle\");"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"name": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n\t\"title\": \"My First jj Listing\",\n\t\"price\": 1000.99,\n\t\"numBed\": 3,\n\t\"location\": \"SLO\",\n\t\"contactInfo\": \"432-222-3433\",\n\t\"description\": \"Nice house\"\n}"
+												},
+												"url": {
+													"raw": "{{url}}/Listing",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"Listing"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "con get (t6) recheck",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "5dd4c303-6bdf-41fa-b62c-ba3a8af2fd06",
+														"exec": [
+															"tests[\"Status code is 200\"] = responseCode.code === 200;",
+															"",
+															"",
+															"var jsonData = JSON.parse(responseBody);",
+															"tests[\"Body1\"] = jsonData.length === 1 && jsonData[0].title === \"My First jj Listing\";"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "GET",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": ""
+												},
+												"url": {
+													"raw": "{{url}}/Listing",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"Listing"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "rename tital conv (t 11)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "341b6a8e-3ef8-48ce-a3b7-9f4415cdc31f",
+														"exec": [
+															"tests[\"Status code is 400\"] = responseCode.code === 400;",
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"name": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n\t\"title\": \"My First jj Listing\",\n\t\"price\": 200.99,\n\t\"numBed\": 1,\n\t\"location\": \"SLO000\",\n\t\"contactInfo\": \"432-222-3433\",\n\t\"description\": \"Nice house\"\n}"
+												},
+												"url": {
+													"raw": "{{url}}/Listing/2",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"Listing",
+														"2"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "rename without body",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "341b6a8e-3ef8-48ce-a3b7-9f4415cdc31f",
+														"exec": [
+															"tests[\"Status code is 400\"] = responseCode.code === 400;",
+															"",
+															"tests[\"Body matches string\"] = responseBody.has(\"missingField\") && responseBody.has(\"title\");"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"name": "Content-Type",
+														"type": "text",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": ""
+												},
+												"url": {
+													"raw": "{{url}}/Listing/1",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"Listing",
+														"1"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "L post (t1) Copy",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "341b6a8e-3ef8-48ce-a3b7-9f4415cdc31f",
+														"exec": [
+															"tests[\"Status code is 200\"] = responseCode.code === 200;"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"name": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n\t\"title\": \"My First Listing 89\",\n\t\"price\": 1000.99,\n\t\"numBed\": 3,\n\t\"location\": \"SLO\",\n\t\"contactInfo\": \"432-222-3433\",\n\t\"description\": \"Nice house\"\n}"
+												},
+												"url": {
+													"raw": "{{url}}/Listing",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"Listing"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "con get (t6)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "5dd4c303-6bdf-41fa-b62c-ba3a8af2fd06",
+														"exec": [
+															"tests[\"Status code is 200\"] = responseCode.code === 200;",
+															"",
+															"var jsonData = JSON.parse(responseBody);",
+															"tests[\"Body1\"] = jsonData.length === 2 && jsonData[0].title === \"My First jj Listing\" && jsonData[1].title === \"My First Listing 89\";"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "GET",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": ""
+												},
+												"url": {
+													"raw": "{{url}}/Listing",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"Listing"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "rename with dup",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "341b6a8e-3ef8-48ce-a3b7-9f4415cdc31f",
+														"exec": [
+															"tests[\"Status code is 400\"] = responseCode.code === 400;",
+															"",
+															"var jsonData = JSON.parse(responseBody);",
+															"tests[\"Body1\"] = jsonData[0].tag === \"missingField\";"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"name": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\"title\": \"My First jj Listing\"}"
+												},
+												"url": {
+													"raw": "{{url}}/Listing/2",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"Listing",
+														"2"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"_postman_isSubFolder": true
+								},
+								{
+									"name": "L get (t6)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "5dd4c303-6bdf-41fa-b62c-ba3a8af2fd06",
+												"exec": [
+													"tests[\"Status code is 200\"] = responseCode.code === 200;",
+													"",
+													"var jsonData = JSON.parse(responseBody);",
+													"tests[\"Body1\"] = jsonData.length === 2;",
+													"tests[\"Body2\"] = jsonData[1].ownerId === 2;"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{url}}/Listing",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"Listing"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "new",
+					"item": [
+						{
+							"name": "List post 3",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "341b6a8e-3ef8-48ce-a3b7-9f4415cdc31f",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"title\": \"Hello\",\n\t\"price\": 100.99,\n\t\"numBed\": 3,\n\t\"location\": \"Atacas\",\n\t\"contactInfo\": \"432-222-3433\",\n\t\"description\": \"Nice house lol\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/Listing",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Listing"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "L get (t6) Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5dd4c303-6bdf-41fa-b62c-ba3a8af2fd06",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"Body1\"] = jsonData[0].title !== jsonData[1].title && jsonData[0].lastMessage !== null;",
+											"tests[\"Body2\"] = jsonData.length === 3;"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/Listing",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Listing"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lisitng post (t1) Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "341b6a8e-3ef8-48ce-a3b7-9f4415cdc31f",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"filePath\" : \"C:\\\\Users\\\\kyawl\\\\Desktop\\\\easy\\\\1.jpeg\" }"
+								},
+								"url": {
+									"raw": "{{url}}/Listing/2/Images",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Listing",
+										"2",
+										"Images"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "35c988e9-febf-4927-8629-45e6c26aa1b8",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/Ssns/{{curLogin}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Ssns",
+										"{{curLogin}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List get 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5dd4c303-6bdf-41fa-b62c-ba3a8af2fd06",
+										"exec": [
+											"tests[\"Status code is 401\"] = responseCode.code === 401;",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/Listing?owner=2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Listing"
+									],
+									"query": [
+										{
+											"key": "owner",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login as Student A Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2c89961f-36f1-41a3-aeb6-7e26462b4d10",
+										"exec": [
+											"var locURL = postman.getResponseHeader(\"Location\").split('/');",
+											"var cookie = postman.getResponseCookie(\"CHSAuth\");",
+											"",
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"tests[\"Cookie Returned\"] = cookie && cookie.value !== undefined;",
+											"",
+											"if (tests[\"Cookie Returned\"]) {",
+											"   postman.setEnvironmentVariable(\"curLogin\", cookie.value)",
+											"   tests[\"Cookie matches session\"] = locURL[locURL.length - 1]",
+											"    === cookie.value;",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"email\": \"userA@domainA\", \"password\": \"wala\"}"
+								},
+								"url": {
+									"raw": "{{url}}/Ssns",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Ssns"
+									]
+								},
+								"description": "Good Login\n"
+							},
+							"response": []
+						},
+						{
+							"name": "con get id (t7)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5dd4c303-6bdf-41fa-b62c-ba3a8af2fd06",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"tests[\"Body matches string\"] = responseBody.has(\"Nice house\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/Listing/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Listing",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "post lst (t8) but no id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5dd4c303-6bdf-41fa-b62c-ba3a8af2fd06",
+										"exec": [
+											"tests[\"Status code is 400\"] = responseCode.code === 400;"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"content\":\"How are you?\"}"
+								},
+								"url": {
+									"raw": "{{url}}/Listing/10/Images",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Listing",
+										"10",
+										"Images"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Image get",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5dd4c303-6bdf-41fa-b62c-ba3a8af2fd06",
+										"exec": [
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/Listing/1/Images",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Listing",
+										"1",
+										"Images"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		}
+	]
+}
