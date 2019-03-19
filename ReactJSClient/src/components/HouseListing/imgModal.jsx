@@ -39,13 +39,20 @@ export default class imgModal extends Component {
             </Modal.Header>
             <Modal.Body>
                <div className="form-group">
-                  <textarea
+                  {/* <textarea
                   className="form-control"
                   id="Newimg"
                   rows="1"
                   placeholder="Enter Image Path"
                   value={this.state.imgPath} 
                   onChange={this.handleChange}
+                  /> */}
+                  <FormControl
+                     id="Newimg"
+                     type="text"
+                     value={this.state.imgPath}
+                     placeholder="Enter Image Path"
+                     onChange={this.handleChange}
                   />
                </div>
             </Modal.Body>
