@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import {
-   Modal, Button, FormControl, ControlLabel, FormGroup, HelpBlock, Row, Col, ListGroup, ListGroupItem
+   Modal, Button, FormControl, ControlLabel,
+    FormGroup, HelpBlock, Row, Col, ListGroup, ListGroupItem
 } from 'react-bootstrap';
-// import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'bootstrap-4-react';
+
 
 export default class CnvModal extends Component {
    constructor(props) {
@@ -153,8 +154,10 @@ export default class CnvModal extends Component {
                </form>
             </Modal.Body>
             <Modal.Footer>
-               <Button className="btn btn-success" onClick={() => this.close("Ok")}>Ok</Button>
-               <Button className="btn btn-secondary" onClick={() => this.close("Cancel")}>Cancel</Button>
+               <Button className="btn btn-success" 
+               onClick={() => this.close("Ok")}>Ok</Button>
+               <Button className="btn btn-secondary" 
+               onClick={() => this.close("Cancel")}>Cancel</Button>
             </Modal.Footer>
          </Modal>)
    }

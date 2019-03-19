@@ -114,7 +114,8 @@ router.get('/:ListingId', function (req, res) {
       req.status(401).end();
       req.cnn.release();
    }
-   req.cnn.chkQry('select l.*, m.imageUrl from Listing l left join Image m on m.ListingId = l.id where l.id = ? limit 1',
+   req.cnn.chkQry('select l.*, m.imageUrl from Listing l ' 
+   +'left join Image m on m.ListingId = l.id where l.id = ? limit 1',
       [req.params.ListingId], handler);
 });
 
@@ -250,9 +251,10 @@ router.post('/:ListingId/Images', function (req, res) {
    var vld = req.validator;
    var cnn = req.cnn;
    var ListingId = req.params.ListingId;
-   console.log(req.body);
+
    // const values = Object.values(req.files);
    const filePath = [req.body.filePath];
+   console.log("posting images ", filePath);
    const promises = filePath.map(file => 
       cloudinary.v2.uploader.upload(file, {tags : ListingId}));
    

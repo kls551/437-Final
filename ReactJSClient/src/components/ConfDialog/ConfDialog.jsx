@@ -19,7 +19,8 @@ export default class ConfDialog extends PureComponent {
    render() {
       console.log("ConfDialog rerenders");
       return (
-         <Modal show={this.props.showConfirmation} onHide={() => this.close("NO")}>
+         <Modal show={this.props.showConfirmation} 
+         onHide={() => this.close("NO")}>
             <Modal.Header closeButton>
                <Modal.Title>{this.props.title}</Modal.Title>
             </Modal.Header>

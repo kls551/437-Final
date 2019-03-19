@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { ListGroup, ListGroupItem} from 'react-bootstrap';
-import { Col, Row, Button, Glyphicon, Image, FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
+import { Col, Row, Button, Glyphicon, Image, 
+   FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
 import ListingModal from './ListingModal';
 import ConfDialog  from '../ConfDialog/ConfDialog';
 import ErrorDialog  from '../ErrorDialog/ErrorDialog';
@@ -141,7 +142,8 @@ export default class AllListings extends Component {
                         </label>
                         </div>
                         <div className="form-group">
-                        <button className="btn btn-primary mt-2" type="submit">
+                        <button className="btn btn-primary mt-2" 
+                        type="submit">
                            Sort
                         </button>
                         </div>
@@ -160,7 +162,9 @@ export default class AllListings extends Component {
                            />
                         </Col>
                         <Col className="pull-right">
-                           <button  onClick={this.handleNumBedsPost} type="submit" className="btn btn-primary mt-2">Filter</button>
+                           <button  onClick={this.handleNumBedsPost} 
+                           type="submit" 
+                           className="btn btn-primary mt-2">Filter</button>
                         </Col>
                      </Row>
                      </FormGroup>
@@ -170,9 +174,10 @@ export default class AllListings extends Component {
                
 
                <Col sm={9}>
-                  <Button className="btn btn-primary" onClick={() => this.openModal()}>
+                  <Button className="btn btn-primary" 
+                  onClick={() => this.openModal()}>
                      New Listing
-                  </Button>
+                  </Button>               
                   <ListGroup>
                      {lstItems}
                   </ListGroup>
@@ -219,7 +224,8 @@ const LstItem = function (props) {
                {console.log("id ", props.id)}
                {console.log("lst ", props)}
                <Link to={ { pathname: "/ListingDetail/" + props.id, 
-                        state : {lstTitle : props.lst.title, lstId: props.lst.id, lst: props.lst} } }  
+                        state : {lstTitle : props.lst.title, 
+                           lstId: props.lst.id, lst: props.lst} } }  
                         title={props.lst.title}> {props.lst.title} </Link> 
             </h3></div>
             <div>
@@ -260,17 +266,21 @@ const LstItem = function (props) {
 
          <div> 
             <Col sm={6}> </Col>
-            <Col sm={6} > <h4> {`Location:  ${props.lst.location}`} </h4></Col>
+            <Col sm={6} > <h4> {`Location:  ${props.lst.location}`} </h4>
+            </Col>
          </div>
 
          <div>
             <Col sm={6}> </Col>
-            <Col sm={6} >  <h4> {`Number of Bedroom: ${props.lst.numBed}`}  </h4> </Col>
+            <Col sm={6} >  <h4> {`Number of Bedroom: ${props.lst.numBed}`}  
+            </h4> </Col>
          </div>
 
          <div>
             <Col sm={6}> </Col>
-            <Col sm={6}  > <h4>{`Contact Information:  ${props.lst.contactInfo}`} </h4> </Col>
+            <Col sm={6}  > 
+            <h4>{`Contact Information:  ${props.lst.contactInfo}`} </h4> 
+            </Col>
          </div>
             </Col>
 
