@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { ListGroup, ListGroupItem, Col, Row, Spinner, 
-   Images, FormGroup, FormControl, HelpBlock,
+import { ListGroup, ListGroupItem, Col, Row,
    Button, Glyphicon, Panel 
    ,Carousel, CarouselItem, Image} from 'react-bootstrap';
 import ImgModal from './imgModal';
-import ConfDialog  from '../ConfDialog/ConfDialog';
-import axios from 'axios'; 
 import './AllListings.css';
 
 export default class ListingDetail extends Component {

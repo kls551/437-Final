@@ -201,7 +201,7 @@ export default class AllListings extends Component {
                      if (answer === 'YES') {
                         this.props.delLst(this.state.delLst.id,
                            () => this.props.history.push("/"));
-                        this.setState({delLst: null, showConfirmation: false});   
+                        this.setState({delLst: null, showConfirmation: false});
                      }
                      else if (answer === 'NO') {
                         this.setState({delLst: null, showConfirmation: false});
