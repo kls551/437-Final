@@ -288,7 +288,10 @@ router.post('/:ListingId/Images', function (req, res) {
             cnn.release();
          });
    })
-   .catch(err => console.log("this is error ",err));
+   .catch(err => {console.log("this is error ",err);
+      res.status(400).end();
+      cnn.release();
+   });
 });
 
 module.exports = router;
