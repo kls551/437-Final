@@ -26,7 +26,7 @@ First you will need Cloudinary Account.
 Just go to [Cloudinary](https://cloudinary.com/) to create an account and to Setup.
 
 #### Cloudinary Setup
-You will need to set up dotenv (npm module) for handling environment variable
+You will need to set up dotenv (npm module) for handling environment variable.
 To set up:
 - Make a `config.env` inside your main directory
 - Put your Cloudinary information in `config.env`
@@ -37,3 +37,5 @@ API_KEY=<API_key>
 API_SECRET=<API_Secret>
 ```
 
+### bug notes
+For now, only 3 images per listing is working but it can be fixed by correct implementation of carousel.
