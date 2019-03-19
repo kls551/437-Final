@@ -54,14 +54,46 @@ export default class ListingDetail extends Component {
       console.log("listing in detail  ", this.state.lst);
    }
 
+   // handleChange = (e) => {
+   //    let newState = {};
+   //    // const files = Array.from(e.target.files);
+   //    // // const files = e.target.files;
+   
+   //    // const formData = new FormData();
+   //    // formData.append(0, files[0]);
+   //    this.setState({selectedImg : e.target.files[0]});
+   //    var path = URL.createObjectURL(e.target.files[0]);
+   //    console.log("path ", path);
+   //    console.log("selected file ", this.state.selectedImg);
+   //    console.log("target file ",  e.target.files[0]);
+   // };
+
+   // upload = () => {
+   //    this.props.uploadImages(this.state.lst.id, this.state.imageUrl);
+   // }
+
    render() {
+      var imgArray = this.props.Imgs;
+      var imgItems = [];
+
+      // this.props.Imgs.forEach( img => {
+      //    imgItems.push(<ImgItem
+      //    key = {img.id}
+      //    imageUrl={img.imageUrl}
+      //    />);
+      // });
+
    return (
       <section className="container">
 
       <h1> {this.state.lst && this.state.lst.title} </h1>
          {/* Carousel - Photos */}
          <Row>
+            {/* <MyCarousel items={this.props.Imgs} /> */}
+      
             <Carousel>
+              
+               {/* {imgItems} */}
                <Carousel.Item> 
                <img
                   className="d-block w-700 h-500"
@@ -87,6 +119,9 @@ export default class ListingDetail extends Component {
                         this.props.Imgs[2].imageUrl : ""}
                      alt="First slide"
                   />
+                  <Carousel.Caption>
+                        <h3>Second slide label</h3>
+                  </Carousel.Caption>
                </Carousel.Item>
             </Carousel>
          </Row>
@@ -119,6 +154,11 @@ export default class ListingDetail extends Component {
          </Button>
       </div>
      
+
+      {/* <input type="file"  onChange={this.handleChange} />
+      <Button bsStyle="primary" onClick={this.uploadFile}>
+         Save Image
+      </Button> */}
       <ImgModal
             showModal={this.state.showModal}
             onDismiss={this.modalDismiss} />
@@ -126,3 +166,39 @@ export default class ListingDetail extends Component {
    )
    }
 }
+
+// const ImgItem = function (props) {
+//    console.log(props)
+//     return (
+//        <Carousel.Item>
+//           {console.log("in image item ---- ", props.imageUrl)}
+//           <img
+//             className="d-block w-700 h-500"
+//             src={props.imageUrl} 
+//             alt="First slide"
+//          />
+//        </Carousel.Item>
+//     );
+//  }
+
+
+ const Item = (item) => (
+   <Carousel.Item>
+     {/* <a className="thumbnail" href="javascript:void(0)"> */}
+     {/* {console.log("image URL --------- ", item && item.imageUrl)} */}
+          <img className="media-object"
+             src={item.imageUrl}
+            //  alt={alt}
+          />
+       {/* </a> */}
+    </Carousel.Item>
+ )
+ 
+ const MyCarousel = ({ items }) => (
+   // <div className="root">
+     <Carousel controls={false}>
+       {items ? items.map((item, i) =>
+        <Item key={i} item={item} />) : ""}
+     </Carousel>
+   // </div>
+ )

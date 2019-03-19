@@ -71,7 +71,6 @@ app.use(CnnPool.router);
 app.use('/Prss', require('./Routes/Account/Prss.js'));
 app.use('/Ssns', require('./Routes/Account/Ssns.js'));
 app.use('/Listing', require('./Routes/House/Listing.js'));
-app.use('/Imgs', require('./Routes/House/Imgs.js'));
 
 app.delete('/DB', function (req, res) {
    // Callbacks to clear tables
