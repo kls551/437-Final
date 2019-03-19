@@ -60,10 +60,17 @@ export default class ListingDetail extends Component {
       const files = Array.from(e.target.files);
       // const files = e.target.files;
    
+      // this.setState({uploading: true});
       const formData = new FormData();
+      // formData.append(0, files);
       formData.append(0, files[0]);
+
+      console.log(" (formData) ------- ", formData);
+      // this.upload();
+      // this.props.uploadImages(this.state.lst.id, files);
       this.setState({images : formData});
-   };
+      // this.props.uploadImages(this.state.lst.id, formData);
+   }
 
    upload = () => {
       console.log("images (formData) ------- ", this.state.images);
@@ -73,6 +80,13 @@ export default class ListingDetail extends Component {
    render() {
       var imgArray = this.props.Imgs;
       var imgItems = [];
+      // for (var i=0; i<imgArray; i++) {
+      //    imgItems.push(<Carousel.Item><img
+      //       className="d-block w-700 h-500"
+      //       src={imgArray[i].imageUrl}
+      //       alt="First slide"
+      //    /> </Carousel.Item>)
+      // }
 
       this.props.Imgs.forEach( img => {
          console.log("adding image ------ ", img.imageUrl);
@@ -82,6 +96,18 @@ export default class ListingDetail extends Component {
          />);
       });
 
+
+      // this.props.Imgs.forEach( img => {
+      //    console.log("adding image ------ ", img.imageUrl);
+      //    imgItems.push(<Carousel.Item
+      //    key = {img.id}
+      //    src={img.ImageUrl}
+      //    alt="First slide"
+      //    // imageUrl={require(img.imageUrl)}
+      //    >   </Carousel.Item>);
+      // });
+
+
       return (
          <section className="container">
 
@@ -89,10 +115,10 @@ export default class ListingDetail extends Component {
             {/* Carousel - Photos */}
             <Row>
                <Carousel>
-                  {imgItems}
 
+                  {/* {imgItems} */}
 
-                  {/* <Carousel.Item> 
+                  <Carousel.Item> 
                   <img
                      className="d-block w-700 h-500"
                      src={(this.props.Imgs && this.props.Imgs[0]) ? this.props.Imgs[0].imageUrl : ""}
@@ -117,7 +143,7 @@ export default class ListingDetail extends Component {
                      <Carousel.Caption>
                            <h3>Second slide label</h3>
                      </Carousel.Caption>
-                  </Carousel.Item> */}
+                  </Carousel.Item>
 
                </Carousel>
             </Row>
@@ -143,6 +169,10 @@ export default class ListingDetail extends Component {
 
             </Row>
 
+
+
+         {/* <input type='file' id='imageUrl' onChange={this.handleChange} /> 
+         <Button onClick={this.upload}> Upload Image </Button> */}
          <Button bsStyle="primary" onClick={() => this.openModal()}>
                Add Image
             </Button>

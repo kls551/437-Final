@@ -20,6 +20,30 @@ cloudinary.config({
 })
 
 console.log(process.env.CLOUD_NAME)
+
+// const storage = multer.diskStorage({
+//    destination: function(req, file, cb) {
+//       cb(null, './uploads');
+//    },
+//    filename: function(req,file,cb) {
+//       var date = Date.now(); 
+//       cb(null, date + file.originalname);
+//    }
+// });
+
+// const fileFilter = (req,file,cb) => {
+//    if (file.mimetype == 'image/jpeg' ||
+//       file.mimetype == 'image/png')
+//       cb (null, true);
+//    else
+//       cb (null, false);
+// }
+
+// var upload = multer({
+//    storage: storage,
+//    fileFilter: fileFilter
+// });
+
 router.baseURL = '/Listing';
 
 // this is multiple image upload (tester version)
@@ -188,7 +212,6 @@ router.delete('/:ListingId', function (req, res) {
    var vld = req.validator;
    var ListingId = req.params.ListingId;
    var cnn = req.cnn;
-   var imgArr = [];
 
    async.waterfall([
       function (cb) {
@@ -199,12 +222,8 @@ router.delete('/:ListingId', function (req, res) {
       function (Listing, fields, cb) {
          if (vld.check(Listing.length, Tags.notFound, null, cb) &&
             vld.checkPrsOK(Listing[0].ownerId, cb))
-               cloudinary.v2.api.delete_resources_by_tag(ListingId,
-                  cb);
-      },
-      function (fields, cb) {
-         cnn.chkQry('delete from Listing where id = ?', [ListingId],
-         cb);
+            cnn.chkQry('delete from Listing where id = ?', [ListingId],
+               cb);
       }],
       function (err) {
          if (!err)
@@ -245,6 +264,47 @@ router.get('/:ListingId/Images', function (req, res) {
       });
 });
 
+// we dont know yet
+// router.post('/:ListingId/Images', upload.array('mainImage', 10), function (req, res) {
+//    console.log(req.files, req.files.length);
+//    var vld = req.validator;
+//    var cnn = req.cnn;
+//    var ListingId = req.params.ListingId;
+//    var filePaths = [];
+//    var i = 0;
+//    for (i = 0; i < req.files.length; i++) {
+//       // filePaths = filePaths + 
+//       // "("+ListingId+","+req.files[0].path+")";
+//       // if (i !== (req.files.length-1))
+//       //    filePaths = filePaths + ","
+//       filePaths.push([ListingId, req.files[i].path]);
+//    }
+//    console.log(" file paths " ,filePaths);
+//    var dummy = [[1, "hello"], [2, "hello"]];
+
+//    async.waterfall([
+//       function (cb) {
+//          if (vld.check(req.session, Tags.noLogin, null, cb)) {
+//             //vld.hasFields(req.body, ["imageUrl"], cb)) {
+//             cnn.chkQry('select * from Listing where id = ?', [ListingId],
+//                cb);
+//          }
+//       },
+//       function (Listing, fields, cb) {
+//          if (vld.check(Listing.length, Tags.notFound, null, cb)) {
+//             console.log("I'm here")
+//             cnn.query("insert into Image (ListingId, imageUrl) values ?",
+//                [filePaths], cb);
+//          }
+//       },
+//       function (insRes, fields, cb) {
+//          res.location(router.baseURL + '/' + insRes.insertId).end();
+//          cb();
+//       }],
+//       function (err) {
+//          cnn.release();
+//       });
+// });
 
 router.post('/:ListingId/Images', function (req, res) {
    var vld = req.validator;
@@ -254,7 +314,7 @@ router.post('/:ListingId/Images', function (req, res) {
    // const values = Object.values(req.files);
    const filePath = [req.body.filePath];
    const promises = filePath.map(file => 
-      cloudinary.v2.uploader.upload(file, {tags : ListingId}));
+      cloudinary.uploader.upload(file));
    
    Promise
      .all(promises)
@@ -286,10 +346,7 @@ router.post('/:ListingId/Images', function (req, res) {
             cnn.release();
          });
    })
-   .catch(err => {console.log("this is error ",err);
-      res.status(400).end();
-      cnn.release();
-   });
+   .catch(err => console.log("this is error ",err));
 });
 
 module.exports = router;
