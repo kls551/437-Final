@@ -2,8 +2,7 @@ function Errs(state = [], action) {
     console.log("Errs reducing action " + action.type);
  
     switch (action.type) {
-        case 'LOGIN_ERR':
-            console.log("login error ", action.details);
+        case 'LOGIN_ERR': 
             return action.details;
         case 'REGISTER_ERR':
             return action.details;
@@ -20,6 +19,7 @@ function Errs(state = [], action) {
         case 'GET_IMGS_ERR':
             return action.details;
         case 'ADD_IMG_ERR': 
+            console.log("ADD img error ", action.details);
             return action.details;   
         case 'CLEAR_ERROR':
             return action.details;       

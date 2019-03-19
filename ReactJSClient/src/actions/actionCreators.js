@@ -97,25 +97,15 @@ export function getLstImgs(lstId, cb, errcb) {
    };
 }
 
-export function uploadImages(lstId, img, cb, errcb) {
-   return (dispatch, prevState) => {
-      api.postImg(lstId, img)
-      .then(imgs => { console.log("imgs -----", imgs);
-         dispatch({type: 'ADD_IMG', imgs: imgs}); } )
-      .then(() => {if (cb) cb();})
-      .catch(error => {dispatch({type: 'ADD_IMG_ERR', details: error});
-                        if (errcb) errcb(); } );
-   };
-}
 
 export function addImg(lstId, body, cb) {
    return (dispatch, prevState) => {
       api.postImg(lstId, body)
-      // .then(imgs => { console.log("imgs -----", imgs);
-      //    dispatch({type: 'ADD_IMG', imgs: imgs}); } )
+      .then( (imgs) => { console.log("imgs -----", imgs);
+         dispatch({type: 'ADD_IMG', imgs: imgs}); } )
       .then(() => {if (cb) cb();})
       .catch(error => {
-         dispatch({type: 'FIELD_MIS_ERR', details: error})
+         dispatch({type: 'ADD_IMG_ERR', details: error})
       });
    };
 }

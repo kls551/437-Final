@@ -281,7 +281,10 @@ router.post('/:ListingId/Images', function (req, res) {
             }
          },
          function (insRes, fields, cb) {
-            res.location(router.baseURL + '/' + insRes.insertId).end();
+            console.log("inRes ", inRes);
+            if (vld.check(insRes, Tags.notFound, null, cb)) {
+               res.location(router.baseURL + '/' + insRes.insertId).end();
+            }
             cb();
          }],
          function (err) {
@@ -289,7 +292,8 @@ router.post('/:ListingId/Images', function (req, res) {
          });
    })
    .catch(err => {console.log("this is error ",err);
-      res.status(400).end();
+      vld.check(!err, Tags.notFound, null, null);
+      // res.status(400).end();
       cnn.release();
    });
 });

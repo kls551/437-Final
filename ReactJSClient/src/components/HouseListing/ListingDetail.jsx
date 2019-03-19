@@ -7,7 +7,7 @@ import { ListGroup, ListGroupItem, Col, Row, Spinner,
 import ImgModal from './imgModal';
 import ConfDialog  from '../ConfDialog/ConfDialog';
 import axios from 'axios'; 
-
+import './AllListings.css';
 
 export default class ListingDetail extends Component {
    constructor(props) {
@@ -152,9 +152,13 @@ export default class ListingDetail extends Component {
 
          </Row>
 
-      <Button bsStyle="primary" onClick={() => this.openModal()}>
+      <div className={(this.state.lst.ownerId != this.props.Prss.id) ? 'hidden' : ''}>
+       <Button bsStyle="primary" 
+            onClick={() => this.openModal()}>
             Add Image
          </Button>
+      </div>
+     
 
       {/* <input type="file"  onChange={this.handleChange} />
       <Button bsStyle="primary" onClick={this.uploadFile}>

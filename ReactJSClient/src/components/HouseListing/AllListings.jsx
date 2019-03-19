@@ -284,10 +284,7 @@ const LstItem = function (props) {
          </div>
             </Col>
 
-         </Row>
-
-
-         
+         </Row> 
       </ListGroupItem>
    )
 }
