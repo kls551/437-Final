@@ -19,7 +19,6 @@ function Errs(state = [], action) {
         case 'GET_IMGS_ERR':
             return action.details;
         case 'ADD_IMG_ERR': 
-            console.log("ADD img error ", action.details);
             return action.details;   
         case 'CLEAR_ERROR':
             return action.details;       

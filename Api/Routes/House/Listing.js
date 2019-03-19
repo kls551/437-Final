@@ -2,7 +2,6 @@ var Express = require('express');
 var Tags = require('../Validator.js').Tags;
 var router = Express.Router({ caseSensitive: true });
 var async = require('async');
-var multer = require('multer');
 
 //img stuff
 const formData = require('express-form-data')
@@ -21,39 +20,6 @@ cloudinary.config({
 
 console.log(process.env.CLOUD_NAME)
 router.baseURL = '/Listing';
-
-// this is multiple image upload (tester version)
-router.post('/multiple_uploads', async (req, res) => {
-   /* we would receive a request of file paths as array */
-   let filePaths = req.body.filePaths;
-   let multipleUpload = new Promise(async (resolve, reject) => {
-     let upload_len = filePaths.length
-         ,upload_res = new Array();
-
-       for(let i = 0; i <= upload_len + 1; i++)
-       {
-           let filePath = filePaths[i];
-           await cloudinary.uploader.upload(filePath, (error, result) => {
-               if(upload_res.length === upload_len)
-               {
-                 /* resolve promise after upload is complete */
-                 resolve(upload_res)
-               }else if(result)
-               {
-                 /*push public_ids in an array */  
-                 upload_res.push(result.public_id);
-               } else if(error) {
-                 reject(error)
-               }
-           })
-       } 
-   })
-   .then((result) => console.log("res  ", result, "resUp ...", upload_res))
-   .catch((error) => console.log(error))
-
-   let upload = await multipleUpload; 
-   res.json({'response':upload})
-})
 
 router.get('/', function (req, res) {
    console.log(req.query);
@@ -292,7 +258,6 @@ router.post('/:ListingId/Images', function (req, res) {
    })
    .catch(err => {console.log("this is error ",err);
       vld.check(!err, Tags.notFound, null, null);
-      // res.status(400).end();
       cnn.release();
    });
 });

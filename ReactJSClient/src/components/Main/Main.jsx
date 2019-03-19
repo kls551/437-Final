@@ -25,8 +25,6 @@ class Main extends Component {
 
    // Function component to generate a Route tag with a render method 
    // conditional on login.  Params {conditional: Cmp to render if signed in}
-
-
    render() {
       console.log("Redrawing main");
       return (

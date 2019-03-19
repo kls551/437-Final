@@ -5,8 +5,6 @@ import { Col, Row, Button, Glyphicon, Image,
    FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
 import ListingModal from './ListingModal';
 import ConfDialog  from '../ConfDialog/ConfDialog';
-import ErrorDialog  from '../ErrorDialog/ErrorDialog';
-import ListingDetail from './ListingDetail'
 import './AllListings.css';
 
 export default class AllListings extends Component {
